@@ -23,13 +23,12 @@ public:
     Drivetrain();
 
     virtual double heading();
-    virtual double leftVelocity();
-    virtual double rightVelocity();
     virtual double leftDistance();
     virtual double rightDistance();
     virtual void driveVelocity(double left, double right);
     virtual void resetEncoders();
 
     void update(double timestamp) override;
-    void SetPIDGains(double P, double I, double D, double F) override;
+    
+    virtual void setPIDGains(double p, double i, double d, double f);
 };
