@@ -56,7 +56,7 @@ void Drivetrain::resetEncoders()
 {
 }
 
-void DriveTrain::SetPIDGains(double P, double I, double D, double F)
+void DriveTrain::setPIDGains(double P, double I, double D, double F)
 {
 }
 
