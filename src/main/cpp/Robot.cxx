@@ -44,10 +44,14 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit()
 {
+    // Start the camera here
 }
 
 void Robot::TeleopPeriodic()
 {
+
+    
+
 }
 
 void Robot::DisabledInit()

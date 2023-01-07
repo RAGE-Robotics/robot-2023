@@ -19,9 +19,11 @@ Drivetrain::Drivetrain()
     mRamseteController->SetTolerance(frc::Pose2d{units::meter_t{Constants::kRamseteToleranceX}, units::meter_t{Constants::kRamseteTolaranceY}, frc::Rotation2d{}});
 
     mPathFollowingTimestamp = -1.0;
+
+    // Define TalonSRX's here
 }
 
-double Drivetrain::heading()
+double Drivetrain::heading() 
 {
     return 0;
 }
@@ -51,6 +53,10 @@ void Drivetrain::driveVelocity(double left, double right)
 }
 
 void Drivetrain::resetEncoders()
+{
+}
+
+void DriveTrain::SetPIDGains(double P, double I, double D, double F)
 {
 }
 

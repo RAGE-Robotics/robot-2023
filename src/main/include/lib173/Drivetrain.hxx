@@ -31,4 +31,5 @@ public:
     virtual void resetEncoders();
 
     void update(double timestamp) override;
+    void SetPIDGains(double P, double I, double D, double F) override;
 };
