@@ -26,7 +26,8 @@ void StateEstimator::setDrivetrain(std::shared_ptr<Drivetrain> drivetrain)
 void StateEstimator::reset(frc::Pose2d pose)
 {
     mPoseEstimatorMutex.lock();
-    mPoseEstimator->ResetPosition(mDrivetrain ? frc::Rotation2d{units::radian_t{mDrivetrain->heading()}} : frc::Rotation2d{}, units::meter_t{mDrivetrain ? mDrivetrain->leftDistance() : 0}, units::meter_t{mDrivetrain ? mDrivetrain->rightDistance() : 0}, pose);
+    mPoseEstimator->ResetPosition(mDrivetrain ? frc::Rotation2d{units::radian_t{mDrivetrain->heading()}} : 
+                                  frc::Rotation2d{}, units::meter_t{mDrivetrain ? mDrivetrain->leftDistance() : 0}, units::meter_t{mDrivetrain ? mDrivetrain->rightDistance() : 0}, pose);
     mPoseEstimatorMutex.unlock();
 }
 
