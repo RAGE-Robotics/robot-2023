@@ -26,9 +26,8 @@ public:
     virtual double leftDistance();
     virtual double rightDistance();
     virtual void driveVelocity(double left, double right);
-    virtual void resetEncoders();
 
     void update(double timestamp) override;
-    
-    virtual void setPIDGains(double p, double i, double d, double f);
+
+    virtual void setPidGains(double p, double i, double d, double f);
 };

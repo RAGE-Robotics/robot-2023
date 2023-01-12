@@ -21,7 +21,7 @@ Drivetrain::Drivetrain()
     mPathFollowingTimestamp = -1.0;
 }
 
-double Drivetrain::heading() 
+double Drivetrain::heading()
 {
     return 0;
 }
@@ -37,10 +37,6 @@ double Drivetrain::rightDistance()
 }
 
 void Drivetrain::driveVelocity(double left, double right)
-{
-}
-
-void Drivetrain::resetEncoders()
 {
 }
 
@@ -82,6 +78,6 @@ void Drivetrain::update(double timestamp)
     mTrajectoryMutex.unlock();
 }
 
-void Drivetrain::setPIDGains(double p, double i, double d, double f)
+void Drivetrain::setPidGains(double p, double i, double d, double f)
 {
 }
