@@ -3,5 +3,7 @@
 class System
 {
 public:
-    virtual void updateSystem(double timestamp);
+    virtual void updateSystem(double timestamp, char mode)
+    {
+    }
 };
