@@ -62,5 +62,5 @@ public:
 
     bool pathFollowing();
     void stopPathFollowing();
-    void followPath(frc::Trajectory path);
+    void followPath(frc::Trajectory path, bool resetPose = true);
 };

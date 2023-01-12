@@ -9,6 +9,7 @@
 
 #include "Constants.hxx"
 #include "Controllers.hxx"
+#include "lib173/StateEstimator.hxx"
 
 DifferentialDrivetrain::DifferentialDrivetrain()
 {
@@ -126,9 +127,11 @@ void DifferentialDrivetrain::stopPathFollowing()
     mTrajectoryMutex.unlock();
 }
 
-void DifferentialDrivetrain::followPath(frc::Trajectory path)
+void DifferentialDrivetrain::followPath(frc::Trajectory path, bool resetPose)
 {
     mTrajectoryMutex.lock();
+    if (resetPose)
+        StateEstimator::instance()->reset(path.InitialPose());
     mTrajectory = std::make_shared<frc::Trajectory>(path);
     mTrajectoryMutex.unlock();
 }
