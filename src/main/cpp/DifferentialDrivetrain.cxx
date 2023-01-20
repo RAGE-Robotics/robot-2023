@@ -17,20 +17,23 @@ DifferentialDrivetrain::DifferentialDrivetrain()
 {
     // mGyro = std::make_unique<frc::ADXRS450_Gyro>(frc::SPI::Port::kOnboardCS0);
 
-    mLeftPrimaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(1);
-    mLeftSecondaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(2);
+    mLeftPrimaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(2);
+    mLeftSecondaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(1);
     mRightPrimaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(3);
     mRightSecondaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(4);
 
     mLeftPrimaryTalon->ConfigFactoryDefault();
+    mLeftPrimaryTalon->SetInverted(true);
     mLeftPrimaryTalon->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
 
     mLeftSecondaryTalon->ConfigFactoryDefault();
+    mLeftSecondaryTalon->SetInverted(true);
     mLeftSecondaryTalon->Follow(*mLeftPrimaryTalon);
 
     mRightPrimaryTalon->ConfigFactoryDefault();
     mRightPrimaryTalon->SetInverted(true);
     mRightPrimaryTalon->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
+    mRightPrimaryTalon->SetSensorPhase(true);
 
     mRightSecondaryTalon->ConfigFactoryDefault();
     mRightSecondaryTalon->SetInverted(true);
@@ -103,10 +106,11 @@ void DifferentialDrivetrain::setPidGains(double p, double i, double d, double f)
 void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
 {
     std::shared_ptr<frc::PS4Controller> driver = Controllers::instance()->driver();
-    double x = driver->GetRightX();
+    double x = driver->GetLeftX();
     x = x * fabs(x);
     double y = driver->GetLeftY();
     y = y * fabs(y);
+    y *= -1.0;
 
     if (mode == 'd')
         driveOpenLoop(0, 0);
