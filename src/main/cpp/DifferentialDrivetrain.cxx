@@ -11,14 +11,16 @@
 #include "Controllers.hxx"
 #include "lib173/StateEstimator.hxx"
 
+#include <iostream>
+
 DifferentialDrivetrain::DifferentialDrivetrain()
 {
-    mGyro = std::make_unique<frc::ADXRS450_Gyro>(frc::SPI::Port::kOnboardCS0);
+    // mGyro = std::make_unique<frc::ADXRS450_Gyro>(frc::SPI::Port::kOnboardCS0);
 
-    mLeftPrimaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(0);
-    mLeftSecondaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(1);
-    mRightPrimaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(2);
-    mRightSecondaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(3);
+    mLeftPrimaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(1);
+    mLeftSecondaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(2);
+    mRightPrimaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(3);
+    mRightSecondaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(4);
 
     mLeftPrimaryTalon->ConfigFactoryDefault();
     mLeftPrimaryTalon->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
@@ -40,7 +42,8 @@ DifferentialDrivetrain::DifferentialDrivetrain()
 
 double DifferentialDrivetrain::heading()
 {
-    return mGyro->GetAngle();
+    // return mGyro->GetAngle();
+    return 0;
 }
 
 double DifferentialDrivetrain::leftDistance()
@@ -109,6 +112,8 @@ void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
         driveOpenLoop(0, 0);
     else if (mode == 't')
         driveOpenLoop(y + x, y - x);
+
+    std::cout << mLeftPrimaryTalon->GetSelectedSensorPosition() << ", " << mRightPrimaryTalon->GetSelectedSensorPosition() << "\n";
 }
 
 bool DifferentialDrivetrain::pathFollowing()

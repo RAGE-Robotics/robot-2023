@@ -32,8 +32,8 @@ void Robot::RobotInit()
 
 void Robot::RobotPeriodic()
 {
-    if (!mVisionInitialized)
-        mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;
+    /*if (!mVisionInitialized)
+        mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;*/
 
     frc::Pose2d pose = StateEstimator::instance()->pose();
     std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
