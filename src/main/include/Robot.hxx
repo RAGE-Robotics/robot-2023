@@ -8,6 +8,8 @@
 #include "RageVision.hxx"
 #include "System.hxx"
 #include "Controllers.hxx"
+#include "Arm.hxx"
+#include "Turret.hxx"
 
 class Robot : public frc::TimedRobot
 {
@@ -19,6 +21,10 @@ private:
     std::vector<std::shared_ptr<System>> mSystems;
 
     std::shared_ptr<Controllers> op_controller;
+
+    std::unique_ptr<Arm> arm_control;
+
+    std::unique_ptr<Turret> turret_control;
 
 public:
     void RobotInit() override;
