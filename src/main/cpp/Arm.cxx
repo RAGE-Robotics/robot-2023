@@ -10,5 +10,5 @@ double Arm::encoderCounts(){
 }
 
 void Arm::raiseArm(double percent){
-    mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::PercentOutput, percent);
+    mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::PercentOutput, percent * 50);
 }

@@ -55,6 +55,8 @@ void Robot::AutonomousPeriodic()
 void Robot::TeleopInit()
 {
     op_controller = std::make_shared<Controllers>();
+    arm_control = std::make_unique<Arm>();
+    turret_control = std::make_unique<Turret>();
 }
 
 void Robot::TeleopPeriodic()
@@ -62,7 +64,8 @@ void Robot::TeleopPeriodic()
     double timestamp = frc::Timer::GetFPGATimestamp().value();
     for (std::shared_ptr<System> system : mSystems)
         system->updateSystem(timestamp, 't');
-    op_controller->driver()->GetLeftY();
+    arm_control->raiseArm(op_controller->driver()->GetLeftY());
+    turret_control->rotateTurret(op_controller->driver()->GetRightX());
 }
 
 void Robot::DisabledInit()
