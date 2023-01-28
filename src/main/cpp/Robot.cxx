@@ -5,6 +5,7 @@
 #include <frc/geometry/Pose2d.h>
 #include <iostream>
 #include <frc/Timer.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 #include "lib173/StateEstimator.hxx"
 #include "RageVision.hxx"
@@ -37,6 +38,7 @@ void Robot::RobotPeriodic()
 
     frc::Pose2d pose = StateEstimator::instance()->pose();
     std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
+
 }
 
 void Robot::AutonomousInit()
@@ -52,6 +54,7 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit()
 {
+    op_controller = std::make_shared<Controllers>();
 }
 
 void Robot::TeleopPeriodic()
@@ -59,6 +62,7 @@ void Robot::TeleopPeriodic()
     double timestamp = frc::Timer::GetFPGATimestamp().value();
     for (std::shared_ptr<System> system : mSystems)
         system->updateSystem(timestamp, 't');
+    op_controller->driver()->GetLeftY();
 }
 
 void Robot::DisabledInit()

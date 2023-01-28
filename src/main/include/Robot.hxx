@@ -7,6 +7,7 @@
 #include "lib173/Looper.hxx"
 #include "RageVision.hxx"
 #include "System.hxx"
+#include "Controllers.hxx"
 
 class Robot : public frc::TimedRobot
 {
@@ -16,6 +17,8 @@ private:
     bool mVisionInitialized;
 
     std::vector<std::shared_ptr<System>> mSystems;
+
+    std::shared_ptr<Controllers> op_controller;
 
 public:
     void RobotInit() override;
