@@ -10,19 +10,22 @@
 #include "lib173/Looper.hxx"
 #include "RageVision.hxx"
 #include "System.hxx"
+#include "Constants.hxx"
 
-class Arm
+class Arm : public System
 {
     private:
-        std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonFX> mArmRaiser;
-        std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonFX> mArmExtender;
+        std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmRaiser;
+        std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmExtender;
 
-        std::unique_ptr<frc::Solenoid> wristJoint;
+        // std::unique_ptr<frc::Solenoid> wristJoint;
     
     public:
 
     Arm();
     double encoderCounts();
-    void raiseArm(double percent);
-
+    void raiseArm(double armpercent);
+    void extendArm(double armpower);
+    void retractArm(double armpower);
+    void updateSystem(double timestamp, char mode) override;
 };

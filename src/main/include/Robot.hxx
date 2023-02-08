@@ -10,6 +10,8 @@
 #include "Controllers.hxx"
 #include "Arm.hxx"
 #include "Turret.hxx"
+#include "Intake.hxx"
+#include "LEDs.hxx"
 
 class Robot : public frc::TimedRobot
 {
@@ -25,6 +27,12 @@ private:
     std::unique_ptr<Arm> arm_control;
 
     std::unique_ptr<Turret> turret_control;
+
+    std::unique_ptr<Claw> claw_control;
+
+    //std::unique_ptr<LEDs> leds_controller;
+
+    LEDs leds;
 
 public:
     void RobotInit() override;

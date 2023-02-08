@@ -12,6 +12,9 @@
 #include "Constants.hxx"
 #include "DifferentialDrivetrain.hxx"
 #include "System.hxx"
+#include "Intake.hxx"
+#include "Arm.hxx"
+#include "LEDs.hxx"
 
 void Robot::RobotInit()
 {
@@ -29,6 +32,7 @@ void Robot::RobotInit()
     mVision->run(Constants::kVisionDataPort, [](double timestamp, int id, double tx, double ty, double tz, double qw, double qx, double qy, double qz, double processingLatency) {});
 
     mSystems.push_back(DifferentialDrivetrain::instance());
+    leds.displayTeamColor();
 }
 
 void Robot::RobotPeriodic()
@@ -38,7 +42,6 @@ void Robot::RobotPeriodic()
 
     frc::Pose2d pose = StateEstimator::instance()->pose();
     std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
-
 }
 
 void Robot::AutonomousInit()
@@ -50,6 +53,8 @@ void Robot::AutonomousPeriodic()
     double timestamp = frc::Timer::GetFPGATimestamp().value();
     for (std::shared_ptr<System> system : mSystems)
         system->updateSystem(timestamp, 'a');
+   // leds_controller = std::make_unique<LEDs>();
+    leds.displayRainbow();
 }
 
 void Robot::TeleopInit()
@@ -57,6 +62,7 @@ void Robot::TeleopInit()
     op_controller = std::make_shared<Controllers>();
     arm_control = std::make_unique<Arm>();
     turret_control = std::make_unique<Turret>();
+    claw_control = std::make_unique<Claw>();
 }
 
 void Robot::TeleopPeriodic()
@@ -64,8 +70,14 @@ void Robot::TeleopPeriodic()
     double timestamp = frc::Timer::GetFPGATimestamp().value();
     for (std::shared_ptr<System> system : mSystems)
         system->updateSystem(timestamp, 't');
-    arm_control->raiseArm(op_controller->driver()->GetLeftY());
-    turret_control->rotateTurret(op_controller->driver()->GetRightX());
+    // arm_control->raiseArm(op_controller->driver()->GetY());
+    // turret_control->rotateTurret(op_controller->driver()->GetRightX());
+    // arm_control->extendArm(op_controller->driver()->GetX());
+    // arm_control->retractArm(op_controller->driver()->Get());
+    // claw_control->intakeRollersIn(op_controller->driver()->GetRawButton(1));
+    // claw_control->intakeRollersOut(op_controller->driver()->GetRawButton(2));
+    claw_control->moveWrist(op_controller->driver()->GetZ());
+    leds.displayFancyTeamColors();
 }
 
 void Robot::DisabledInit()
@@ -77,6 +89,7 @@ void Robot::DisabledPeriodic()
     double timestamp = frc::Timer::GetFPGATimestamp().value();
     for (std::shared_ptr<System> system : mSystems)
         system->updateSystem(timestamp, 'd');
+    leds.displayTeamColor();
 }
 
 #ifndef RUNNING_FRC_TESTS

@@ -6,4 +6,5 @@ public:
     virtual void updateSystem(double timestamp, char mode)
     {
     }
+
 };

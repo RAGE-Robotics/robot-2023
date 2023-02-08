@@ -103,10 +103,10 @@ void DifferentialDrivetrain::setPidGains(double p, double i, double d, double f)
 
 void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
 {
-    std::shared_ptr<frc::PS4Controller> driver = Controllers::instance()->driver();
-    double x = driver->GetLeftX();
+    std::shared_ptr<frc::Joystick> driver = Controllers::instance()->driver();
+    double x = driver->GetX();
     x = x * fabs(x);
-    double y = driver->GetLeftY();
+    double y = driver->GetY();
     y = y * fabs(y);
     y *= -1.0;
 
