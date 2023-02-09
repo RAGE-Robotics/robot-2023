@@ -29,7 +29,7 @@ void Arm::retractArm(double armpower)
 
 void Arm::updateSystem(double timestamp, char mode)
 {
-    std::shared_ptr<frc::Joystick> driver = Controllers::instance()->driver();
+    std::shared_ptr<frc::Joystick> driver = Controllers::instance()->LeftOperator();
     double x = driver->GetX();
     // x = x * fabs(x);
     double y = driver->GetY();

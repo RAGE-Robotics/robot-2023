@@ -76,9 +76,8 @@ void Robot::TeleopPeriodic()
     // arm_control->retractArm(op_controller->driver()->Get());
     // claw_control->intakeRollersIn(op_controller->driver()->GetRawButton(1));
     // claw_control->intakeRollersOut(op_controller->driver()->GetRawButton(2));
-    claw_control->moveWrist(op_controller->driver()->GetZ());
-    // leds.displayFancyTeamColors();
-    leds.displayRainbow();
+    claw_control->moveWrist(op_controller->RightOperator()->GetZ());
+    leds.displayFancyTeamColors();
 }
 
 void Robot::DisabledInit()

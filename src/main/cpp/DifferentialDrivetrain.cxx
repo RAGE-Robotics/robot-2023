@@ -103,17 +103,18 @@ void DifferentialDrivetrain::setPidGains(double p, double i, double d, double f)
 
 void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
 {
-    std::shared_ptr<frc::Joystick> driver = Controllers::instance()->driver();
-    double x = driver->GetX();
-    x = x * fabs(x);
-    double y = driver->GetY();
-    y = y * fabs(y);
-    y *= -1.0;
+    std::shared_ptr<frc::Joystick> leftdriver = Controllers::instance()->LeftDriver();
+    std::shared_ptr<frc::Joystick> rightdriver = Controllers::instance()->RightDriver();
+    double l = leftdriver->GetY();
+    l = l * fabs(l);
+    double r = rightdriver->GetY();
+    r = r * fabs(r);
+    //r *= -1.0;
 
     if (mode == 'd')
         driveOpenLoop(0, 0);
     else if (mode == 't')
-        driveOpenLoop(y + x, y - x);
+        driveOpenLoop(l, r);
 }
 
 bool DifferentialDrivetrain::pathFollowing()

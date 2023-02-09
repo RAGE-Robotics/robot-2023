@@ -26,7 +26,7 @@ public:
 
 
 private:
-    static constexpr int kLength = 300;
+    static constexpr int kLength = 600;
     // // PWM port 9
     // // Must be a PWM header, not MXP or DIO
     frc::AddressableLED m_led{9};
