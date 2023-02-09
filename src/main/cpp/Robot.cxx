@@ -53,7 +53,7 @@ void Robot::AutonomousPeriodic()
     double timestamp = frc::Timer::GetFPGATimestamp().value();
     for (std::shared_ptr<System> system : mSystems)
         system->updateSystem(timestamp, 'a');
-   // leds_controller = std::make_unique<LEDs>();
+    // leds_controller = std::make_unique<LEDs>();
     leds.displayRainbow();
 }
 
@@ -77,7 +77,8 @@ void Robot::TeleopPeriodic()
     // claw_control->intakeRollersIn(op_controller->driver()->GetRawButton(1));
     // claw_control->intakeRollersOut(op_controller->driver()->GetRawButton(2));
     claw_control->moveWrist(op_controller->driver()->GetZ());
-    leds.displayFancyTeamColors();
+    // leds.displayFancyTeamColors();
+    leds.displayRainbow();
 }
 
 void Robot::DisabledInit()
