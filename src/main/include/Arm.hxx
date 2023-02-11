@@ -22,6 +22,12 @@ class Arm : public System
     
     public:
 
+    static std::shared_ptr<Arm> instance()
+    {
+        static std::shared_ptr<Arm> arm = std::make_shared<Arm>();
+        return arm;
+    }
+
     Arm();
     double encoderCounts();
     void raiseArm(double armpercent);

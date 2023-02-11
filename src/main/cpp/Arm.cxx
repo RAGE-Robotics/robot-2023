@@ -29,14 +29,16 @@ void Arm::retractArm(double armpower)
 
 void Arm::updateSystem(double timestamp, char mode)
 {
-    std::shared_ptr<frc::Joystick> driver = Controllers::instance()->LeftOperator();
-    double x = driver->GetX();
+    std::shared_ptr<frc::Joystick> opl = Controllers::instance()->LeftOperator();
+    double x = opl->GetRawButton(3);
     // x = x * fabs(x);
-    double y = driver->GetY();
+    double z = opl->GetRawButton(2);
     // y = y * fabs(y);
+    double y = opl->GetY();
     if (mode == 't')
     {
         raiseArm(y);
         extendArm(x);
+        retractArm(z);
     }
 }

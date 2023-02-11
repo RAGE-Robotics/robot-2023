@@ -11,7 +11,7 @@
 #include "Controllers.hxx"
 #include "lib173/StateEstimator.hxx"
 
-DifferentialDrivetrain::DifferentialDrivetrain()
+DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
 {
     // mGyro = std::make_unique<frc::ADXRS450_Gyro>(frc::SPI::Port::kOnboardCS0);
 
@@ -44,7 +44,7 @@ DifferentialDrivetrain::DifferentialDrivetrain()
 double DifferentialDrivetrain::heading()
 {
     // return mGyro->GetAngle();
-    return 0;
+    return ahrs.GetAngle();
 }
 
 double DifferentialDrivetrain::leftDistance()

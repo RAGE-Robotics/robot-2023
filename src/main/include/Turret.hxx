@@ -10,7 +10,7 @@
 #include "RageVision.hxx"
 #include "System.hxx"
 
-class Turret 
+class Turret : public System
 {
 private:
     std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonFX> mTurret;
@@ -21,11 +21,16 @@ private:
     
 
 public:
-    static std::shared_ptr<Turret> instance();
+    static std::shared_ptr<Turret> instance()
+    {
+        static std::shared_ptr<Turret> turret = std::make_shared<Turret>();
+        return turret;
+    }
     Turret();
     bool homingSwitchActive();
     void rotateTurret(double percentPower);
     double encoderPosition();
+    void updateSystem(double timestamp, char mode) override;
 
     ~Turret();
 };

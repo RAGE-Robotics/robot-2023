@@ -8,6 +8,7 @@
 #include "lib173/Drivetrain.hxx"
 #include "System.hxx"
 #include "Constants.hxx"
+#include "AHRS.h"
 
 class DifferentialDrivetrain : public Drivetrain, public System
 {
@@ -38,6 +39,8 @@ private:
     std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mRightPrimaryTalon;
     std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mRightSecondaryTalon;
 
+    
+
 public:
     static std::shared_ptr<DifferentialDrivetrain> instance()
     {
@@ -63,4 +66,6 @@ public:
     bool pathFollowing();
     void stopPathFollowing();
     void followPath(frc::Trajectory path, bool resetPose = true);
+
+    AHRS ahrs;
 };

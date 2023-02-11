@@ -10,8 +10,11 @@
 #include "Controllers.hxx"
 #include "Arm.hxx"
 #include "Turret.hxx"
-#include "Intake.hxx"
+#include "Claw.hxx"
 #include "LEDs.hxx"
+#include "AHRS.h"
+
+
 
 class Robot : public frc::TimedRobot
 {
@@ -22,17 +25,7 @@ private:
 
     std::vector<std::shared_ptr<System>> mSystems;
 
-    std::shared_ptr<Controllers> op_controller;
-
-    std::unique_ptr<Arm> arm_control;
-
-    std::unique_ptr<Turret> turret_control;
-
-    std::unique_ptr<Claw> claw_control;
-
-    //std::unique_ptr<LEDs> leds_controller;
-
-    LEDs leds;
+    LEDs leds;  
 
 public:
     void RobotInit() override;
