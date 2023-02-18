@@ -20,7 +20,7 @@
 void Robot::RobotInit()
 {
     std::shared_ptr<StateEstimator> stateEstimator = StateEstimator::instance();
-    std::shared_ptr<RAGETrajectory> trajectoryGen = RAGETrajectory::RAGETrajectory();
+    std::shared_ptr<RAGETrajectory> trajectoryGen = RAGETrajectory::instance();
 
     mLooper.add(stateEstimator);
     AddPeriodic([this]
