@@ -20,13 +20,13 @@
 void Robot::RobotInit()
 {
     std::shared_ptr<StateEstimator> stateEstimator = StateEstimator::instance();
-    std::shared_ptr<RAGETrajectory> trajectoryGen = RAGETrajectory::instance();
+    //std::shared_ptr<RAGETrajectory> trajectoryGen = RAGETrajectory::instance();
 
     mLooper.add(stateEstimator);
     AddPeriodic([this]
                 { mLooper.update(); },
                 units::second_t{Constants::kLoopDt});
-    trajectoryGen->GeneratePoints();
+    //trajectoryGen->GeneratePoints();
     stateEstimator->setDrivetrain(DifferentialDrivetrain::instance());
     stateEstimator->reset(frc::Pose2d{});
 
@@ -38,7 +38,7 @@ void Robot::RobotInit()
     mSystems.push_back(Arm::instance());
     mSystems.push_back(Claw::instance());
     mSystems.push_back(Turret::instance());
-    mSystems.push_back(LEDs::instance());
+    //mSystems.push_back(LEDs::instance());
     // leds.displayTeamColor();
 
     compressor.EnableAnalog(kCompressorMinPressure, kCompressorMaxPressure);
