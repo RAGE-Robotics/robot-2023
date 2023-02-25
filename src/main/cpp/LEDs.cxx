@@ -2,6 +2,7 @@
 
 #include "Controllers.hxx"
 
+#if 0
 LEDs::LEDs()
 {
     m_LEDTimer.Reset();
@@ -304,3 +305,4 @@ void updateSystem(double timestamp, char mode)
         LEDs displayRainbow();
     }
 }
+#endif

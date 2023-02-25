@@ -13,13 +13,13 @@
 class Turret : public System
 {
 private:
-    std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonFX> mTurret;
-    frc::DigitalInput mHomingSwitch{0};
+    std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mTurret;
 
     bool zero_turret = false;
 
     bool manual;
     
+    double turretPosition;
     
 
 public:

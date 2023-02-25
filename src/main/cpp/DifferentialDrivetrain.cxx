@@ -25,8 +25,7 @@ DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
     mLeftPrimaryTalon->ConfigFactoryDefault();
     mLeftPrimaryTalon->SetInverted(true);
     mLeftPrimaryTalon->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::IntegratedSensor);
-    //mLeftPrimaryTalon->SetSensorPhase(true);
-
+    // mLeftPrimaryTalon->SetSensorPhase(true);
 
     mLeftSecondaryTalon->ConfigFactoryDefault();
     mLeftSecondaryTalon->SetInverted(true);
@@ -35,13 +34,13 @@ DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
     mRightPrimaryTalon->ConfigFactoryDefault();
     mRightPrimaryTalon->SetInverted(false);
     mRightPrimaryTalon->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::IntegratedSensor);
-    //mRightPrimaryTalon->SetSensorPhase(false);
+    // mRightPrimaryTalon->SetSensorPhase(false);
 
     mRightSecondaryTalon->ConfigFactoryDefault();
     mRightSecondaryTalon->SetInverted(false);
     mRightSecondaryTalon->Follow(*mRightPrimaryTalon);
 
-    shift(true);
+    // shift(true);
 
     coast();
     setPidGains(Constants::kDrivetrainP, Constants::kDrivetrainI, Constants::kDrivetrainD, Constants::kDrivetrainF);
@@ -96,12 +95,12 @@ void DifferentialDrivetrain::brake()
 
 void DifferentialDrivetrain::setPidGains(double p, double i, double d, double f)
 {
-    mLeftPrimaryTalon->Config_kP(0, p);
+    mLeftPrimaryTalon->Config_kP(1, p);
     mLeftPrimaryTalon->Config_kI(0, i);
     mLeftPrimaryTalon->Config_kD(0, d);
     mLeftPrimaryTalon->Config_kF(0, f);
 
-    mRightPrimaryTalon->Config_kP(0, p);
+    mRightPrimaryTalon->Config_kP(1, p);
     mRightPrimaryTalon->Config_kI(0, i);
     mRightPrimaryTalon->Config_kD(0, d);
     mRightPrimaryTalon->Config_kF(0, f);
@@ -116,8 +115,8 @@ void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
     double r = rightdriver->GetY();
     r = r * fabs(r);
     bool gearUpdated = false;
-    bool highgear;
-    
+    // bool highgear;
+
     if (leftdriver->GetRawButton(1))
     {
         highgear = false;
@@ -128,7 +127,7 @@ void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
         highgear = true;
         gearUpdated = true;
     }
-    //r *= -1.0;
+    // r *= -1.0;
 
     if (mode == 'd')
         driveOpenLoop(0, 0);
@@ -138,9 +137,6 @@ void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
         if (gearUpdated)
             shift(highgear);
     }
-
-    
-
 }
 
 bool DifferentialDrivetrain::pathFollowing()
@@ -178,5 +174,4 @@ void DifferentialDrivetrain::shift(bool isHighGear)
     {
         mGearSolenoid->Set(frc::DoubleSolenoid::Value::kReverse);
     }
-        
 }

@@ -14,6 +14,8 @@
 class DifferentialDrivetrain : public Drivetrain, public System
 {
 private:
+
+    bool highgear;
     static double encoderTicksToMeters(int encoderTicks)
     {
         double rotations = encoderTicks;

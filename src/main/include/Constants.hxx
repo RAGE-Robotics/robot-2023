@@ -29,6 +29,8 @@ public:
     static constexpr double kDrivetrainWheelRadius = 0.0762;
     static constexpr double kDrivetrainGearRatio = 0.125786163522013;
 
+    static const int kTurretEncoderUnitsPerRotation = 8192;
+
 
 
 };

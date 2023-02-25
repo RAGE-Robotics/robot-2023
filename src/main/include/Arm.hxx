@@ -11,15 +11,19 @@
 #include "RageVision.hxx"
 #include "System.hxx"
 #include "Constants.hxx"
+#include <frc/AnalogEncoder.h>
+#include <frc/DutyCycleEncoder.h>
 
 class Arm : public System
 {
     private:
         std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmRaiser;
         std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmExtender;
-
+        frc::DutyCycleEncoder armRaiseEncoder{0};
         // std::unique_ptr<frc::Solenoid> wristJoint;
         bool manual;
+
+        double armRaiseEncoderValue;
     
     public:
 

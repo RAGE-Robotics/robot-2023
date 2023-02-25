@@ -13,7 +13,7 @@ void RAGETrajectory::GeneratePoints()
 {
     const frc::Pose2d firstPoint
     {
-        5_ft,
+        0_ft,
         0_ft, 
         frc::Rotation2d(0_deg)
     };

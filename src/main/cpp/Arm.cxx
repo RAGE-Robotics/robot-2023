@@ -1,11 +1,12 @@
 #include "Arm.hxx"
 #include "Controllers.hxx"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 using namespace std;
 Arm::Arm()
 {
     mArmRaiser = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(9);
-    mArmExtender = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(10);
+    mArmExtender = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(6);
 
     mArmRaiser->ConfigMotionCruiseVelocity(4332);
     mArmRaiser->ConfigMotionAcceleration(2332);
@@ -25,54 +26,67 @@ Arm::Arm()
 }
 double Arm::encoderCounts()
 {
-    return mArmRaiser->GetSelectedSensorPosition();
+    armRaiseEncoderValue = armRaiseEncoder.GetDistance();
+
+    frc::SmartDashboard::PutNumber("Arm", armRaiseEncoderValue);
+    return armRaiseEncoderValue;
 }
 
 void Arm::raiseArm(double armpercent)
 {
-    mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpercent * 0.5);
+    mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpercent * 0.7);
 }
 
-void Arm::testMagicalRaise()
-{
-    manual = false;
-    mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::MotionMagic, 300);
-}
+// void Arm::testMagicalRaise()
+// {
+//     manual = false;
+//     mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::MotionMagic, 300);
+// }
 
 void Arm::extendArm(double armpower)
 {
-    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpower * 0.3);
+    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpower * -0.35);
 }
 
-void Arm::testMagicalExtend()
-{
-    manual = false;
-    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::MotionMagic, 60);
-}
+// void Arm::testMagicalExtend()
+// {
+//     manual = false;
+//     mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::MotionMagic, 60);
+// }
 
 void Arm::retractArm(double armpower)
 {
-    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpower * -0.2);
+    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpower * 0.35);
 }
 
 void Arm::updateSystem(double timestamp, char mode)
 {
     std::shared_ptr<frc::Joystick> opl = Controllers::instance()->LeftOperator();
-    bool x = opl->GetRawButton(3);
+    bool x = opl->GetRawButtonPressed(3);
     // x = x * fabs(x);
-    bool z = opl->GetRawButton(2);
+    bool z = opl->GetRawButtonPressed(2);
     // y = y * fabs(y);
     double y = opl->GetY();
 
-    manual = opl->GetRawButtonPressed(6);
+    //manual = opl->GetRawButtonPressed(6);
+    manual = true;
+
+    encoderCounts();
 
     if (mode == 't')
     {
-        if (manual)
-        {
-            raiseArm(y);
-            extendArm(x);
-            retractArm(z);
+        //if
+       // {
+        if(x) {
+            extendArm(.3);
         }
+        if(y) {
+            raiseArm(.3);
+        }
+        if(z) {
+            retractArm(.3);
+        }
+            
+        //}
     }
 }

@@ -4,7 +4,7 @@
 using namespace std;
 Claw::Claw()
 {
-    mClawIntake = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(9);
+    mClawIntake = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(11);
     mWrist = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(8);
 }
 double Claw::encoderCounts()

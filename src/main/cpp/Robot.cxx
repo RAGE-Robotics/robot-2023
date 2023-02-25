@@ -21,14 +21,15 @@ void Robot::RobotInit()
 {
     std::shared_ptr<StateEstimator> stateEstimator = StateEstimator::instance();
     std::shared_ptr<RAGETrajectory> trajectoryGen = RAGETrajectory::instance();
+    std::shared_ptr<Turret> turret = Turret::instance();
 
     mLooper.add(stateEstimator);
     AddPeriodic([this]
                 { mLooper.update(); },
                 units::second_t{Constants::kLoopDt});
-    trajectoryGen->GeneratePoints();
-    stateEstimator->setDrivetrain(DifferentialDrivetrain::instance());
-    stateEstimator->reset(frc::Pose2d{});
+    // trajectoryGen->GeneratePoints();
+    // stateEstimator->setDrivetrain(DifferentialDrivetrain::instance());
+    // stateEstimator->reset(frc::Pose2d{});
 
     mVision = std::make_shared<RageVision>();
     mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;
@@ -38,7 +39,7 @@ void Robot::RobotInit()
     mSystems.push_back(Arm::instance());
     mSystems.push_back(Claw::instance());
     mSystems.push_back(Turret::instance());
-    mSystems.push_back(LEDs::instance());
+    // mSystems.push_back(LEDs::instance());
     // leds.displayTeamColor();
 
     compressor.EnableAnalog(kCompressorMinPressure, kCompressorMaxPressure);
@@ -54,8 +55,7 @@ void Robot::RobotPeriodic()
     frc::SmartDashboard::PutNumber("Gyro", pose.Rotation().Radians().value());
     frc::SmartDashboard::PutNumber("X Pos", pose.X().value());
     frc::SmartDashboard::PutNumber("Y Pos", pose.Y().value());
-    
-
+    // frc::SmartDashboard::PutNumber("Turret", turret);    
 }
 
 void Robot::AutonomousInit()
