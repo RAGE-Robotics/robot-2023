@@ -17,6 +17,8 @@ private:
     frc::DigitalInput mHomingSwitch{0};
 
     bool zero_turret = false;
+
+    bool manual;
     
     
 
@@ -28,8 +30,9 @@ public:
     }
     Turret();
     bool homingSwitchActive();
-    void rotateTurret(double percentPower);
+    void magicalTwist();
     double encoderPosition();
+    void manualMode(double percentPower);
     void updateSystem(double timestamp, char mode) override;
 
     ~Turret();

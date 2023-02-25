@@ -7,6 +7,7 @@
 Turret::Turret()
 {
     mTurret = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonFX>(7);
+    mTurret->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
 }
 
 Turret::~Turret()
@@ -23,9 +24,15 @@ double Turret::encoderPosition()
     return mTurret->GetSelectedSensorPosition();
 }
 
-void Turret::rotateTurret(double percentPower)
+void Turret::manualMode(double percentPower)
 {
-    mTurret->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::PercentOutput, percentPower * 20);
+    mTurret->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::PercentOutput, percentPower * 0.2);
+}
+
+void Turret::magicalTwist()
+{
+    manual = false;
+    mTurret->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::MotionMagic, 200);
 }
 void Turret::updateSystem(double timestamp, char mode)
 {
@@ -35,6 +42,10 @@ void Turret::updateSystem(double timestamp, char mode)
 
     if (mode == 't')
     {
-        rotateTurret(rotate);
+        if (manual)
+        {
+            manualMode(rotate);
+        }
+        
     }
 }

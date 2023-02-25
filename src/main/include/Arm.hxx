@@ -19,6 +19,7 @@ class Arm : public System
         std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmExtender;
 
         // std::unique_ptr<frc::Solenoid> wristJoint;
+        bool manual;
     
     public:
 
@@ -31,7 +32,9 @@ class Arm : public System
     Arm();
     double encoderCounts();
     void raiseArm(double armpercent);
+    void testMagicalRaise();
     void extendArm(double armpower);
+    void testMagicalExtend();
     void retractArm(double armpower);
     void updateSystem(double timestamp, char mode) override;
 };
