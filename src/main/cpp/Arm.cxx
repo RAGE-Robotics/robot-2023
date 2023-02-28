@@ -8,13 +8,13 @@ Arm::Arm()
     mArmRaiser = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(9);
     mArmExtender = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(6);
 
-    mArmRaiser->ConfigMotionCruiseVelocity(4332);
-    mArmRaiser->ConfigMotionAcceleration(2332);
+    // mArmRaiser->ConfigMotionCruiseVelocity(4332);
+    // mArmRaiser->ConfigMotionAcceleration(2332);
 
-    mArmRaiser->Config_kP(0, 10);
-    mArmRaiser->Config_kI(0, 0);
-    mArmRaiser->Config_kD(0, 0);
-    mArmRaiser->Config_kF(0, 0);
+    // mArmRaiser->Config_kP(0, 10);
+    // mArmRaiser->Config_kI(0, 0);
+    // mArmRaiser->Config_kD(0, 0);
+    // mArmRaiser->Config_kF(0, 0);
 
     mArmExtender->ConfigMotionCruiseVelocity(4332);
     mArmExtender->ConfigMotionAcceleration(2332);
@@ -23,18 +23,30 @@ Arm::Arm()
     mArmExtender->Config_kI(0, 0);
     mArmExtender->Config_kD(0, 0);
     mArmExtender->Config_kF(0, 0);
+
+    mArmExtender->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
 }
-double Arm::encoderCounts()
+double Arm::getRaiseEncoder()
 {
     armRaiseEncoderValue = armRaiseEncoder.GetDistance();
 
-    frc::SmartDashboard::PutNumber("Arm", armRaiseEncoderValue);
+    frc::SmartDashboard::PutNumber("Raise", armRaiseEncoderValue);
+
     return armRaiseEncoderValue;
+}
+
+double Arm::getExtendEncoder()
+{
+    armExtendEncoderValue = mArmExtender->GetSelectedSensorPosition();
+
+    frc::SmartDashboard::PutNumber("Extend", armExtendEncoderValue);
+
+    return armExtendEncoderValue;
 }
 
 void Arm::raiseArm(double armpercent)
 {
-    mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpercent * 0.7);
+    mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpercent * 0.6);
 }
 
 // void Arm::testMagicalRaise()
@@ -62,31 +74,39 @@ void Arm::retractArm(double armpower)
 void Arm::updateSystem(double timestamp, char mode)
 {
     std::shared_ptr<frc::Joystick> opl = Controllers::instance()->LeftOperator();
-    bool x = opl->GetRawButtonPressed(3);
+    bool x = opl->GetRawButton(3);
     // x = x * fabs(x);
-    bool z = opl->GetRawButtonPressed(2);
+    bool z = opl->GetRawButton(2);
     // y = y * fabs(y);
     double y = opl->GetY();
 
-    //manual = opl->GetRawButtonPressed(6);
+    // manual = opl->GetRawButtonPressed(6);
     manual = true;
 
-    encoderCounts();
+    // getRaiseEncoder();
+    // getExtendEncoder();
 
     if (mode == 't')
     {
-        //if
-       // {
-        if(x) {
-            extendArm(.3);
+
+        if (x)
+        {
+            extendArm(1);
         }
-        if(y) {
-            raiseArm(.3);
+        else if(z)
+        {
+            retractArm(1);
         }
-        if(z) {
-            retractArm(.3);
+
+        else if (!z && !x)
+        {
+            extendArm(0);
+            retractArm(0);
         }
-            
-        //}
-    }
+
+        // else
+        // {
+            raiseArm(y);
+        // }
+    };
 }

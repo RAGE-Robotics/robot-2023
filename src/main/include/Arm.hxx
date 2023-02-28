@@ -24,6 +24,8 @@ class Arm : public System
         bool manual;
 
         double armRaiseEncoderValue;
+
+        double armExtendEncoderValue;
     
     public:
 
@@ -34,7 +36,8 @@ class Arm : public System
     }
 
     Arm();
-    double encoderCounts();
+    double getRaiseEncoder();
+    double getExtendEncoder();
     void raiseArm(double armpercent);
     void testMagicalRaise();
     void extendArm(double armpower);

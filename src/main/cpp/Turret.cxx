@@ -10,23 +10,23 @@ Turret::Turret()
     mTurret = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(7);
     // mTurret->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
 
-    mTurret->ConfigMotionCruiseVelocity(4332);
-    mTurret->ConfigMotionAcceleration(2332);
+    // mTurret->ConfigMotionCruiseVelocity(4332);
+    // mTurret->ConfigMotionAcceleration(2332);
 
-    mTurret->Config_kP(0, 10);
-    mTurret->Config_kI(0, 0);
-    mTurret->Config_kD(0, 0);
-    mTurret->Config_kF(0, 0);
+    // mTurret->Config_kP(0, 10);
+    // mTurret->Config_kI(0, 0);
+    // mTurret->Config_kD(0, 0);
+    // mTurret->Config_kF(0, 0);
 }
 
 Turret::~Turret()
 {
 }
 
-bool Turret::homingSwitchActive()
-{
-    return true;
-}
+// bool Turret::homingSwitchActive()
+// {
+//     return true;
+// }
 
 // double Turret::encoderPosition()
 // // {
@@ -37,7 +37,7 @@ bool Turret::homingSwitchActive()
 
 void Turret::manualMode(double percentPower)
 {
-    mTurret->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, percentPower * 0.3);
+    mTurret->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, percentPower * 0.5);
 }
 
 // void Turret::magicalTwist()
@@ -58,7 +58,8 @@ void Turret::updateSystem(double timestamp, char mode)
     {
         // if (manual)
         // {
-            manualMode(rotate);
+        manualMode(rotate);
+
         // }
     }
 }

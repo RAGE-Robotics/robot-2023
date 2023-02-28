@@ -20,7 +20,7 @@ public:
     static const int kVisionDataPort = 5800;
     static const std::string kVisionIp;
 
-    static constexpr double kDrivetrainP = 1.0;
+    static constexpr double kDrivetrainP = .2;
     static constexpr double kDrivetrainI = 0;
     static constexpr double kDrivetrainD = 0;
     static constexpr double kDrivetrainF = 0;

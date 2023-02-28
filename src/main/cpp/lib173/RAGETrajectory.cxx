@@ -9,7 +9,7 @@ RAGETrajectory::RAGETrajectory()
 {
 }
 
-void RAGETrajectory::GeneratePoints()
+frc::Trajectory RAGETrajectory::GeneratePoints()
 {
     const frc::Pose2d firstPoint
     {
@@ -40,5 +40,7 @@ void RAGETrajectory::GeneratePoints()
             secondPoint,
             Config
     );
+
+    return Trajectory;
 }
 

@@ -75,5 +75,7 @@ public:
 
     void shift(bool isHighGear);
 
+    void rampRate(double rate);
+
     AHRS ahrs;
 };

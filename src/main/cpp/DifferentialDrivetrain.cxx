@@ -40,7 +40,7 @@ DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
     mRightSecondaryTalon->SetInverted(false);
     mRightSecondaryTalon->Follow(*mRightPrimaryTalon);
 
-    // shift(true);
+    shift(true);
 
     coast();
     setPidGains(Constants::kDrivetrainP, Constants::kDrivetrainI, Constants::kDrivetrainD, Constants::kDrivetrainF);
@@ -67,8 +67,8 @@ void DifferentialDrivetrain::driveVelocity(double left, double right)
     double leftEncoderTicks = metersToEncoderTicks(left) / 10;
     double rightEncoderTicks = metersToEncoderTicks(right) / 10;
 
-    mLeftPrimaryTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, (int)std::round(leftEncoderTicks));
-    mRightPrimaryTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, (int)std::round(rightEncoderTicks));
+    mLeftPrimaryTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, -(int)std::round(leftEncoderTicks));
+    mRightPrimaryTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, -(int)std::round(rightEncoderTicks));
 }
 
 void DifferentialDrivetrain::driveOpenLoop(double left, double right)
@@ -95,12 +95,12 @@ void DifferentialDrivetrain::brake()
 
 void DifferentialDrivetrain::setPidGains(double p, double i, double d, double f)
 {
-    mLeftPrimaryTalon->Config_kP(1, p);
+    mLeftPrimaryTalon->Config_kP(0, p);
     mLeftPrimaryTalon->Config_kI(0, i);
     mLeftPrimaryTalon->Config_kD(0, d);
     mLeftPrimaryTalon->Config_kF(0, f);
 
-    mRightPrimaryTalon->Config_kP(1, p);
+    mRightPrimaryTalon->Config_kP(0, p);
     mRightPrimaryTalon->Config_kI(0, i);
     mRightPrimaryTalon->Config_kD(0, d);
     mRightPrimaryTalon->Config_kF(0, f);
@@ -137,6 +137,10 @@ void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
         if (gearUpdated)
             shift(highgear);
     }
+
+    // else if(mode == 'a') {
+    //     driveVelocity(1,1);
+    // }
 }
 
 bool DifferentialDrivetrain::pathFollowing()
@@ -174,4 +178,9 @@ void DifferentialDrivetrain::shift(bool isHighGear)
     {
         mGearSolenoid->Set(frc::DoubleSolenoid::Value::kReverse);
     }
+}
+
+void DifferentialDrivetrain::rampRate(double rate)
+{
+    
 }

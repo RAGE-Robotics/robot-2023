@@ -16,6 +16,6 @@ public:
         static std::shared_ptr<RAGETrajectory> trajectory = std::make_shared<RAGETrajectory>();
         return trajectory;
     }
-    void GeneratePoints();
+    frc::Trajectory GeneratePoints();
     void SetConfig();
 };

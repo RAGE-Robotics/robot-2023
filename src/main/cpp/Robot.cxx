@@ -22,22 +22,24 @@ void Robot::RobotInit()
     std::shared_ptr<StateEstimator> stateEstimator = StateEstimator::instance();
     std::shared_ptr<RAGETrajectory> trajectoryGen = RAGETrajectory::instance();
     std::shared_ptr<Turret> turret = Turret::instance();
+    std::shared_ptr<DifferentialDrivetrain> diffTrain = DifferentialDrivetrain::instance();
 
     mLooper.add(stateEstimator);
     AddPeriodic([this]
                 { mLooper.update(); },
                 units::second_t{Constants::kLoopDt});
-    // trajectoryGen->GeneratePoints();
-    // stateEstimator->setDrivetrain(DifferentialDrivetrain::instance());
-    // stateEstimator->reset(frc::Pose2d{});
+
+    trajectoryGen->GeneratePoints();
+    stateEstimator->setDrivetrain(DifferentialDrivetrain::instance());
+    stateEstimator->reset(frc::Pose2d{});
 
     mVision = std::make_shared<RageVision>();
     mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;
     mVision->run(Constants::kVisionDataPort, [](double timestamp, int id, double tx, double ty, double tz, double qw, double qx, double qy, double qz, double processingLatency) {});
 
-    mSystems.push_back(DifferentialDrivetrain::instance());
+    mSystems.push_back(diffTrain);
     mSystems.push_back(Arm::instance());
-    mSystems.push_back(Claw::instance());
+    //mSystems.push_back(Claw::instance());
     mSystems.push_back(Turret::instance());
     // mSystems.push_back(LEDs::instance());
     // leds.displayTeamColor();
@@ -49,17 +51,19 @@ void Robot::RobotPeriodic()
 {
     /*if (!mVisionInitialized)
         mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;*/
-
+    
+    std::shared_ptr<DifferentialDrivetrain> diffTrain = DifferentialDrivetrain::instance();
     frc::Pose2d pose = StateEstimator::instance()->pose();
     std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
     frc::SmartDashboard::PutNumber("Gyro", pose.Rotation().Radians().value());
-    frc::SmartDashboard::PutNumber("X Pos", pose.X().value());
-    frc::SmartDashboard::PutNumber("Y Pos", pose.Y().value());
+    frc::SmartDashboard::PutNumber("left side", diffTrain->leftDistance());
+    frc::SmartDashboard::PutNumber("right side", diffTrain->rightDistance());
     // frc::SmartDashboard::PutNumber("Turret", turret);    
 }
 
 void Robot::AutonomousInit()
 {
+    DifferentialDrivetrain::instance()->followPath(RAGETrajectory::instance()->GeneratePoints());
 }
 
 void Robot::AutonomousPeriodic()
@@ -69,6 +73,8 @@ void Robot::AutonomousPeriodic()
         system->updateSystem(timestamp, 'a');
     // leds_controller = std::make_unique<LEDs>();
     //leds.displayRainbow();
+
+
 }
 
 void Robot::TeleopInit()
