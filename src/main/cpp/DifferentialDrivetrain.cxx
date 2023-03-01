@@ -66,7 +66,7 @@ void DifferentialDrivetrain::driveVelocity(double left, double right)
 {
     double leftEncoderTicks = metersToEncoderTicks(left) / 10;
     double rightEncoderTicks = metersToEncoderTicks(right) / 10;
-
+    
     mLeftPrimaryTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, -(int)std::round(leftEncoderTicks));
     mRightPrimaryTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, -(int)std::round(rightEncoderTicks));
 }

@@ -104,9 +104,6 @@ void Arm::updateSystem(double timestamp, char mode)
             retractArm(0);
         }
 
-        // else
-        // {
-            raiseArm(y);
-        // }
+        raiseArm(y);
     };
 }

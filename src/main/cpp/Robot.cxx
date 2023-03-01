@@ -20,7 +20,7 @@
 void Robot::RobotInit()
 {
     std::shared_ptr<StateEstimator> stateEstimator = StateEstimator::instance();
-    std::shared_ptr<RAGETrajectory> trajectoryGen = RAGETrajectory::instance();
+    trajectoryGen = RAGETrajectory::instance();
     std::shared_ptr<Turret> turret = Turret::instance();
     std::shared_ptr<DifferentialDrivetrain> diffTrain = DifferentialDrivetrain::instance();
 
@@ -63,7 +63,7 @@ void Robot::RobotPeriodic()
 
 void Robot::AutonomousInit()
 {
-    DifferentialDrivetrain::instance()->followPath(RAGETrajectory::instance()->GeneratePoints());
+    DifferentialDrivetrain::instance()->followPath(trajectoryGen);
 }
 
 void Robot::AutonomousPeriodic()

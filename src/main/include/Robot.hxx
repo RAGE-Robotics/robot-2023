@@ -23,6 +23,7 @@ private:
     bool mVisionInitialized;
 
     std::vector<std::shared_ptr<System>> mSystems;
+    std::shared_ptr<RAGETrajectory> trajectoryGen;
 
     // LEDs leds;
     Turret turret;
