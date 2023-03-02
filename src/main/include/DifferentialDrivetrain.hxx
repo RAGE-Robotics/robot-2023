@@ -72,6 +72,7 @@ public:
     bool pathFollowing();
     void stopPathFollowing();
     void followPath(frc::Trajectory path, bool resetPose = true);
+    void resetEncoder();
 
     void shift(bool isHighGear);
 

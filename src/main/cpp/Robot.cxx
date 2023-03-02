@@ -32,6 +32,7 @@ void Robot::RobotInit()
     trajectoryGen->GeneratePoints();
     stateEstimator->setDrivetrain(DifferentialDrivetrain::instance());
     stateEstimator->reset(frc::Pose2d{});
+    diffTrain->resetEncoder();
 
     mVision = std::make_shared<RageVision>();
     mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;
@@ -63,7 +64,7 @@ void Robot::RobotPeriodic()
 
 void Robot::AutonomousInit()
 {
-    DifferentialDrivetrain::instance()->followPath(trajectoryGen);
+    DifferentialDrivetrain::instance()->followPath(trajectoryGen->GeneratePoints());
 }
 
 void Robot::AutonomousPeriodic()

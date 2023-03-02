@@ -184,3 +184,9 @@ void DifferentialDrivetrain::rampRate(double rate)
 {
     
 }
+
+void DifferentialDrivetrain::resetEncoder() 
+{
+    mLeftPrimaryTalon->SetSelectedSensorPosition(0,0,0);
+    mRightPrimaryTalon->SetSelectedSensorPosition(0,0,0);
+}
