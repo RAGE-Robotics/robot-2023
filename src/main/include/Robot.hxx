@@ -15,6 +15,8 @@
 #include "AHRS.h"
 #include <frc/Compressor.h>
 
+#include "RAGETrajectory.hxx"
+
 class Robot : public frc::TimedRobot
 {
 private:
