@@ -25,6 +25,7 @@ void Robot::RobotInit()
     std::shared_ptr<DifferentialDrivetrain> diffTrain = DifferentialDrivetrain::instance();
 
     mLooper.add(stateEstimator);
+    mLooper.add(diffTrain);
     AddPeriodic([this]
                 { mLooper.update(); },
                 units::second_t{Constants::kLoopDt});
@@ -55,7 +56,7 @@ void Robot::RobotPeriodic()
     
     std::shared_ptr<DifferentialDrivetrain> diffTrain = DifferentialDrivetrain::instance();
     frc::Pose2d pose = StateEstimator::instance()->pose();
-    std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
+    //std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
     frc::SmartDashboard::PutNumber("Gyro", pose.Rotation().Radians().value());
     frc::SmartDashboard::PutNumber("left side", diffTrain->leftDistance());
     frc::SmartDashboard::PutNumber("right side", diffTrain->rightDistance());
