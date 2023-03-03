@@ -4,6 +4,7 @@
 #include <frc/DriverStation.h>
 #include <frc/DigitalInput.h>
 #include "System.hxx"
+#include <array>
 
 
 class LEDs : public System
