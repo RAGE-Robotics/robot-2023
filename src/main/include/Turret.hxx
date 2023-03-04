@@ -15,7 +15,7 @@ class Turret : public System
 private:
     std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mTurret;
 
-    frc::DigitalInput turretLimitSwitch{0};
+    // frc::DigitalInput turretLimitSwitch{0};
 
     bool zero_turret = false;
 

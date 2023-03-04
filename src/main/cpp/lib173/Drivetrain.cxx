@@ -11,6 +11,8 @@
 #include "Constants.hxx"
 #include "lib173/StateEstimator.hxx"
 
+#include <iostream>
+
 Drivetrain::Drivetrain()
 {
     mKinematics = std::make_shared<frc::DifferentialDriveKinematics>(units::meter_t{Constants::kDrivetrainWidth});
@@ -43,7 +45,7 @@ void Drivetrain::driveVelocity(double left, double right)
 void Drivetrain::update(double timestamp)
 {
     mTrajectoryMutex.lock();
-
+    std::cout << mTrajectory << "\n";
     std::shared_ptr<StateEstimator> stateEstimator = StateEstimator::instance();
 
     if (mPathFollowingTimestamp < 0 && mTrajectory)

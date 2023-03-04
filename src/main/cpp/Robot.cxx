@@ -37,7 +37,7 @@ void Robot::RobotInit()
 
     mVision = std::make_shared<RageVision>();
     mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;
-    mVision->run(Constants::kVisionDataPort, [](double timestamp, int id, double tx, double ty, double tz, double qw, double qx, double qy, double qz, double processingLatency) {});
+    // mVision->run(Constants::kVisionDataPort, [](double timestamp, int id, double tx, double ty, double tz, double qw, double qx, double qy, double qz, double processingLatency) {});
 
     mSystems.push_back(diffTrain);
     // mSystems.push_back(Arm::instance());
@@ -58,8 +58,8 @@ void Robot::RobotPeriodic()
     frc::Pose2d pose = StateEstimator::instance()->pose();
     //std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
     frc::SmartDashboard::PutNumber("Gyro", pose.Rotation().Radians().value());
-    frc::SmartDashboard::PutNumber("left side", diffTrain->leftDistance());
-    frc::SmartDashboard::PutNumber("right side", diffTrain->rightDistance());
+    frc::SmartDashboard::PutNumber("x pose", (pose.X().value()*3.28084));
+    //frc::SmartDashboard::PutNumber("right side", diffTrain->rightDistance());
     // frc::SmartDashboard::PutNumber("Turret", turret);    
 }
 

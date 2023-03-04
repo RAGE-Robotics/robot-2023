@@ -25,10 +25,11 @@ Turret::~Turret()
 
 bool Turret::homingSwitchActive()
 {
-    if (turretLimitSwitch.Get())
-    {
-        mTurret->SetSelectedSensorPosition(0);
-    }
+    // if (turretLimitSwitch.Get())
+    // {
+    //     mTurret->SetSelectedSensorPosition(0);
+    // }
+    return true;
 }
 
 // double Turret::encoderPosition()

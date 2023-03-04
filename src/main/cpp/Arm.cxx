@@ -8,7 +8,7 @@ Arm::Arm()
     mArmRaiser = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(9);
     mArmExtender = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(6);
 
-    armRetractLimit = make_unique<frc::DigitalInput>(1);
+    //armRetractLimit = make_unique<frc::DigitalInput>(1);
 
     // mArmRaiser->ConfigMotionCruiseVelocity(4332);
     // mArmRaiser->ConfigMotionAcceleration(2332);
