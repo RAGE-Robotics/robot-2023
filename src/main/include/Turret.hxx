@@ -22,6 +22,10 @@ private:
     bool manual;
     
     double turretPosition;
+
+    double sensorPos;
+
+    double error;
     
 
 public:
@@ -36,6 +40,8 @@ public:
     double encoderPosition();
     void manualMode(double percentPower);
     void updateSystem(double timestamp, char mode) override;
+
+    void setTurretAngle(double radians, double speed, double kP);
 
     ~Turret();
 };

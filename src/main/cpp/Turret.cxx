@@ -10,9 +10,6 @@ Turret::Turret()
     mTurret = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(7);
     mTurret->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
 
-    // mTurret->ConfigMotionCruiseVelocity(4332);
-    // mTurret->ConfigMotionAcceleration(2332);
-
     // mTurret->Config_kP(0, 10);
     // mTurret->Config_kI(0, 0);
     // mTurret->Config_kD(0, 0);
@@ -32,23 +29,18 @@ bool Turret::homingSwitchActive()
     return true;
 }
 
-// double Turret::encoderPosition()
-// // {
-// //     turretPosition = mTurret->GetSelectedSensorPosition() / Constants::kTurretEncoderUnitsPerRotation;
-// //     frc::SmartDashboard::PutNumber("Turret", turretPosition);
-// //     return turretPosition;
-// }
 
 void Turret::manualMode(double percentPower)
 {
     mTurret->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, percentPower * 0.5);
 }
 
-// void Turret::magicalTwist()
-// {
-//     manual = false;
-//     mTurret->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::MotionMagic, 200);
-// }
+void Turret::setTurretAngle(double radians, double speed, double kP)
+{
+    sensorPos = radians * Constants::kTurretEncoderTicksPerRadian;
+    error = abs(sensorPos - mTurret->GetSelectedSensorPosition());
+}
+
 void Turret::updateSystem(double timestamp, char mode)
 {
     std::shared_ptr<frc::Joystick> opr = Controllers::instance()->RightOperator();
@@ -57,12 +49,18 @@ void Turret::updateSystem(double timestamp, char mode)
     // manual = true;
 
     double rotate = opr->GetX();
+    bool r = opr->GetRawButtonPressed(7);
 
     if (mode == 't')
     {
         // if (manual)
         // {
         manualMode(rotate);
+
+        // if (r)
+        // {
+        //     setTurretAngle(Constants::kPi / 2, 0.4, 0.2);
+        // }
 
         // }
     }

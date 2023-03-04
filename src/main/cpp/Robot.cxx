@@ -58,9 +58,7 @@ void Robot::RobotPeriodic()
     frc::Pose2d pose = StateEstimator::instance()->pose();
     //std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
     frc::SmartDashboard::PutNumber("Gyro", pose.Rotation().Radians().value());
-    frc::SmartDashboard::PutNumber("x pose", (pose.X().value()*3.28084));
-    //frc::SmartDashboard::PutNumber("right side", diffTrain->rightDistance());
-    // frc::SmartDashboard::PutNumber("Turret", turret);    
+    frc::SmartDashboard::PutNumber("x pose", (pose.X().value()*3.28084));   
 }
 
 void Robot::AutonomousInit()

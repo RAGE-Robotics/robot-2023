@@ -21,7 +21,7 @@ Arm::Arm()
     mArmExtender->ConfigMotionCruiseVelocity(4332);
     mArmExtender->ConfigMotionAcceleration(2332);
 
-    mArmExtender->Config_kP(0, 10);
+    mArmExtender->Config_kP(0, 1);
     mArmExtender->Config_kI(0, 0);
     mArmExtender->Config_kD(0, 0);
     mArmExtender->Config_kF(0, 0);
@@ -76,7 +76,7 @@ void Arm::extendArm(double armpower)
 
 void Arm::zeroExtend()
 {
-    mArmExtender->SetSelectedSensorPosition(0);
+    mArmExtender->SetSelectedSensorPosition(0, 0);
 }
 
 void Arm::retractArm(double armpower)

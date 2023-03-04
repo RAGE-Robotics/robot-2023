@@ -30,6 +30,8 @@ public:
     static constexpr double kDrivetrainGearRatio = 0.125786163522013;
 
     static const int kTurretEncoderUnitsPerRotation = 8192;
+    static const int kTurretEncoderTicksPerRotation = 87040;
+    static const int kTurretEncoderTicksPerRadian = 87040/(2*kPi);
 
 
 
