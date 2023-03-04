@@ -40,7 +40,7 @@ void Robot::RobotInit()
     mVision->run(Constants::kVisionDataPort, [](double timestamp, int id, double tx, double ty, double tz, double qw, double qx, double qy, double qz, double processingLatency) {});
 
     mSystems.push_back(diffTrain);
-    mSystems.push_back(Arm::instance());
+    // mSystems.push_back(Arm::instance());
     //mSystems.push_back(Claw::instance());
     mSystems.push_back(Turret::instance());
     // mSystems.push_back(LEDs::instance());
