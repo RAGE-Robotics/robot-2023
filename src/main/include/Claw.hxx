@@ -6,6 +6,7 @@
 #include <ctre/Phoenix.h>
 #include <frc/DigitalInput.h>
 #include <frc/Solenoid.h>
+#include <frc/DutyCycleEncoder.h>
 
 #include "lib173/Looper.hxx"
 #include "RageVision.hxx"
@@ -16,6 +17,7 @@ class Claw : public System
 private:
     std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mClawIntake;
     std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mWrist;
+    //frc::DutyCycleEncoder wristEncoder{1};
 
 public:
     static std::shared_ptr<Claw> instance()
