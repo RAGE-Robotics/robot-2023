@@ -81,6 +81,7 @@ void Robot::AutonomousPeriodic()
 
 void Robot::TeleopInit()
 {
+    DifferentialDrivetrain::instance()->stopPathFollowing();
 }
 
 void Robot::TeleopPeriodic()
@@ -95,6 +96,7 @@ void Robot::TeleopPeriodic()
 
 void Robot::DisabledInit()
 {
+    DifferentialDrivetrain::instance()->stopPathFollowing();
 }
 
 void Robot::DisabledPeriodic()
