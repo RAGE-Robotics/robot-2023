@@ -23,6 +23,8 @@ private:
     
     double turretPosition;
 
+    bool homingSwitch;
+
     double sensorPos;
 
     double error;
@@ -34,6 +36,9 @@ public:
         static std::shared_ptr<Turret> turret = std::make_shared<Turret>();
         return turret;
     }
+
+    double turretEncoderPosition;
+
     Turret();
     bool homingSwitchActive();
     void magicalTwist();
@@ -41,7 +46,7 @@ public:
     void manualMode(double percentPower);
     void updateSystem(double timestamp, char mode) override;
 
-    void setTurretAngle(double radians, double speed, double kP);
+    void setTurretAngle(double radians);
 
     ~Turret();
 };

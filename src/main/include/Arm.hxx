@@ -21,7 +21,7 @@ class Arm : public System
         std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmExtender;
         frc::DutyCycleEncoder armRaiseEncoder{0};
 
-        std::unique_ptr<frc::DigitalInput> armRetractLimit;
+        // std::unique_ptr<frc::DigitalInput> armRetractLimit;
         // std::unique_ptr<frc::Solenoid> wristJoint;
         bool manual;
 

@@ -6,6 +6,9 @@ Claw::Claw()
 {
     mClawIntake = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(11);
     mWrist = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(8);
+
+    mWrist->SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
+
 }
 double Claw::encoderCounts()
 {
@@ -30,8 +33,8 @@ void Claw::updateSystem(double timestamp, char mode)
     std::shared_ptr<frc::Joystick> opl = Controllers::instance()->LeftOperator();
     std::shared_ptr<frc::Joystick> opr = Controllers::instance()->RightOperator();
 
-    double cone = opl->GetRawButton(1);
-    double cube = opr->GetRawButton(1);
+    bool cone = opl->GetRawButton(1);
+    bool cube = opr->GetRawButton(1);
     double wrist = 1;
     if (mode == 't')
     {
@@ -48,7 +51,18 @@ void Claw::updateSystem(double timestamp, char mode)
             moveWrist(0);
         }
 
-        intakeRollersIn(cone);
-        intakeRollersOut(cube);
+        if (cone)
+        {
+            intakeRollersIn(1);
+        }
+        else if (cube)
+        {
+            intakeRollersOut(1);
+        }
+        else
+        {
+            intakeRollersIn(0);
+            intakeRollersOut(0);
+        }
     }
 }

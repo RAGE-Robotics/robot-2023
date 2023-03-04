@@ -15,6 +15,7 @@
 #include "Claw.hxx"
 #include "Arm.hxx"
 #include "LEDs.hxx"
+#include "Turret.hxx"
 #include "RAGETrajectory.hxx"
 
 void Robot::RobotInit()
@@ -40,8 +41,8 @@ void Robot::RobotInit()
     // mVision->run(Constants::kVisionDataPort, [](double timestamp, int id, double tx, double ty, double tz, double qw, double qx, double qy, double qz, double processingLatency) {});
 
     mSystems.push_back(diffTrain);
-    // mSystems.push_back(Arm::instance());
-    //mSystems.push_back(Claw::instance());
+    mSystems.push_back(Arm::instance());
+    mSystems.push_back(Claw::instance());
     mSystems.push_back(Turret::instance());
     // mSystems.push_back(LEDs::instance());
     // leds.displayTeamColor();
@@ -55,10 +56,15 @@ void Robot::RobotPeriodic()
         mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;*/
     
     std::shared_ptr<DifferentialDrivetrain> diffTrain = DifferentialDrivetrain::instance();
+    std::shared_ptr<Turret> turret = Turret::instance();
+    std::shared_ptr<Arm> arm = Arm::instance();
     frc::Pose2d pose = StateEstimator::instance()->pose();
     //std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
     frc::SmartDashboard::PutNumber("Gyro", pose.Rotation().Radians().value());
     frc::SmartDashboard::PutNumber("x pose", (pose.X().value()*3.28084));   
+    frc::SmartDashboard::PutNumber("Turret", turret->encoderPosition());
+    frc::SmartDashboard::PutNumber("Arm", arm->getExtendEncoder());
+    frc::SmartDashboard::PutBoolean("Turret Limit", turret->homingSwitchActive());
 }
 
 void Robot::AutonomousInit()

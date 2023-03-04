@@ -48,8 +48,9 @@ double Arm::getExtendEncoder()
 
 bool Arm::getRetractLimit()
 {
-    isRetracted = armRetractLimit->Get();
-    return isRetracted;
+    // isRetracted = mArmExtender->configForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource::FeedbackConnector, ctre::phoenix::motorcontrol::LimitSwitchSource::NormallyOpen, 0);
+    
+    return true;
 }
 
 void Arm::raiseArm(double armpercent)
@@ -57,22 +58,10 @@ void Arm::raiseArm(double armpercent)
     mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpercent * 0.6);
 }
 
-// void Arm::testMagicalRaise()
-// {
-//     manual = false;
-//     mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::MotionMagic, 300);
-// }
-
 void Arm::extendArm(double armpower)
 {
     mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpower * -0.35);
 }
-
-// void Arm::testMagicalExtend()
-// {
-//     manual = false;
-//     mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::MotionMagic, 60);
-// }
 
 void Arm::zeroExtend()
 {
@@ -104,6 +93,7 @@ void Arm::updateSystem(double timestamp, char mode)
 
         if (x)
         {
+        
             extendArm(1);
         }
         else if(z)
