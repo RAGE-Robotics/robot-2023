@@ -8,6 +8,8 @@ Arm::Arm()
     mArmRaiser = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(9);
     mArmExtender = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(6);
 
+    armRetractLimit = make_unique<frc::DigitalInput>(1);
+
     // mArmRaiser->ConfigMotionCruiseVelocity(4332);
     // mArmRaiser->ConfigMotionAcceleration(2332);
 
@@ -44,6 +46,12 @@ double Arm::getExtendEncoder()
     return armExtendEncoderValue;
 }
 
+bool Arm::getRetractLimit()
+{
+    isRetracted = armRetractLimit->Get();
+    return isRetracted;
+}
+
 void Arm::raiseArm(double armpercent)
 {
     mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpercent * 0.6);
@@ -65,6 +73,11 @@ void Arm::extendArm(double armpower)
 //     manual = false;
 //     mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::MotionMagic, 60);
 // }
+
+void Arm::zeroExtend()
+{
+    mArmExtender->SetSelectedSensorPosition(0);
+}
 
 void Arm::retractArm(double armpower)
 {
@@ -105,5 +118,18 @@ void Arm::updateSystem(double timestamp, char mode)
         }
 
         raiseArm(y);
+
+        if (isRetracted)
+        {
+            zeroExtend();
+        }
+    };
+
+    if (mode == 'a')
+    {
+        if (isRetracted)
+        {
+            zeroExtend();
+        }
     };
 }

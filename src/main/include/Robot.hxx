@@ -13,6 +13,7 @@
 #include "Claw.hxx"
 #include "LEDs.hxx"
 #include "AHRS.h"
+#include "RAGETrajectory.hxx"
 #include <frc/Compressor.h>
 
 #include "RAGETrajectory.hxx"

@@ -20,8 +20,12 @@ class Arm : public System
         std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmRaiser;
         std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmExtender;
         frc::DutyCycleEncoder armRaiseEncoder{0};
+
+        std::unique_ptr<frc::DigitalInput> armRetractLimit;
         // std::unique_ptr<frc::Solenoid> wristJoint;
         bool manual;
+
+        bool isRetracted;
 
         double armRaiseEncoderValue;
 
@@ -38,10 +42,14 @@ class Arm : public System
     Arm();
     double getRaiseEncoder();
     double getExtendEncoder();
+
+    bool getRetractLimit();
+    
     void raiseArm(double armpercent);
     void testMagicalRaise();
     void extendArm(double armpower);
     void testMagicalExtend();
+    void zeroExtend();
     void retractArm(double armpower);
     void updateSystem(double timestamp, char mode) override;
 };

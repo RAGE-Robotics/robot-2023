@@ -8,7 +8,7 @@
 Turret::Turret()
 {
     mTurret = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(7);
-    // mTurret->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
+    mTurret->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
 
     // mTurret->ConfigMotionCruiseVelocity(4332);
     // mTurret->ConfigMotionAcceleration(2332);
@@ -23,10 +23,13 @@ Turret::~Turret()
 {
 }
 
-// bool Turret::homingSwitchActive()
-// {
-//     return true;
-// }
+bool Turret::homingSwitchActive()
+{
+    if (turretLimitSwitch.Get())
+    {
+        mTurret->SetSelectedSensorPosition(0);
+    }
+}
 
 // double Turret::encoderPosition()
 // // {
