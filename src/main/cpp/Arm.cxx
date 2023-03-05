@@ -82,7 +82,7 @@ bool Arm::getRetractLimit()
 
 void Arm::raiseArm(double armpercent)
 {
-    mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpercent * 0.6);
+    mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpercent * -0.6);
 }
 
 void Arm::extendArm(double armpower)
