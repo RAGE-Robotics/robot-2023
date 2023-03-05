@@ -130,7 +130,8 @@ void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
 
     if (mode == 'd')
     {
-        brake();
+        // brake();
+        coast();
         driveOpenLoop(0, 0);
     }
     else if (mode == 't')

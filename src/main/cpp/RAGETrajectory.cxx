@@ -19,7 +19,7 @@ frc::Trajectory RAGETrajectory::GeneratePoints()
     };
     const frc::Pose2d secondPoint
     {
-        5_ft,
+        10_ft,
         0_ft,
         frc::Rotation2d(0_deg)
     };
@@ -31,6 +31,7 @@ frc::Trajectory RAGETrajectory::GeneratePoints()
 
     vector<frc::Translation2d> interiorWayPts {
         frc::Translation2d{2_ft, 0_ft},
+        frc::Translation2d{6_ft, 0_ft}
     };
 
 
