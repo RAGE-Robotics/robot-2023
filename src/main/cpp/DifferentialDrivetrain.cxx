@@ -48,7 +48,7 @@ DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
 double DifferentialDrivetrain::heading()
 {
     // return mGyro->GetAngle();
-    return ahrs.GetAngle() / 360.0 * 2.0 * Constants::kPi;
+    return -ahrs.GetAngle() / 360.0 * 2.0 * Constants::kPi;
 }
 
 double DifferentialDrivetrain::leftDistance()
@@ -114,17 +114,20 @@ void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
     double r = rightdriver->GetY();
     r = r * fabs(r);
     bool gearUpdated = false;
-    // bool highgear;
 
     if (leftdriver->GetRawButton(1))
     {
-        highgear = false;
-        gearUpdated = true;
+        if(highgear) {
+            shift(false);
+            highgear = false;
+        }
     }
     if (rightdriver->GetRawButton(1))
     {
-        highgear = true;
-        gearUpdated = true;
+        if(!highgear) {
+            shift(true);
+            highgear = true;
+        }
     }
     // r *= -1.0;
 

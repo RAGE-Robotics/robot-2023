@@ -83,7 +83,7 @@ void Turret::updateSystem(double timestamp, char mode)
         }
     }
 
-    if(mode == 't') {
+    if(mode == 't' || mode == 'a') {
         setTurretAngle(sensorPos/Constants::kTurretEncoderTicksPerRadian);
     }
 }

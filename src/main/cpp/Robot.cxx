@@ -62,7 +62,7 @@ void Robot::RobotPeriodic()
     //std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
     frc::SmartDashboard::PutNumber("Gyro", pose.Rotation().Radians().value());
     frc::SmartDashboard::PutNumber("x pose", (pose.X().value()*3.28084));   
-    frc::SmartDashboard::PutNumber("y pose", (pose.y.value() * 3.28084));
+    frc::SmartDashboard::PutNumber("y pose", (pose.Y().value() * 3.28084));
     frc::SmartDashboard::PutNumber("Turret", turret->encoderPosition());
     frc::SmartDashboard::PutNumber("Arm", arm->getRaiseEncoder());
     frc::SmartDashboard::PutBoolean("Turret Limit", turret->homingSwitchActive());
