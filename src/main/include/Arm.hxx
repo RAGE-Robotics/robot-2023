@@ -27,7 +27,7 @@ class Arm : public System
 
         bool isRetracted;
 
-        double armRaiseEncoderValue;
+        units::turn_t armRaiseEncoderValue;
 
         double armExtendEncoderValue;
     

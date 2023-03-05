@@ -28,9 +28,9 @@ Arm::Arm()
 
     mArmExtender->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
 }
-double Arm::getRaiseEncoder()
+units::turn_t Arm::getRaiseEncoder()
 {
-    armRaiseEncoderValue = armRaiseEncoder.GetAbsolutePosition();
+    armRaiseEncoderValue = armRaiseEncoder.Get();
 
     return armRaiseEncoderValue;
 }
