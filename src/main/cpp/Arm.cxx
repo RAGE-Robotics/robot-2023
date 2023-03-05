@@ -30,9 +30,7 @@ Arm::Arm()
 }
 double Arm::getRaiseEncoder()
 {
-    armRaiseEncoderValue = armRaiseEncoder.GetDistance();
-
-    frc::SmartDashboard::PutNumber("Raise", armRaiseEncoderValue);
+    armRaiseEncoderValue = armRaiseEncoder.GetAbsolutePosition();
 
     return armRaiseEncoderValue;
 }

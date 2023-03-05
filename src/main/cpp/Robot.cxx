@@ -63,7 +63,7 @@ void Robot::RobotPeriodic()
     frc::SmartDashboard::PutNumber("Gyro", pose.Rotation().Radians().value());
     frc::SmartDashboard::PutNumber("x pose", (pose.X().value()*3.28084));   
     frc::SmartDashboard::PutNumber("Turret", turret->encoderPosition());
-    frc::SmartDashboard::PutNumber("Arm", arm->getExtendEncoder());
+    frc::SmartDashboard::PutNumber("Arm", arm->getRaiseEncoder());
     frc::SmartDashboard::PutBoolean("Turret Limit", turret->homingSwitchActive());
 }
 
