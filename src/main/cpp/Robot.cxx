@@ -47,7 +47,7 @@ void Robot::RobotInit()
     // mSystems.push_back(LEDs::instance());
     // leds.displayTeamColor();
 
-    compressor.EnableAnalog(kCompressorMinPressure, kCompressorMaxPressure);
+    // compressor.EnableAnalog(kCompressorMinPressure, kCompressorMaxPressure);
 }
 
 void Robot::RobotPeriodic()

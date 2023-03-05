@@ -13,8 +13,8 @@ Turret::Turret()
     mTurret->SetSensorPhase(true);
 
     mTurret->Config_kP(0, .03);
-    mTurret->Config_kI(0, .04);
-    mTurret->Config_kD(0, .05);
+    mTurret->Config_kI(0, 0);
+    mTurret->Config_kD(0, .055);
     mTurret->Config_kF(0, 0);
 }
 
@@ -63,6 +63,7 @@ void Turret::updateSystem(double timestamp, char mode)
 
     double rotate = opr->GetX();
     bool r = opr->GetRawButton(7);
+    bool zero = opr->GetRawButton(8);
 
     if (mode == 't')
     {
@@ -74,6 +75,12 @@ void Turret::updateSystem(double timestamp, char mode)
         {
             setTurretAngle((Constants::kPi / 2));
         }
+
+        else if (zero)
+        {
+            setTurretAngle(0);
+        }
+    
 
         // }
     }
