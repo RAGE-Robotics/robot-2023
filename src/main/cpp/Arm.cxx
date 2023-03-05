@@ -8,7 +8,7 @@ Arm::Arm()
     mArmRaiser = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(9);
     mArmExtender = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(6);
 
-    //armRetractLimit = make_unique<frc::DigitalInput>(1);
+    // armRetractLimit = make_unique<frc::DigitalInput>(1);
 
     // mArmRaiser->ConfigMotionCruiseVelocity(4332);
     // mArmRaiser->ConfigMotionAcceleration(2332);
@@ -28,11 +28,40 @@ Arm::Arm()
 
     mArmExtender->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
 }
-units::turn_t Arm::getRaiseEncoder()
+double Arm::getRaiseEncoder()
 {
-    armRaiseEncoderValue = armRaiseEncoder.Get();
+    armRaiseEncoder.SetDistancePerRotation(1);
+    armRaiseEncoderValue = armRaiseEncoder.GetDistance();
 
     return armRaiseEncoderValue;
+}
+
+void Arm::setArmPosition(double speed, double kP, double position)
+{
+    double pidSpeed;
+    cout <<"setArmPosition"<<endl; 
+    error = abs(position - armRaiseEncoder.GetDistance());
+    if ((error * kP) >= speed)
+    {
+        pidSpeed = speed;
+    }
+
+    else
+    {
+        pidSpeed = kP * error;
+    }
+
+    if (armRaiseEncoder.GetDistance() < position)
+    {
+        mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, -pidSpeed);
+    }
+
+    else
+    {
+        mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, pidSpeed);
+    }
+
+    cout <<pidSpeed<<endl;
 }
 
 double Arm::getExtendEncoder()
@@ -47,7 +76,7 @@ double Arm::getExtendEncoder()
 bool Arm::getRetractLimit()
 {
     // isRetracted = mArmExtender->configForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource::FeedbackConnector, ctre::phoenix::motorcontrol::LimitSwitchSource::NormallyOpen, 0);
-    
+
     return true;
 }
 
@@ -80,6 +109,7 @@ void Arm::updateSystem(double timestamp, char mode)
     // y = y * fabs(y);
     double y = opl->GetY();
 
+    bool test = opl->GetRawButton(6);
     // manual = opl->GetRawButtonPressed(6);
     manual = true;
 
@@ -91,10 +121,10 @@ void Arm::updateSystem(double timestamp, char mode)
 
         if (x)
         {
-        
+
             extendArm(1);
         }
-        else if(z)
+        else if (z)
         {
             retractArm(1);
         }
@@ -110,6 +140,11 @@ void Arm::updateSystem(double timestamp, char mode)
         if (isRetracted)
         {
             zeroExtend();
+        }
+
+        if (test)
+        {
+            setArmPosition(0.6, 9.5, 0.51);
         }
     };
 

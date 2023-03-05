@@ -42,7 +42,6 @@ DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
 
     shift(true);
 
-    coast();
     setPidGains(Constants::kDrivetrainP, Constants::kDrivetrainI, Constants::kDrivetrainD, Constants::kDrivetrainF);
 }
 
@@ -66,7 +65,7 @@ void DifferentialDrivetrain::driveVelocity(double left, double right)
 {
     double leftEncoderTicks = metersToEncoderTicks(left) / 10;
     double rightEncoderTicks = metersToEncoderTicks(right) / 10;
-    
+
     mLeftPrimaryTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, -(int)std::round(leftEncoderTicks));
     mRightPrimaryTalon->Set(ctre::phoenix::motorcontrol::TalonFXControlMode::Velocity, -(int)std::round(rightEncoderTicks));
 }
@@ -130,17 +129,22 @@ void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
     // r *= -1.0;
 
     if (mode == 'd')
+    {
+        brake();
         driveOpenLoop(0, 0);
+    }
     else if (mode == 't')
     {
+        brake();
         driveOpenLoop(l, r);
         if (gearUpdated)
             shift(highgear);
     }
 
-    // else if(mode == 'a') {
-    //     driveVelocity(1,1);
-    // }
+    else if (mode == 'a')
+    {
+        coast();
+    }
 }
 
 bool DifferentialDrivetrain::pathFollowing()
@@ -182,11 +186,10 @@ void DifferentialDrivetrain::shift(bool isHighGear)
 
 void DifferentialDrivetrain::rampRate(double rate)
 {
-    
 }
 
-void DifferentialDrivetrain::resetEncoder() 
+void DifferentialDrivetrain::resetEncoder()
 {
-    mLeftPrimaryTalon->SetSelectedSensorPosition(0,0,0);
-    mRightPrimaryTalon->SetSelectedSensorPosition(0,0,0);
+    mLeftPrimaryTalon->SetSelectedSensorPosition(0, 0, 0);
+    mRightPrimaryTalon->SetSelectedSensorPosition(0, 0, 0);
 }

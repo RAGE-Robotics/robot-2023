@@ -20,11 +20,10 @@ public:
     static const int kVisionDataPort = 5800;
     static const std::string kVisionIp;
 
-    static constexpr double kDrivetrainP = 0.35;
-    static constexpr double kDrivetrainI = 0.7;
+    static constexpr double kDrivetrainP = 0.23;
+    static constexpr double kDrivetrainI = 0.0;
     static constexpr double kDrivetrainD = 0;
     static constexpr double kDrivetrainF = 0;
-
     static const int kDrivetrainEncoderUnitsPerRotation = 2048;
     static constexpr double kDrivetrainWheelRadius = 0.0762;
     static constexpr double kDrivetrainGearRatio = 0.125786163522013;

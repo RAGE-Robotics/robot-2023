@@ -16,6 +16,8 @@ Turret::Turret()
     mTurret->Config_kI(0, 0);
     mTurret->Config_kD(0, .055);
     mTurret->Config_kF(0, 0);
+
+    mTurret->SetSelectedSensorPosition(0, 0);
 }
 
 Turret::~Turret()
@@ -58,9 +60,6 @@ void Turret::updateSystem(double timestamp, char mode)
 {
     std::shared_ptr<frc::Joystick> opr = Controllers::instance()->RightOperator();
 
-    // encoderPosition();
-    // manual = true;
-
     double rotate = opr->GetX();
     bool r = opr->GetRawButton(7);
     bool zero = opr->GetRawButton(6);
@@ -68,8 +67,6 @@ void Turret::updateSystem(double timestamp, char mode)
 
     if (mode == 't')
     {
-        // if (manual)
-        // {
         manualMode(rotate);
 
         if (r)
@@ -84,9 +81,9 @@ void Turret::updateSystem(double timestamp, char mode)
         {
             setTurretAngle(-(Constants::kPi / 2));
         }
+    }
 
-    
-
-        // }
+    if(mode == 't' || mode == 'a') {
+        setTurretAngle(sensorPos/Constants::kTurretEncoderTicksPerRadian);
     }
 }

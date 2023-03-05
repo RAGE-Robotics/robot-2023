@@ -25,7 +25,7 @@ private:
 
     bool homingSwitch;
 
-    double sensorPos;
+    double sensorPos = 0;
 
     double error;
     
@@ -41,6 +41,7 @@ public:
 
     Turret();
     bool homingSwitchActive();
+    void setPositionMode();
     void magicalTwist();
     double encoderPosition();
     void manualMode(double percentPower);
