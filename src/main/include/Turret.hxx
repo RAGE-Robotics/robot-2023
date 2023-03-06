@@ -26,6 +26,7 @@ private:
     bool homingSwitch;
 
     double sensorPos = 0;
+    double adjustment = 0;
 
     double error;
     
