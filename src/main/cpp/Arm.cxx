@@ -16,6 +16,7 @@ Arm::Arm()
     mArmExtender->Config_kF(0, 0);
 
     mArmExtender->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
+    mArmExtender->ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector, ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
 }
 
 double Arm::getRaiseEncoder()
@@ -62,9 +63,7 @@ double Arm::getExtendEncoder()
 
 bool Arm::getRetractLimit()
 {
-    // isRetracted = mArmExtender->configForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource::FeedbackConnector, ctre::phoenix::motorcontrol::LimitSwitchSource::NormallyOpen, 0);
-
-    return true;
+    return mArmExtender->IsFwdLimitSwitchClosed();
 }
 
 void Arm::raiseArm(double armpercent)
@@ -75,11 +74,6 @@ void Arm::raiseArm(double armpercent)
 void Arm::extendArm(double armpower)
 {
     mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpower * -0.35);
-}
-
-void Arm::zeroExtend()
-{
-    mArmExtender->SetSelectedSensorPosition(0, 0);
 }
 
 void Arm::retractArm(double armpower)
@@ -96,6 +90,19 @@ void Arm::updateSystem(double timestamp, char mode)
 
     bool test = opl->GetRawButton(6);
     manual = true;
+
+    getExtendEncoder();
+
+    if ((mode == 't' || mode == 'a') && !extendHome)
+    {
+        if (!getRetractLimit())
+        {
+            mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, 0.35);
+            return;
+        }
+        mArmExtender->SetSelectedSensorPosition(0, 0);
+        extendHome = true;
+    }
 
     if (mode == 't')
     {
@@ -118,11 +125,6 @@ void Arm::updateSystem(double timestamp, char mode)
 
         raiseArm(y);
 
-        if (isRetracted)
-        {
-            zeroExtend();
-        }
-
         if (test)
         {
             setArmPosition(0.6, 9.5, 0.51);
@@ -131,9 +133,5 @@ void Arm::updateSystem(double timestamp, char mode)
 
     if (mode == 'a')
     {
-        if (isRetracted)
-        {
-            zeroExtend();
-        }
     };
 }

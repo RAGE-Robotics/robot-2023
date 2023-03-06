@@ -23,7 +23,7 @@ private:
 
     bool manual;
 
-    bool isRetracted;
+    bool extendHome = false;
 
     double armRaiseEncoderValue;
 
@@ -45,10 +45,7 @@ public:
     bool getRetractLimit();
 
     void raiseArm(double armpercent);
-    void testMagicalRaise();
     void extendArm(double armpower);
-    void testMagicalExtend();
-    void zeroExtend();
     void retractArm(double armpower);
     void updateSystem(double timestamp, char mode) override;
     void setArmPosition(double speed, double kP, double position);
