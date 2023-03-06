@@ -7,7 +7,6 @@
 class RAGETrajectory
 {
 private:
-
 public:
     RAGETrajectory();
     static std::shared_ptr<RAGETrajectory> instance()

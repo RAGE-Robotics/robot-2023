@@ -2,21 +2,10 @@
 #include "Controllers.hxx"
 #include <frc/smartdashboard/SmartDashboard.h>
 
-using namespace std;
 Arm::Arm()
 {
-    mArmRaiser = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(9);
-    mArmExtender = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(6);
-
-    // armRetractLimit = make_unique<frc::DigitalInput>(1);
-
-    // mArmRaiser->ConfigMotionCruiseVelocity(4332);
-    // mArmRaiser->ConfigMotionAcceleration(2332);
-
-    // mArmRaiser->Config_kP(0, 10);
-    // mArmRaiser->Config_kI(0, 0);
-    // mArmRaiser->Config_kD(0, 0);
-    // mArmRaiser->Config_kF(0, 0);
+    mArmRaiser = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(9);
+    mArmExtender = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(6);
 
     mArmExtender->ConfigMotionCruiseVelocity(4332);
     mArmExtender->ConfigMotionAcceleration(2332);
@@ -28,6 +17,7 @@ Arm::Arm()
 
     mArmExtender->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
 }
+
 double Arm::getRaiseEncoder()
 {
     armRaiseEncoder.SetDistancePerRotation(1);
@@ -39,7 +29,6 @@ double Arm::getRaiseEncoder()
 void Arm::setArmPosition(double speed, double kP, double position)
 {
     double pidSpeed;
-    cout <<"setArmPosition"<<endl; 
     error = abs(position - armRaiseEncoder.GetDistance());
     if ((error * kP) >= speed)
     {
@@ -60,8 +49,6 @@ void Arm::setArmPosition(double speed, double kP, double position)
     {
         mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, pidSpeed);
     }
-
-    cout <<pidSpeed<<endl;
 }
 
 double Arm::getExtendEncoder()
@@ -104,17 +91,11 @@ void Arm::updateSystem(double timestamp, char mode)
 {
     std::shared_ptr<frc::Joystick> opl = Controllers::instance()->LeftOperator();
     bool x = opl->GetRawButton(3);
-    // x = x * fabs(x);
     bool z = opl->GetRawButton(2);
-    // y = y * fabs(y);
     double y = opl->GetY();
 
     bool test = opl->GetRawButton(6);
-    // manual = opl->GetRawButtonPressed(6);
     manual = true;
-
-    // getRaiseEncoder();
-    // getExtendEncoder();
 
     if (mode == 't')
     {

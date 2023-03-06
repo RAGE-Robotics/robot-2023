@@ -34,7 +34,6 @@ bool Turret::homingSwitchActive()
     return homingSwitch;
 }
 
-
 void Turret::manualMode(double percentPower)
 {
     adjustment = 1000 * -percentPower;
@@ -49,9 +48,6 @@ double Turret::encoderPosition()
 void Turret::setTurretAngle(double radians)
 {
     sensorPos = radians * Constants::kTurretEncoderTicksPerRadian;
-    // error = abs(sensorPos - mTurret->GetSelectedSensorPosition());
-
-    std::cout << "setting turret position" << std::endl;
 
     mTurret->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, sensorPos);
 }
@@ -83,7 +79,8 @@ void Turret::updateSystem(double timestamp, char mode)
         }
     }
 
-    if(mode == 't' || mode == 'a') {
-        setTurretAngle((sensorPos + adjustment)/Constants::kTurretEncoderTicksPerRadian);
+    if (mode == 't' || mode == 'a')
+    {
+        setTurretAngle((sensorPos + adjustment) / Constants::kTurretEncoderTicksPerRadian);
     }
 }

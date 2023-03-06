@@ -1,15 +1,14 @@
 #include "Claw.hxx"
 #include "Controllers.hxx"
 
-using namespace std;
 Claw::Claw()
 {
-    mClawIntake = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(11);
-    mWrist = make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(8);
+    mClawIntake = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(11);
+    mWrist = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(8);
 
     mWrist->SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
-
 }
+
 double Claw::encoderCounts()
 {
     return mWrist->GetSelectedSensorPosition();

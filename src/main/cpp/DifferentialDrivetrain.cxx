@@ -6,6 +6,7 @@
 #include <cmath>
 #include <frc/PS4Controller.h>
 #include <frc/trajectory/Trajectory.h>
+#include <frc/DriverStation.h>
 
 #include "Constants.hxx"
 #include "Controllers.hxx"
@@ -13,8 +14,6 @@
 
 DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
 {
-    // mGyro = std::make_unique<frc::ADXRS450_Gyro>(frc::SPI::Port::kOnboardCS0);
-
     mLeftPrimaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonFX>(14);
     mLeftSecondaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonFX>(13);
     mRightPrimaryTalon = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonFX>(1);
@@ -25,7 +24,6 @@ DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
     mLeftPrimaryTalon->ConfigFactoryDefault();
     mLeftPrimaryTalon->SetInverted(true);
     mLeftPrimaryTalon->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::IntegratedSensor);
-    // mLeftPrimaryTalon->SetSensorPhase(true);
 
     mLeftSecondaryTalon->ConfigFactoryDefault();
     mLeftSecondaryTalon->SetInverted(true);
@@ -34,7 +32,6 @@ DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
     mRightPrimaryTalon->ConfigFactoryDefault();
     mRightPrimaryTalon->SetInverted(false);
     mRightPrimaryTalon->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::IntegratedSensor);
-    // mRightPrimaryTalon->SetSensorPhase(false);
 
     mRightSecondaryTalon->ConfigFactoryDefault();
     mRightSecondaryTalon->SetInverted(false);
@@ -47,7 +44,6 @@ DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
 
 double DifferentialDrivetrain::heading()
 {
-    // return mGyro->GetAngle();
     return -ahrs.GetAngle() / 360.0 * 2.0 * Constants::kPi;
 }
 
@@ -117,24 +113,27 @@ void DifferentialDrivetrain::updateSystem(double timestamp, char mode)
 
     if (leftdriver->GetRawButton(1))
     {
-        if(highgear) {
+        if (highgear)
+        {
             shift(false);
             highgear = false;
         }
     }
     if (rightdriver->GetRawButton(1))
     {
-        if(!highgear) {
+        if (!highgear)
+        {
             shift(true);
             highgear = true;
         }
     }
-    // r *= -1.0;
 
     if (mode == 'd')
     {
-        // brake();
-        coast();
+        if (frc::DriverStation::GetMatchType() != frc::DriverStation::MatchType::kNone)
+            brake();
+        else
+            coast();
         driveOpenLoop(0, 0);
     }
     else if (mode == 't')

@@ -20,7 +20,7 @@ private:
     bool zero_turret = false;
 
     bool manual;
-    
+
     double turretPosition;
 
     bool homingSwitch;
@@ -29,7 +29,6 @@ private:
     double adjustment = 0;
 
     double error;
-    
 
 public:
     static std::shared_ptr<Turret> instance()

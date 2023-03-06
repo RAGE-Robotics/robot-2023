@@ -6,7 +6,6 @@
 #include "System.hxx"
 #include <array>
 
-
 class LEDs : public System
 {
 public:
@@ -26,14 +25,14 @@ public:
 
     void signalCube();
     void signalCone();
-    //virtual void updateSystem(double timestamp, char mode) override;
+    // virtual void updateSystem(double timestamp, char mode) override;
 
     static std::shared_ptr<LEDs> instance()
     {
         static std::shared_ptr<LEDs> leds = std::make_shared<LEDs>();
         return leds;
     }
-    
+
 private:
     static constexpr int kLength = 600;
     // // PWM port 9
@@ -43,5 +42,4 @@ private:
         m_ledBuffer; // Reuse the buffer
 
     frc::Timer m_LEDTimer;
-
 };

@@ -16,25 +16,22 @@
 
 class Arm : public System
 {
-    private:
-        std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmRaiser;
-        std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmExtender;
-        frc::DutyCycleEncoder armRaiseEncoder{1};
+private:
+    std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmRaiser;
+    std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mArmExtender;
+    frc::DutyCycleEncoder armRaiseEncoder{1};
 
-        // std::unique_ptr<frc::DigitalInput> armRetractLimit;
-        // std::unique_ptr<frc::Solenoid> wristJoint;
-        bool manual;
+    bool manual;
 
-        bool isRetracted;
+    bool isRetracted;
 
-        double armRaiseEncoderValue;
+    double armRaiseEncoderValue;
 
-        double armExtendEncoderValue;
+    double armExtendEncoderValue;
 
-        double error;
-    
-    public:
+    double error;
 
+public:
     static std::shared_ptr<Arm> instance()
     {
         static std::shared_ptr<Arm> arm = std::make_shared<Arm>();
@@ -46,7 +43,7 @@ class Arm : public System
     double getExtendEncoder();
 
     bool getRetractLimit();
-    
+
     void raiseArm(double armpercent);
     void testMagicalRaise();
     void extendArm(double armpower);

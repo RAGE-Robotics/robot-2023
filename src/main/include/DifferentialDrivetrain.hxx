@@ -14,7 +14,6 @@
 class DifferentialDrivetrain : public Drivetrain, public System
 {
 private:
-
     bool highgear = true;
     static double encoderTicksToMeters(int encoderTicks)
     {
@@ -44,8 +43,6 @@ private:
     std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonFX> mRightSecondaryTalon;
 
     std::unique_ptr<frc::DoubleSolenoid> mGearSolenoid;
-    
-    
 
 public:
     static std::shared_ptr<DifferentialDrivetrain> instance()

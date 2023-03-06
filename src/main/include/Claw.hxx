@@ -17,7 +17,6 @@ class Claw : public System
 private:
     std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mClawIntake;
     std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mWrist;
-    //frc::DutyCycleEncoder wristEncoder{1};
 
 public:
     static std::shared_ptr<Claw> instance()

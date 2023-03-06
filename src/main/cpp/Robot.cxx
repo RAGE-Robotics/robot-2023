@@ -54,14 +54,14 @@ void Robot::RobotPeriodic()
 {
     /*if (!mVisionInitialized)
         mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;*/
-    
+
     std::shared_ptr<DifferentialDrivetrain> diffTrain = DifferentialDrivetrain::instance();
     std::shared_ptr<Turret> turret = Turret::instance();
     std::shared_ptr<Arm> arm = Arm::instance();
     frc::Pose2d pose = StateEstimator::instance()->pose();
-    //std::cout << "x: " << pose.X().value() << ", y: " << pose.Y().value() << ", theta: " << pose.Rotation().Radians().value() << ", rate: " << mLooper.rate() << "\n";
+    
     frc::SmartDashboard::PutNumber("Gyro", pose.Rotation().Radians().value());
-    frc::SmartDashboard::PutNumber("x pose", (pose.X().value()*3.28084));   
+    frc::SmartDashboard::PutNumber("x pose", (pose.X().value() * 3.28084));
     frc::SmartDashboard::PutNumber("y pose", (pose.Y().value() * 3.28084));
     frc::SmartDashboard::PutNumber("Turret", turret->encoderPosition());
     frc::SmartDashboard::PutNumber("Arm", arm->getRaiseEncoder());
@@ -79,9 +79,7 @@ void Robot::AutonomousPeriodic()
     for (std::shared_ptr<System> system : mSystems)
         system->updateSystem(timestamp, 'a');
     // leds_controller = std::make_unique<LEDs>();
-    //leds.displayRainbow();
-
-
+    // leds.displayRainbow();
 }
 
 void Robot::TeleopInit()
@@ -92,10 +90,11 @@ void Robot::TeleopInit()
 void Robot::TeleopPeriodic()
 {
     double timestamp = frc::Timer::GetFPGATimestamp().value();
-    for (std::shared_ptr<System> system : mSystems) {
+    for (std::shared_ptr<System> system : mSystems)
+    {
         system->updateSystem(timestamp, 't');
     }
-   
+
     // leds.displayFancyTeamColors();
 }
 
