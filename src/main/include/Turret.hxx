@@ -45,7 +45,9 @@ public:
     void magicalTwist();
     double encoderPosition();
     void manualMode(double percentPower);
+    void brake();
     void updateSystem(double timestamp, char mode) override;
+    
 
     void setTurretAngle(double radians);
 

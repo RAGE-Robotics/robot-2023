@@ -31,6 +31,8 @@ private:
 
     double error;
 
+    double armExtendSetpoint = 0;
+
 public:
     static std::shared_ptr<Arm> instance()
     {
@@ -44,9 +46,6 @@ public:
 
     bool getRetractLimit();
 
-    void raiseArm(double armpercent);
-    void extendArm(double armpower);
-    void retractArm(double armpower);
     void updateSystem(double timestamp, char mode) override;
     void setArmPosition(double speed, double kP, double position);
 };

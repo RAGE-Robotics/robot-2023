@@ -1,7 +1,7 @@
 #include "Arm.hxx"
 #include "Controllers.hxx"
 #include <frc/smartdashboard/SmartDashboard.h>
-
+#include <iostream>
 Arm::Arm()
 {
     mArmRaiser = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(9);
@@ -10,7 +10,7 @@ Arm::Arm()
     mArmExtender->ConfigMotionCruiseVelocity(4332);
     mArmExtender->ConfigMotionAcceleration(2332);
 
-    mArmExtender->Config_kP(0, 1);
+    mArmExtender->Config_kP(0, 0.25);
     mArmExtender->Config_kI(0, 0);
     mArmExtender->Config_kD(0, 0);
     mArmExtender->Config_kF(0, 0);
@@ -30,7 +30,8 @@ double Arm::getRaiseEncoder()
 void Arm::setArmPosition(double speed, double kP, double position)
 {
     double pidSpeed;
-    error = abs(position - armRaiseEncoder.GetDistance());
+    error = abs(position - getRaiseEncoder());
+ 
     if ((error * kP) >= speed)
     {
         pidSpeed = speed;
@@ -66,21 +67,6 @@ bool Arm::getRetractLimit()
     return mArmExtender->IsFwdLimitSwitchClosed();
 }
 
-void Arm::raiseArm(double armpercent)
-{
-    mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpercent * -0.6);
-}
-
-void Arm::extendArm(double armpower)
-{
-    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpower * -0.35);
-}
-
-void Arm::retractArm(double armpower)
-{
-    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, armpower * 0.35);
-}
-
 void Arm::updateSystem(double timestamp, char mode)
 {
     std::shared_ptr<frc::Joystick> opl = Controllers::instance()->LeftOperator();
@@ -92,6 +78,14 @@ void Arm::updateSystem(double timestamp, char mode)
     manual = true;
 
     getExtendEncoder();
+
+    if (mode == 't')
+    {
+        if (test)
+        {
+            setArmPosition(0.6, 9.5, 0.51);
+        }
+    }
 
     if ((mode == 't' || mode == 'a') && !extendHome)
     {
@@ -106,32 +100,16 @@ void Arm::updateSystem(double timestamp, char mode)
 
     if (mode == 't')
     {
+        if (opl->GetRawButton(2))
+            armExtendSetpoint = 0;
+        else if (opl->GetRawButton(3))
+            armExtendSetpoint = 0.25;
+        else if (opl->GetRawButton(4))
+            armExtendSetpoint = 0.5;
+    }
 
-        if (x)
-        {
-
-            extendArm(1);
-        }
-        else if (z)
-        {
-            retractArm(1);
-        }
-
-        else if (!z && !x)
-        {
-            extendArm(0);
-            retractArm(0);
-        }
-
-        raiseArm(y);
-
-        if (test)
-        {
-            setArmPosition(0.6, 9.5, 0.51);
-        }
-    };
-
-    if (mode == 'a')
+    if (mode == 'a' || mode == 't')
     {
-    };
+        mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, -armExtendSetpoint * Constants::kArmEncoderTicksPerMeter);
+    }
 }

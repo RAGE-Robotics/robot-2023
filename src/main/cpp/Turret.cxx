@@ -36,7 +36,7 @@ bool Turret::homingSwitchActive()
 
 void Turret::manualMode(double percentPower)
 {
-    adjustment = 1000 * -percentPower;
+    adjustment = 500 * percentPower;
 }
 
 double Turret::encoderPosition()
@@ -50,6 +50,11 @@ void Turret::setTurretAngle(double radians)
     sensorPos = radians * Constants::kTurretEncoderTicksPerRadian;
 
     mTurret->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, sensorPos);
+}
+
+void Turret::brake()
+{
+    mTurret->SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 }
 
 void Turret::updateSystem(double timestamp, char mode)
@@ -82,5 +87,6 @@ void Turret::updateSystem(double timestamp, char mode)
     if (mode == 't' || mode == 'a')
     {
         setTurretAngle((sensorPos + adjustment) / Constants::kTurretEncoderTicksPerRadian);
+        brake();
     }
 }
