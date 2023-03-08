@@ -4,19 +4,30 @@
 Claw::Claw()
 {
     mClawIntake = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(11);
-    mWrist = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(8);
+    //mWrist = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(8);
 
-    mWrist->SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
+   // mWrist->SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
+
+    mWristSolenoid = std::make_unique<frc::DoubleSolenoid>(frc::PneumaticsModuleType::REVPH, 9, 4);
+
+    extended = false;
 }
 
-double Claw::encoderCounts()
-{
-    return mWrist->GetSelectedSensorPosition();
-}
+// double Claw::encoderCounts()
+// {
+//     return mWrist->GetSelectedSensorPosition();
+// }
 
-void Claw::moveWrist(double wristpower)
+void Claw::moveWrist(bool isExtended)
 {
-    mWrist->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, wristpower * 0.5);
+    if (isExtended)
+    {
+        mWristSolenoid->Set(frc::DoubleSolenoid::Value::kForward);
+    }
+    else
+    {
+        mWristSolenoid->Set(frc::DoubleSolenoid::Value::kReverse);
+    }
 }
 
 void Claw::intakeRollersIn(double intakepower)
@@ -34,20 +45,24 @@ void Claw::updateSystem(double timestamp, char mode)
 
     bool cone = opl->GetRawButton(1);
     bool cube = opr->GetRawButton(1);
-    double wrist = 1;
+    //double wrist = 1;
     if (mode == 't')
     {
         if (opr->GetRawButton(3))
         {
-            moveWrist(wrist);
+            if (extended)
+            {
+                moveWrist(true);
+                extended = false;
+            }
         }
         else if (opr->GetRawButton(2))
         {
-            moveWrist(-wrist);
-        }
-        else
-        {
-            moveWrist(0);
+            if (!extended)
+            {
+                moveWrist(false);
+                extended = true;
+            }
         }
 
         if (cone)

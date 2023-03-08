@@ -7,6 +7,7 @@
 #include <frc/DigitalInput.h>
 #include <frc/Solenoid.h>
 #include <frc/DutyCycleEncoder.h>
+#include <frc/DoubleSolenoid.h>
 
 #include "lib173/Looper.hxx"
 #include "RageVision.hxx"
@@ -16,7 +17,10 @@ class Claw : public System
 {
 private:
     std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mClawIntake;
-    std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mWrist;
+    //std::unique_ptr<ctre::phoenix::motorcontrol::can::WPI_TalonSRX> mWrist;
+    std::unique_ptr<frc::DoubleSolenoid> mWristSolenoid;
+
+    bool extended;
 
 public:
     static std::shared_ptr<Claw> instance()
@@ -26,8 +30,8 @@ public:
     }
 
     Claw();
-    double encoderCounts();
-    void moveWrist(double wristpower);
+   // double encoderCounts();
+    void moveWrist(bool isExtended);
     void intakeRollersIn(double intakepower);
     void intakeRollersOut(double intakepower);
     void updateSystem(double timestamp, char mode) override;
