@@ -68,7 +68,11 @@ void Turret::updateSystem(double timestamp, char mode)
 
     if (mode == 't')
     {
-        manualMode(rotate);
+        if (rotate > 0.05)
+        {
+            manualMode(rotate);
+        }
+        
 
         if (r)
         {
@@ -89,4 +93,9 @@ void Turret::updateSystem(double timestamp, char mode)
         setTurretAngle((sensorPos + adjustment) / Constants::kTurretEncoderTicksPerRadian);
         brake();
     }
+}
+
+void Turret::resetEncoder()
+{
+    mTurret->SetSelectedSensorPosition(0,0);
 }

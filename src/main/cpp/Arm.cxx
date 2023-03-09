@@ -27,6 +27,8 @@ double Arm::getRaiseEncoder()
     return armRaiseEncoderValue;
 }
 
+
+
 void Arm::setArmPosition(double speed, double kP, double position)
 {
     double pidSpeed;
@@ -62,10 +64,22 @@ double Arm::getExtendEncoder()
     return armExtendEncoderValue;
 }
 
+void Arm::resetExtendEncoder() {
+    mArmExtender->SetSelectedSensorPosition(0, 0);
+}
+
 bool Arm::getRetractLimit()
 {
     return mArmExtender->IsFwdLimitSwitchClosed();
 }
+
+void Arm::setExtendPosition(double extendPosition)
+{
+    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, extendPosition);
+}
+
+
+
 
 void Arm::updateSystem(double timestamp, char mode)
 {
@@ -78,6 +92,7 @@ void Arm::updateSystem(double timestamp, char mode)
     manual = true;
 
     getExtendEncoder();
+    
 
     if (mode == 't')
     {
@@ -87,29 +102,38 @@ void Arm::updateSystem(double timestamp, char mode)
         }
     }
 
-    if ((mode == 't' || mode == 'a') && !extendHome)
-    {
-        if (!getRetractLimit())
-        {
-            mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, 0.35);
-            return;
+    // if ((mode == 't' || mode == 'a') && !extendHome)
+    // {
+    //     if (!getRetractLimit())
+    //     {
+    //         mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, 0.35);
+    //         return;
+    //     }
+    //     mArmExtender->SetSelectedSensorPosition(0, 0);
+    //     extendHome = true;
+    // }
+
+    if((mode == 't' || mode == 'a')) {
+        if(getRetractLimit()) {
+            resetExtendEncoder();
         }
-        mArmExtender->SetSelectedSensorPosition(0, 0);
-        extendHome = true;
     }
 
     if (mode == 't')
     {
-        if (opl->GetRawButton(2))
-            armExtendSetpoint = 0;
-        else if (opl->GetRawButton(3))
-            armExtendSetpoint = 0.25;
-        else if (opl->GetRawButton(4))
-            armExtendSetpoint = 0.5;
+        if (z)
+            mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, 0.3);
+
+        else if (x)
+            mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, -0.3);
+
+        else if(!z && !x) {
+            mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, 0);
+        }
     }
 
-    if (mode == 'a' || mode == 't')
-    {
-        mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, -armExtendSetpoint * Constants::kArmEncoderTicksPerMeter);
-    }
+    // if (mode == 'a' || mode == 't')
+    // {
+    //     mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, -armExtendSetpoint * Constants::kArmEncoderTicksPerMeter);
+    // }
 }

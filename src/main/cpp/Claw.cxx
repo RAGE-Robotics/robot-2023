@@ -8,7 +8,7 @@ Claw::Claw()
 
    // mWrist->SetNeutralMode(ctre::phoenix::motorcontrol::NeutralMode::Brake);
 
-    mWristSolenoid = std::make_unique<frc::DoubleSolenoid>(frc::PneumaticsModuleType::REVPH, 9, 4);
+    mWristSolenoid = std::make_unique<frc::DoubleSolenoid>(frc::PneumaticsModuleType::REVPH, 4, 9);
 
     extended = false;
 }
@@ -50,6 +50,7 @@ void Claw::updateSystem(double timestamp, char mode)
     {
         if (opr->GetRawButton(3))
         {
+            //Invert controls
             if (extended)
             {
                 moveWrist(true);

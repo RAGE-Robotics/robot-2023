@@ -39,11 +39,13 @@ void Robot::RobotInit()
     mVision = std::make_shared<RageVision>();
     mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;
     // mVision->run(Constants::kVisionDataPort, [](double timestamp, int id, double tx, double ty, double tz, double qw, double qx, double qy, double qz, double processingLatency) {});
-
+    turret->resetEncoder();
+    Arm::instance()->resetExtendEncoder();
     mSystems.push_back(diffTrain);
     mSystems.push_back(Arm::instance());
     mSystems.push_back(Claw::instance());
     mSystems.push_back(Turret::instance());
+
     // mSystems.push_back(LEDs::instance());
     // leds.displayTeamColor();
 

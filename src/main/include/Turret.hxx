@@ -50,6 +50,7 @@ public:
     
 
     void setTurretAngle(double radians);
+    void resetEncoder();
 
     ~Turret();
 };
