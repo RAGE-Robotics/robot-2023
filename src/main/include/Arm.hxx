@@ -29,9 +29,9 @@ private:
 
     double armExtendEncoderValue;
 
-    double error;
+    double armExtendSetPoint = 0;
 
-    double armExtendSetpoint = 0;
+    double error;
 
 public:
     static std::shared_ptr<Arm> instance()

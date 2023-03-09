@@ -57,7 +57,7 @@ void Arm::setArmPosition(double speed, double kP, double position)
 
 double Arm::getExtendEncoder()
 {
-    armExtendEncoderValue = mArmExtender->GetSelectedSensorPosition();
+    armExtendEncoderValue = mArmExtender->GetSelectedSensorPosition() * Constants::kArmEncoderTicksPerMeter;
 
     frc::SmartDashboard::PutNumber("Extend", armExtendEncoderValue);
 
@@ -75,7 +75,8 @@ bool Arm::getRetractLimit()
 
 void Arm::setExtendPosition(double extendPosition)
 {
-    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, extendPosition);
+    armExtendSetPoint = extendPosition * Constants::kArmEncoderTicksPerMeter;
+    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, armExtendSetPoint);
 }
 
 
@@ -136,4 +137,12 @@ void Arm::updateSystem(double timestamp, char mode)
     // {
     //     mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, -armExtendSetpoint * Constants::kArmEncoderTicksPerMeter);
     // }
+
+    if(mode == 'a' || mode == 't') {
+        // This is to keep our extend position at all times
+        setExtendPosition(armExtendPoint/Constants::kArmEncoderTicksPerMeter)
+        
+        // This is to keep our Arm Postion all the time so it doesn't go automatically up
+        // setArmPosition()
+    }
 }

@@ -20,6 +20,7 @@
 
 void Robot::RobotInit()
 {
+    // ptr variables
     std::shared_ptr<StateEstimator> stateEstimator = StateEstimator::instance();
     trajectoryGen = RAGETrajectory::instance();
     std::shared_ptr<Turret> turret = Turret::instance();
@@ -31,16 +32,22 @@ void Robot::RobotInit()
                 { mLooper.update(); },
                 units::second_t{Constants::kLoopDt});
 
-    trajectoryGen->GeneratePoints();
+    // setting drivetrain for state estimator
     stateEstimator->setDrivetrain(DifferentialDrivetrain::instance());
-    stateEstimator->reset(frc::Pose2d{});
-    diffTrain->resetEncoder();
+    
 
+    // Vision initalization
     mVision = std::make_shared<RageVision>();
     mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;
     // mVision->run(Constants::kVisionDataPort, [](double timestamp, int id, double tx, double ty, double tz, double qw, double qx, double qy, double qz, double processingLatency) {});
+    
+    // Reset stuff
     turret->resetEncoder();
+    stateEstimator->reset(frc::Pose2d{});
+    diffTrain->resetEncoder();
     Arm::instance()->resetExtendEncoder();
+
+    // Systems
     mSystems.push_back(diffTrain);
     mSystems.push_back(Arm::instance());
     mSystems.push_back(Claw::instance());
@@ -57,11 +64,14 @@ void Robot::RobotPeriodic()
     /*if (!mVisionInitialized)
         mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;*/
 
+    // Ptr variables for systems
     std::shared_ptr<DifferentialDrivetrain> diffTrain = DifferentialDrivetrain::instance();
     std::shared_ptr<Turret> turret = Turret::instance();
     std::shared_ptr<Arm> arm = Arm::instance();
     frc::Pose2d pose = StateEstimator::instance()->pose();
     
+
+    // printing out useful values
     frc::SmartDashboard::PutNumber("Gyro", pose.Rotation().Radians().value());
     frc::SmartDashboard::PutNumber("x pose", (pose.X().value() * 3.28084));
     frc::SmartDashboard::PutNumber("y pose", (pose.Y().value() * 3.28084));
