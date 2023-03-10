@@ -15,6 +15,7 @@ Arm::Arm()
     mArmExtender->Config_kD(0, 0);
     mArmExtender->Config_kF(0, 0);
 
+    mArmExtender->SetSensorPhase(true);
     mArmExtender->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
     mArmExtender->ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector, ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
 }
@@ -66,6 +67,11 @@ double Arm::getExtendEncoder()
 
 void Arm::resetExtendEncoder() {
     mArmExtender->SetSelectedSensorPosition(0, 0);
+}
+
+void Arm::resetRaiseEncoder()
+{
+    mArmRaiser->SetSelectedSensorPosition(0,0);
 }
 
 bool Arm::getRetractLimit()

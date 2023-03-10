@@ -281,8 +281,8 @@ void updateSystem(double timestamp, char mode)
     std::shared_ptr<frc::Joystick> ldriver = Controllers::instance()->LeftDriver();
     std::shared_ptr<frc::Joystick> rdriver = Controllers::instance()->RightDriver();
     
-    double x = ldriver->GetRawButton(2);
-    double y = rdriver->GetRawButton(2);
+    bool x = ldriver->GetRawButton(2);
+    bool y = rdriver->GetRawButton(2);
     
     if(mode == 't')
     {

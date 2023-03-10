@@ -46,6 +46,7 @@ public:
 
     bool getRetractLimit();
     void resetExtendEncoder();
+    void resetRaiseEncoder();
 
     void updateSystem(double timestamp, char mode) override;
     void setArmPosition(double speed, double kP, double position);
