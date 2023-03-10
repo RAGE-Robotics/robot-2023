@@ -68,9 +68,13 @@ void Turret::updateSystem(double timestamp, char mode)
 
     if (mode == 't')
     {
-        if (rotate > 0.05)
+        if (rotate > 0.01 || rotate < -0.01)
         {
             manualMode(rotate);
+        }
+        else 
+        {
+            manualMode(0);
         }
         
 

@@ -28,6 +28,10 @@ private:
     double armRaiseEncoderValue;
 
     double armExtendEncoderValue;
+    
+    double armRaiser = 0.665;
+
+    double adjustment;
 
     double armExtendSetPoint = 0;
 
@@ -52,4 +56,5 @@ public:
     void setArmPosition(double speed, double kP, double position);
 
     void setExtendPosition(double extendPosition);
+    void manualModeRaiser(double percentPower);
 };

@@ -2,6 +2,9 @@
 #include "Controllers.hxx"
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <iostream>
+
+using namespace std;
+
 Arm::Arm()
 {
     mArmRaiser = std::make_unique<ctre::phoenix::motorcontrol::can::WPI_TalonSRX>(9);
@@ -15,7 +18,6 @@ Arm::Arm()
     mArmExtender->Config_kD(0, 0);
     mArmExtender->Config_kF(0, 0);
 
-    mArmExtender->SetSensorPhase(true);
     mArmExtender->ConfigSelectedFeedbackSensor(ctre::phoenix::motorcontrol::FeedbackDevice::QuadEncoder);
     mArmExtender->ConfigForwardLimitSwitchSource(ctre::phoenix::motorcontrol::LimitSwitchSource::LimitSwitchSource_FeedbackConnector, ctre::phoenix::motorcontrol::LimitSwitchNormal::LimitSwitchNormal_NormallyOpen);
 }
@@ -33,7 +35,10 @@ double Arm::getRaiseEncoder()
 void Arm::setArmPosition(double speed, double kP, double position)
 {
     double pidSpeed;
-    error = abs(position - getRaiseEncoder());
+    armRaiser = position;
+    error = abs(armRaiser - getRaiseEncoder());
+
+    // cout <<error<< endl;
  
     if ((error * kP) >= speed)
     {
@@ -45,7 +50,7 @@ void Arm::setArmPosition(double speed, double kP, double position)
         pidSpeed = kP * error;
     }
 
-    if (armRaiseEncoder.GetDistance() < position)
+    if (armRaiseEncoder.GetDistance() < armRaiser)
     {
         mArmRaiser->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, -pidSpeed);
     }
@@ -58,7 +63,7 @@ void Arm::setArmPosition(double speed, double kP, double position)
 
 double Arm::getExtendEncoder()
 {
-    armExtendEncoderValue = mArmExtender->GetSelectedSensorPosition() * Constants::kArmEncoderTicksPerMeter;
+    armExtendEncoderValue = mArmExtender->GetSelectedSensorPosition() / Constants::kArmEncoderTicksPerMeter;
 
     frc::SmartDashboard::PutNumber("Extend", armExtendEncoderValue);
 
@@ -81,8 +86,12 @@ bool Arm::getRetractLimit()
 
 void Arm::setExtendPosition(double extendPosition)
 {
-    armExtendSetPoint = extendPosition * Constants::kArmEncoderTicksPerMeter;
-    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, armExtendSetPoint);
+    armExtendSetPoint = -extendPosition * Constants::kArmEncoderTicksPerMeter;
+}
+
+void Arm::manualModeRaiser(double percentPower)
+{
+    adjustment = percentPower * .15;
 }
 
 
@@ -95,7 +104,11 @@ void Arm::updateSystem(double timestamp, char mode)
     bool z = opl->GetRawButton(2);
     double y = opl->GetY();
 
-    bool test = opl->GetRawButton(6);
+    bool groundRaisePos = opl->GetRawButton(4);
+    bool topRaisePos = opl->GetRawButton(5);
+    bool scoreLow = opl->GetRawButton(2);
+    bool scoreHigh = opl->GetRawButton(3);
+
     manual = true;
 
     getExtendEncoder();
@@ -103,52 +116,39 @@ void Arm::updateSystem(double timestamp, char mode)
 
     if (mode == 't')
     {
-        if (test)
+        if (groundRaisePos)
         {
-            setArmPosition(0.6, 9.5, 0.51);
+            setArmPosition(1, 5.5, 0.55);
+            setExtendPosition(.26);
+        }
+        else if (topRaisePos)
+        {
+            setArmPosition(1, 5.5, 0.665);
+            setExtendPosition(0);
+        }
+        else if (scoreLow)
+        {
+            setArmPosition(1, 5.5, .65);
+            setExtendPosition(.2);
+        }
+        else if (scoreHigh)
+        {
+            setArmPosition(1, 5.5, 0.676);
+            setExtendPosition(.415);
+        }
+        else if (Controllers::instance()->RightOperator()->GetTrigger())
+        {
+            setArmPosition(1, 5.5, 0.5);
+            setExtendPosition(0.26);
         }
     }
 
-    // if ((mode == 't' || mode == 'a') && !extendHome)
-    // {
-    //     if (!getRetractLimit())
-    //     {
-    //         mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, 0.35);
-    //         return;
-    //     }
-    //     mArmExtender->SetSelectedSensorPosition(0, 0);
-    //     extendHome = true;
-    // }
-
-    if((mode == 't' || mode == 'a')) {
+    if(mode == 't' || mode == 'a') {
         if(getRetractLimit()) {
             resetExtendEncoder();
         }
-    }
+        setArmPosition(1, 5.5, armRaiser);
 
-    if (mode == 't')
-    {
-        if (z)
-            mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, 0.3);
-
-        else if (x)
-            mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, -0.3);
-
-        else if(!z && !x) {
-            mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, 0);
-        }
-    }
-
-    // if (mode == 'a' || mode == 't')
-    // {
-    //     mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, -armExtendSetpoint * Constants::kArmEncoderTicksPerMeter);
-    // }
-
-    if(mode == 'a' || mode == 't') {
-        // This is to keep our extend position at all times
-        setExtendPosition(armExtendPoint/Constants::kArmEncoderTicksPerMeter)
-        
-        // This is to keep our Arm Postion all the time so it doesn't go automatically up
-        // setArmPosition()
+        mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, armExtendSetPoint);
     }
 }

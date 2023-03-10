@@ -74,6 +74,10 @@ void Claw::updateSystem(double timestamp, char mode)
         {
             intakeRollersOut(1);
         }
+        else if (opr->GetRawButton(4))
+        {
+            intakeRollersOut(0.9);
+        }
         else
         {
             intakeRollersIn(0);
