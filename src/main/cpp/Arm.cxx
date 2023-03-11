@@ -118,7 +118,7 @@ void Arm::updateSystem(double timestamp, char mode)
     {
         if (groundRaisePos)
         {
-            setArmPosition(1, Constants::kRaiserP, Constants::kGroundRaisePosition); //old 0.55
+            setArmPosition(1, Constants::kRaiserP, Constants::kGroundRaisePosition); 
             setExtendPosition(Constants::kGroundExtendPosition);
         }
         else if (topRaisePos)

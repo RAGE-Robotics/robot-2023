@@ -3,6 +3,8 @@
 #include <wpi/array.h>
 #include <string>
 
+#include <frc/trajectory/Trajectory.h>
+
 class Constants
 {
 public:
@@ -29,8 +31,8 @@ public:
     static constexpr double kDrivetrainGearRatio = 0.125786163522013;
     static constexpr double kRaiserP = 5.5;
 
+    static constexpr double kGroundRaisePosition = 0.53; //old 0.55
     static constexpr double kTopRaisePosition = 0.665;
-    static constexpr double kGroundRaisePosition = 0.53;
     static constexpr double kScoreLowRaisePosition = 0.65;
     static constexpr double kScoreHighRaisePosition = 0.676;
     static constexpr double kPickupRaisePosition = 0.5;
@@ -40,6 +42,8 @@ public:
     static constexpr double kScoreLowExtendPosition = 0.2;
     static constexpr double kScoreHighExtendPosition = 0.415;
     static constexpr double kPickupExtendPosition = 0.26;
+
+    static constexpr frc::Translation2d kLeftRightStartingPosition = {18.23_ft, 0_ft};
 
     static const int kTurretEncoderUnitsPerRotation = 8192;
     static const int kTurretEncoderTicksPerRotation = 87040;
