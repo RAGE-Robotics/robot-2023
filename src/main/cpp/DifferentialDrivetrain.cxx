@@ -39,6 +39,8 @@ DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
 
     shift(true);
 
+    rampRate(0.4);
+
     setPidGains(Constants::kDrivetrainP, Constants::kDrivetrainI, Constants::kDrivetrainD, Constants::kDrivetrainF);
 }
 
@@ -189,6 +191,8 @@ void DifferentialDrivetrain::shift(bool isHighGear)
 
 void DifferentialDrivetrain::rampRate(double rate)
 {
+    mLeftPrimaryTalon->ConfigOpenloopRamp(0.4);
+    mRightPrimaryTalon->ConfigOpenloopRamp(0.4);
 }
 
 void DifferentialDrivetrain::resetEncoder()

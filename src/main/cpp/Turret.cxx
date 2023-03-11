@@ -12,9 +12,9 @@ Turret::Turret()
 
     mTurret->SetSensorPhase(true);
 
-    mTurret->Config_kP(0, .034);
+    mTurret->Config_kP(0, 0.8); // .034
     mTurret->Config_kI(0, 0);
-    mTurret->Config_kD(0, .055);
+    mTurret->Config_kD(0, .7); // .055
     mTurret->Config_kF(0, 0);
 
     mTurret->SetSelectedSensorPosition(0, 0);
@@ -68,7 +68,7 @@ void Turret::updateSystem(double timestamp, char mode)
 
     if (mode == 't')
     {
-        if (rotate > 0.01 || rotate < -0.01)
+        if (rotate > 0.04 || rotate < -0.04)
         {
             manualMode(rotate);
         }

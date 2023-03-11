@@ -34,6 +34,7 @@ private:
     double adjustment;
 
     double armExtendSetPoint = 0;
+    double adjustmentExtender = 0;
 
     double error;
 
@@ -57,4 +58,5 @@ public:
 
     void setExtendPosition(double extendPosition);
     void manualModeRaiser(double percentPower);
+    void manualModeExtender(double percentPower);
 };

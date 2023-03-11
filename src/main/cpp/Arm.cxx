@@ -79,6 +79,12 @@ void Arm::resetRaiseEncoder()
     mArmRaiser->SetSelectedSensorPosition(0,0);
 }
 
+void Arm::manualModeExtender(double percentPower)
+{
+    // adjustmentExtender = 25 * percentPower;
+    mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::PercentOutput, percentPower * 0.5);
+}
+
 bool Arm::getRetractLimit()
 {
     return mArmExtender->IsFwdLimitSwitchClosed();
@@ -108,6 +114,8 @@ void Arm::updateSystem(double timestamp, char mode)
     bool topRaisePos = opl->GetRawButton(5);
     bool scoreLow = opl->GetRawButton(2);
     bool scoreHigh = opl->GetRawButton(3);
+    bool coneShelve = opl->GetRawButton(10);
+    bool cubeShelve = opl->GetRawButton(11);
 
     manual = true;
 
@@ -119,27 +127,52 @@ void Arm::updateSystem(double timestamp, char mode)
         if (groundRaisePos)
         {
             setArmPosition(1, Constants::kRaiserP, Constants::kGroundRaisePosition); 
-            setExtendPosition(Constants::kGroundExtendPosition);
+            // setExtendPosition(Constants::kGroundExtendPosition);
         }
+        else if(coneShelve) {
+            setArmPosition(1, Constants::kRaiserP, .672);
+            // setExtendPosition(0);
+        }
+        else if(cubeShelve) {
+            setArmPosition(1, Constants::kRaiserP, .667);
+            // setExtendPosition(0);
+        }
+
+        
+
         else if (topRaisePos)
         {
             setArmPosition(1, Constants::kRaiserP, Constants::kTopRaisePosition);
-            setExtendPosition(Constants::kTopExtendPosition);
+            // setExtendPosition(Constants::kTopExtendPosition);
         }
         else if (scoreLow)
         {
             setArmPosition(1, Constants::kRaiserP, Constants::kScoreLowRaisePosition);
-            setExtendPosition(Constants::kScoreLowExtendPosition);
+            // setExtendPosition(Constants::kScoreLowExtendPosition);
         }
         else if (scoreHigh)
         {
             setArmPosition(1, Constants::kRaiserP, Constants::kScoreHighRaisePosition);
-            setExtendPosition(Constants::kScoreHighExtendPosition);
+            // setExtendPosition(Constants::kScoreHighExtendPosition);
         }
         else if (Controllers::instance()->RightOperator()->GetTrigger())
         {
             setArmPosition(1, Constants::kRaiserP, Constants::kPickupRaisePosition);
-            setExtendPosition(Constants::kPickupExtendPosition);
+            // setExtendPosition(Constants::kPickupExtendPosition);
+        }
+        else if (Controllers::instance()->LeftOperator()->GetTrigger())
+        {
+            setArmPosition(1, Constants::kRaiserP, Constants::kPickupRaisePosition);
+            // setExtendPosition(Constants::kPickupExtendPosition);
+        }
+
+        if (y > 0.02 || y < -0.02)
+        {
+            manualModeExtender(y);
+        }
+        else 
+        {
+            manualModeExtender(0);
         }
     }
 
@@ -149,6 +182,8 @@ void Arm::updateSystem(double timestamp, char mode)
         }
         setArmPosition(1, 5.5, armRaiser);
 
-        mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, armExtendSetPoint);
+        // if (armExtendSetPoint+adjustmentExtender * Constants::kArmEncoderTicksPerMeter <= 0)
+        // mArmExtender->Set(ctre::phoenix::motorcontrol::TalonSRXControlMode::Position, armExtendSetPoint * Constants::kArmEncoderTicksPerMeter);
+
     }
 }

@@ -33,7 +33,7 @@ private:
 
     frc::Compressor compressor{frc::PneumaticsModuleType::REVPH};
     const units::pounds_per_square_inch_t kCompressorMinPressure{95};
-    const units::pounds_per_square_inch_t kCompressorMaxPressure{117};
+    const units::pounds_per_square_inch_t kCompressorMaxPressure{107};
 
 public:
     void RobotInit() override;

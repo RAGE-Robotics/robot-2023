@@ -14,7 +14,7 @@ frc::Trajectory RAGETrajectory::GeneratePoints()
         0_ft,
         frc::Rotation2d(0_deg)};
     const frc::Pose2d secondPoint{
-        18_ft,
+        16.5_ft,
         0_ft,
         frc::Rotation2d(0_deg)};
     frc::TrajectoryConfig Config{
@@ -26,7 +26,7 @@ frc::Trajectory RAGETrajectory::GeneratePoints()
         frc::Translation2d{2_ft, 0_ft},
         frc::Translation2d{5_ft, 0_ft},
         frc::Translation2d{10_ft, 0_ft},
-        frc::Translation2d{15_ft, 0_ft}
+        frc::Translation2d{14_ft, 0_ft}
         };
 
     auto Trajectory = frc::TrajectoryGenerator::GenerateTrajectory(
