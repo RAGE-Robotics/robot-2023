@@ -37,7 +37,7 @@ DifferentialDrivetrain::DifferentialDrivetrain() : ahrs{frc::I2C::Port::kMXP}
     mRightSecondaryTalon->SetInverted(false);
     mRightSecondaryTalon->Follow(*mRightPrimaryTalon);
 
-    shift(true);
+    shift(false);
 
     rampRate(0.4);
 

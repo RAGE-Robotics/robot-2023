@@ -28,7 +28,7 @@ public:
     static constexpr double kDrivetrainF = 0;
     static const int kDrivetrainEncoderUnitsPerRotation = 2048;
     static constexpr double kDrivetrainWheelRadius = 0.0762;
-    static constexpr double kDrivetrainGearRatio = 0.125786163522013;
+    static constexpr double kDrivetrainGearRatio = 1/16.364;
     static constexpr double kRaiserP = 5.5;
 
     static constexpr double kGroundRaisePosition = 0.53; //old 0.55
