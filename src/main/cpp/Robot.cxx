@@ -49,7 +49,7 @@ void Robot::RobotInit()
 
     // Systems
     mSystems.push_back(diffTrain);
-    mSystems.push_back(Arm::instance());
+    //mSystems.push_back(Arm::instance());
     mSystems.push_back(Claw::instance());
     // mSystems.push_back(Turret::instance());
 

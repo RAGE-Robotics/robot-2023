@@ -48,23 +48,23 @@ void Claw::updateSystem(double timestamp, char mode)
     //double wrist = 1;
     if (mode == 't')
     {
-        if (opr->GetRawButton(3))
-        {
-            //Invert controls
-            if (extended)
-            {
-                moveWrist(true);
-                extended = false;
-            }
-        }
-        else if (opr->GetRawButton(2))
-        {
-            if (!extended)
-            {
-                moveWrist(false);
-                extended = true;
-            }
-        }
+        // if (opr->GetRawButton(3))
+        // {
+        //     //Invert controls
+        //     if (extended)
+        //     {
+        //         moveWrist(true);
+        //         extended = false;
+        //     }
+        // }
+        // else if (opr->GetRawButton(2))
+        // {
+        //     if (!extended)
+        //     {
+        //         moveWrist(false);
+        //         extended = true;
+        //     }
+        // }
 
         if (cone)
         {
@@ -76,16 +76,21 @@ void Claw::updateSystem(double timestamp, char mode)
         }
         else if (opr->GetRawButton(4))
         {
-            intakeRollersOut(0.9);
+            intakeRollersOut(0.8);
         }
         else if (opr->GetRawButton(5))
         {
-            intakeRollersIn(1);
+            intakeRollersIn(0.7);
         }
         else
         {
             intakeRollersIn(0);
             intakeRollersOut(0);
         }
+    }
+
+    if (mode == 'a')
+    {
+        intakeRollersOut(1);
     }
 }

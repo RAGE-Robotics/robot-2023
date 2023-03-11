@@ -12,9 +12,9 @@ Turret::Turret()
 
     mTurret->SetSensorPhase(true);
 
-    mTurret->Config_kP(0, 0.8); // .034
+    mTurret->Config_kP(0, 0.5); // .034
     mTurret->Config_kI(0, 0);
-    mTurret->Config_kD(0, .7); // .055
+    mTurret->Config_kD(0, 0.4); // .055
     mTurret->Config_kF(0, 0);
 
     mTurret->SetSelectedSensorPosition(0, 0);

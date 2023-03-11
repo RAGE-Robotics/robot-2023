@@ -3,6 +3,8 @@
 #include <frc/trajectory/TrajectoryConfig.h>
 #include <frc/trajectory/TrajectoryGenerator.h>
 
+#include "Constants.hxx"
+
 RAGETrajectory::RAGETrajectory()
 {
 }
@@ -14,19 +16,20 @@ frc::Trajectory RAGETrajectory::GeneratePoints()
         0_ft,
         frc::Rotation2d(0_deg)};
     const frc::Pose2d secondPoint{
-        // 16.5_ft,
-        5_ft,
+        -7.0_ft,
+        // 6_ft,
         0_ft,
         frc::Rotation2d(0_deg)};
     frc::TrajectoryConfig Config{
-        7_fps,
-        2_fps_sq,
+        6_fps,
+        3_fps_sq
     };
+    Config.SetReversed(true);
 
     std::vector<frc::Translation2d> interiorWayPts{
-        frc::Translation2d{2_ft, 0_ft},
-        frc::Translation2d{4_ft, 0_ft},
-        // frc::Translation2d{10_ft, 0_ft},
+        frc::Translation2d{-2_ft, 0_ft},
+        frc::Translation2d{-5_ft, 0_ft},
+        // frc::Translation2d{9.5_ft, 0_ft},
         // frc::Translation2d{14_ft, 0_ft}
         };
 

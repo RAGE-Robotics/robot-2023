@@ -35,7 +35,8 @@ public:
     static constexpr double kTopRaisePosition = 0.665;
     static constexpr double kScoreLowRaisePosition = 0.65;
     static constexpr double kScoreHighRaisePosition = 0.676;
-    static constexpr double kPickupRaisePosition = 0.5;
+    static constexpr double kPickupRaisePosition = 0.48;
+    static constexpr double kPickupRaiseCubePosition = .44;
 
     static constexpr double kGroundExtendPosition = 0.26;
     static constexpr double kTopExtendPosition = 0;

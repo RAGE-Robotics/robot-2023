@@ -106,6 +106,7 @@ void Arm::manualModeRaiser(double percentPower)
 void Arm::updateSystem(double timestamp, char mode)
 {
     std::shared_ptr<frc::Joystick> opl = Controllers::instance()->LeftOperator();
+    std::shared_ptr<frc::Joystick> opr = Controllers::instance()->RightOperator();
     bool x = opl->GetRawButton(3);
     bool z = opl->GetRawButton(2);
     double y = opl->GetY();
@@ -116,6 +117,8 @@ void Arm::updateSystem(double timestamp, char mode)
     bool scoreHigh = opl->GetRawButton(3);
     bool coneShelve = opl->GetRawButton(10);
     bool cubeShelve = opl->GetRawButton(11);
+
+    bool stow = opr->GetRawButton(12);
 
     manual = true;
 
@@ -130,11 +133,11 @@ void Arm::updateSystem(double timestamp, char mode)
             setExtendPosition(Constants::kGroundExtendPosition);
         }
         else if(coneShelve) {
-            setArmPosition(1, Constants::kRaiserP, .672);
+            setArmPosition(1, Constants::kRaiserP, .52);
             setExtendPosition(0);
         }
         else if(cubeShelve) {
-            setArmPosition(1, Constants::kRaiserP, .667);
+            setArmPosition(1, Constants::kRaiserP, .579);
             setExtendPosition(0);
         }
 
@@ -157,13 +160,18 @@ void Arm::updateSystem(double timestamp, char mode)
         }
         else if (Controllers::instance()->RightOperator()->GetTrigger())
         {
-            setArmPosition(1, Constants::kRaiserP, Constants::kPickupRaisePosition);
+            setArmPosition(1, 7, Constants::kPickupRaisePosition);
             setExtendPosition(Constants::kPickupExtendPosition);
         }
         else if (Controllers::instance()->LeftOperator()->GetTrigger())
         {
-            setArmPosition(1, Constants::kRaiserP, Constants::kPickupRaisePosition);
-            setExtendPosition(Constants::kPickupExtendPosition);
+            setArmPosition(1, 17, Constants::kPickupRaiseCubePosition);
+            setExtendPosition(.26);
+        }
+        else if (stow)
+        {
+            setArmPosition(1, 7, Constants::kPickupRaisePosition);
+            setExtendPosition(0);
         }
 
         if (y > 0.02 || y < -0.02)
