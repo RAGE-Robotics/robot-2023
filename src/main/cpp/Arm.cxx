@@ -118,28 +118,28 @@ void Arm::updateSystem(double timestamp, char mode)
     {
         if (groundRaisePos)
         {
-            setArmPosition(1, 5.5, 0.55);
-            setExtendPosition(.26);
+            setArmPosition(1, Constants::kRaiserP, Constants::kGroundRaisePosition); //old 0.55
+            setExtendPosition(Constants::kGroundExtendPosition);
         }
         else if (topRaisePos)
         {
-            setArmPosition(1, 5.5, 0.665);
-            setExtendPosition(0);
+            setArmPosition(1, Constants::kRaiserP, Constants::kTopRaisePosition);
+            setExtendPosition(Constants::kTopExtendPosition);
         }
         else if (scoreLow)
         {
-            setArmPosition(1, 5.5, .65);
-            setExtendPosition(.2);
+            setArmPosition(1, Constants::kRaiserP, Constants::kScoreLowRaisePosition);
+            setExtendPosition(Constants::kScoreLowExtendPosition);
         }
         else if (scoreHigh)
         {
-            setArmPosition(1, 5.5, 0.676);
-            setExtendPosition(.415);
+            setArmPosition(1, Constants::kRaiserP, Constants::kScoreHighRaisePosition);
+            setExtendPosition(Constants::kScoreHighExtendPosition);
         }
         else if (Controllers::instance()->RightOperator()->GetTrigger())
         {
-            setArmPosition(1, 5.5, 0.5);
-            setExtendPosition(0.26);
+            setArmPosition(1, Constants::kRaiserP, Constants::kPickupRaisePosition);
+            setExtendPosition(Constants::kPickupExtendPosition);
         }
     }
 

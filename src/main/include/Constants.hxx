@@ -27,6 +27,19 @@ public:
     static const int kDrivetrainEncoderUnitsPerRotation = 2048;
     static constexpr double kDrivetrainWheelRadius = 0.0762;
     static constexpr double kDrivetrainGearRatio = 0.125786163522013;
+    static constexpr double kRaiserP = 5.5;
+
+    static constexpr double kTopRaisePosition = 0.665;
+    static constexpr double kGroundRaisePosition = 0.53;
+    static constexpr double kScoreLowRaisePosition = 0.65;
+    static constexpr double kScoreHighRaisePosition = 0.676;
+    static constexpr double kPickupRaisePosition = 0.5;
+
+    static constexpr double kGroundExtendPosition = 0.26;
+    static constexpr double kTopExtendPosition = 0;
+    static constexpr double kScoreLowExtendPosition = 0.2;
+    static constexpr double kScoreHighExtendPosition = 0.415;
+    static constexpr double kPickupExtendPosition = 0.26;
 
     static const int kTurretEncoderUnitsPerRotation = 8192;
     static const int kTurretEncoderTicksPerRotation = 87040;
