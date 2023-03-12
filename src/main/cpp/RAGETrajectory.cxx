@@ -2,6 +2,7 @@
 #include <frc/trajectory/Trajectory.h>
 #include <frc/trajectory/TrajectoryConfig.h>
 #include <frc/trajectory/TrajectoryGenerator.h>
+#include <Claw.hxx>
 
 #include "Constants.hxx"
 
@@ -41,3 +42,16 @@ frc::Trajectory RAGETrajectory::GeneratePoints()
 
     return Trajectory;
 }
+
+// void RAGETrajectory::runAutonomous() {
+//     switch (autoStages) {
+//         case 0:
+//             claw->intakeRollersIn(1);
+//             autoStages++;
+//         case 1:
+//             claw->intakeRollersIn(0);
+//             // Claw::moveWrist(true)
+//             // GeneratePoints();
+//             autoStages++;
+//     }
+// }

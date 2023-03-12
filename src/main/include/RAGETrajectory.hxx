@@ -3,10 +3,13 @@
 #include <ctre/Phoenix.h>
 #include <memory>
 #include <frc/trajectory/Trajectory.h>
+#include <Claw.hxx>
 
 class RAGETrajectory
 {
 private:
+    int autoStages = 0;
+    std::shared_ptr<Claw> claw = Claw::instance();
 public:
     RAGETrajectory();
     static std::shared_ptr<RAGETrajectory> instance()
@@ -15,5 +18,8 @@ public:
         return trajectory;
     }
     frc::Trajectory GeneratePoints();
+
+    void runAutonomous();
+
     void SetConfig();
 };

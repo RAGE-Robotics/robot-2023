@@ -92,6 +92,7 @@ void Robot::AutonomousPeriodic()
         system->updateSystem(timestamp, 'a');
     // leds_controller = std::make_unique<LEDs>();
     // leds.displayRainbow();
+    // trajectoryGen::runAutonomous();
 }
 
 void Robot::TeleopInit()
