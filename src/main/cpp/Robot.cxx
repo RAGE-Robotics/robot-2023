@@ -41,11 +41,19 @@ void Robot::RobotInit()
     mVisionInitialized = mVision->sync(Constants::kVisionIp, frc::Timer::GetFPGATimestamp().value()) == -1 ? false : true;
     // mVision->run(Constants::kVisionDataPort, [](double timestamp, int id, double tx, double ty, double tz, double qw, double qx, double qy, double qz, double processingLatency) {});
     
+
     // Reset stuff
     turret->resetEncoder();
     stateEstimator->reset(frc::Pose2d{});
     diffTrain->resetEncoder();
     Arm::instance()->resetExtendEncoder();
+
+    // auto selector
+    m_chooser.SetDefaultOption(kDriveAuto, kDriveAuto);
+    m_chooser.AddOption(kBlueBalance, kBlueBalance);
+    m_chooser.AddOption(kRedBalance, kRedBalance);
+    frc::SmartDashboard::PutData("Auto Chooser", &m_chooser);
+
 
     // Systems
     mSystems.push_back(diffTrain);
@@ -82,12 +90,32 @@ void Robot::RobotPeriodic()
 
 void Robot::AutonomousInit()
 {
-    DifferentialDrivetrain::instance()->followPath(trajectoryGen->GeneratePoints());
+    m_autoSelected = m_chooser.GetSelected();
+    autoTimestamp = frc::Timer::GetFPGATimestamp().value();
 }
 
 void Robot::AutonomousPeriodic()
 {
     double timestamp = frc::Timer::GetFPGATimestamp().value();
+
+    static bool autoStarted = false;
+    if (!autoStarted && timestamp >= autoTimestamp + 1)
+    {
+        if(m_autoSelected == kDriveAuto) {
+            DifferentialDrivetrain::instance()->followPath(trajectoryGen->DriveStraight());
+        }
+        else if(m_autoSelected == kRedBalance)
+        {
+            DifferentialDrivetrain::instance()->followPath(trajectoryGen->RedBalance());
+        }
+        else
+        {
+            DifferentialDrivetrain::instance()->followPath(trajectoryGen->BlueBalance());
+        }
+        //DifferentialDrivetrain::instance()->followPath(trajectoryGen->BlueBalance());
+        autoStarted = true;
+    }
+
     for (std::shared_ptr<System> system : mSystems)
         system->updateSystem(timestamp, 'a');
     // leds_controller = std::make_unique<LEDs>();

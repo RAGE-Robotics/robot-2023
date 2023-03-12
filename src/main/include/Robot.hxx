@@ -15,6 +15,7 @@
 #include "AHRS.h"
 #include "RAGETrajectory.hxx"
 #include <frc/Compressor.h>
+#include <frc/smartdashboard/SendableChooser.h>
 
 #include "RAGETrajectory.hxx"
 
@@ -27,6 +28,13 @@ private:
 
     std::vector<std::shared_ptr<System>> mSystems;
     std::shared_ptr<RAGETrajectory> trajectoryGen;
+    frc::SendableChooser<std::string> m_chooser;
+    // const std::string kChargeStationAuto = "Charge Station";
+    const std::string kDriveAuto = "Drive Straight";
+    const std::string kBlueBalance = "BalanceBlue";
+    const std::string kRedBalance = "BalanceRed";
+    std::string m_autoSelected;
+
 
     // LEDs leds;
     Turret turret;
@@ -34,6 +42,8 @@ private:
     frc::Compressor compressor{frc::PneumaticsModuleType::REVPH};
     const units::pounds_per_square_inch_t kCompressorMinPressure{95};
     const units::pounds_per_square_inch_t kCompressorMaxPressure{117};
+
+    double autoTimestamp = 0;
 
 public:
     void RobotInit() override;

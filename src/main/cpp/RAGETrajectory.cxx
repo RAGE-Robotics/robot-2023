@@ -9,14 +9,14 @@ RAGETrajectory::RAGETrajectory()
 {
 }
 
-frc::Trajectory RAGETrajectory::GeneratePoints()
+frc::Trajectory RAGETrajectory::RedBalance()
 {
     const frc::Pose2d firstPoint{
         0_ft,
         0_ft,
         frc::Rotation2d(0_deg)};
     const frc::Pose2d secondPoint{
-        -7.0_ft,
+        -7.0_ft, // -10.0
         // 6_ft,
         0_ft,
         frc::Rotation2d(0_deg)};
@@ -41,3 +41,67 @@ frc::Trajectory RAGETrajectory::GeneratePoints()
 
     return Trajectory;
 }
+
+frc::Trajectory RAGETrajectory::BlueBalance() {
+    const frc::Pose2d firstPoint{
+        0_ft,
+        0_ft,
+        frc::Rotation2d(0_deg)};
+    const frc::Pose2d secondPoint{
+        -7.2_ft,
+        // 6_ft,
+        0_ft,
+        frc::Rotation2d(0_deg)};
+
+    frc::TrajectoryConfig Config{
+        7_fps,
+        3_fps_sq
+    };
+    Config.SetReversed(true);
+
+    std::vector<frc::Translation2d> interiorWayPts{
+        frc::Translation2d{-2_ft, 0_ft},
+        frc::Translation2d{-5_ft, 0_ft},
+        };
+
+    auto Trajectory = frc::TrajectoryGenerator::GenerateTrajectory(
+        firstPoint,
+        interiorWayPts,
+        secondPoint,
+        Config);
+
+    return Trajectory;
+}
+
+frc::Trajectory RAGETrajectory::DriveStraight() {
+    const frc::Pose2d firstPoint{
+        0_ft,
+        0_ft,
+        frc::Rotation2d(0_deg)};
+    const frc::Pose2d secondPoint{
+        -10_ft,
+        // 6_ft,
+        0_ft,
+        frc::Rotation2d(0_deg)};
+
+    frc::TrajectoryConfig Config{
+        6_fps,
+        3_fps_sq
+    };
+    Config.SetReversed(true);
+
+    std::vector<frc::Translation2d> interiorWayPts{
+        frc::Translation2d{-2_ft, 0_ft},
+        frc::Translation2d{-5_ft, 0_ft},
+        };
+
+    auto Trajectory = frc::TrajectoryGenerator::GenerateTrajectory(
+        firstPoint,
+        interiorWayPts,
+        secondPoint,
+        Config);
+
+    return Trajectory;
+}
+
+
