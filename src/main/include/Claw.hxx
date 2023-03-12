@@ -21,6 +21,7 @@ private:
     std::unique_ptr<frc::DoubleSolenoid> mWristSolenoid;
 
     bool extended;
+    int autoStages = 0;
 
 public:
     static std::shared_ptr<Claw> instance()
