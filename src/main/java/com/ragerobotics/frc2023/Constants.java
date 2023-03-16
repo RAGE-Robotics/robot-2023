@@ -54,4 +54,5 @@ public class Constants {
                                                                                                              // = wheel
                                                                                                              // rotations
     public static final double kDriveEncoderPPR = 1000.0;
+    public static final double kLooperDt = 0.01;
 }

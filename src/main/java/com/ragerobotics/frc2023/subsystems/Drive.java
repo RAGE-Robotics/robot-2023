@@ -24,11 +24,11 @@ import com.team254.lib.util.DriveSignal;
 import com.team254.lib.util.ReflectingCSVWriter;
 import com.team254.lib.util.Util;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+//import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+//import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+//import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.HashSet;
@@ -40,7 +40,7 @@ public class Drive extends Subsystem {
 
     // hardware
     private final TalonFX mLeftMaster1, mRightMaster1, mLeftMaster2, mRightMaster2;
-    private final DoubleSolenoid mShifter;
+    // private final DoubleSolenoid mShifter;
     private final DriveSide mLeftSide;
     private final DriveSide mRightSide;
 
@@ -146,8 +146,11 @@ public class Drive extends Subsystem {
         mRightMaster2 = TalonFXFactory.createDefaultTalon(new CanDeviceId(Constants.kRightDriveMaster2Id));
         configureTalon(mRightMaster2, false, true);
 
-        mShifter = new DoubleSolenoid(Constants.kPCMId, PneumaticsModuleType.REVPH, Constants.kShifterSolenoidId1,
-                Constants.kShifterSolenoidId2);
+        /*
+         * mShifter = new DoubleSolenoid(Constants.kPCMId, PneumaticsModuleType.REVPH,
+         * Constants.kShifterSolenoidId1,
+         * Constants.kShifterSolenoidId2);
+         */
 
         mLeftSide = new DriveSide(mLeftMaster1, mLeftMaster2);
         mRightSide = new DriveSide(mRightMaster1, mRightMaster2);
@@ -432,7 +435,7 @@ public class Drive extends Subsystem {
         if (wantsHighGear != mIsHighGear) {
             mIsHighGear = wantsHighGear;
             // Plumbed default high.
-            mShifter.set(wantsHighGear ? Value.kForward : Value.kReverse);
+            // mShifter.set(wantsHighGear ? Value.kForward : Value.kReverse);
             configureTalonPIDSlot();
         }
     }
