@@ -23,4 +23,35 @@ public class Constants {
     public static final double kPathLookaheadTime = 0.4; // seconds to look ahead along the path for steering
     public static final double kPathMinLookaheadDistance = 24.0; // inches
     public static final double kPathKX = 4.0; // units/s per unit of error
+    public static final int kCANTimeoutMs = 10; // use for important on the fly updates
+    public static final int kLongCANTimeoutMs = 100; // use for constructors
+    public static final double kDriveHighGearKp = 0.15;
+    public static final double kDriveHighGearKi = 0.0;
+    public static final double kDriveHighGearKd = 0.0;
+    public static final double kDriveHighGearKf = 0.0;
+    public static final double kDriveLowGearKp = 0.0;
+    public static final double kDriveLowGearKi = 0.0;
+    public static final double kDriveLowGearKd = 0.0;
+    public static final double kDriveLowGearKf = 0.0;
+    public static final double kDrivePositionKp = 0.006;
+    public static final double kDrivePositionKi = 0.0;
+    public static final double kDrivePositionKd = 0.0;
+    public static final double kDrivePositionKf = 0.0;
+    public static final int kLeftDriveMaster1Id = 14;
+    public static final int kLeftDriveMaster2Id = 13;
+    public static final int kRightDriveMaster1Id = 1;
+    public static final int kRightDriveMaster2Id = 5;
+    public static final int kPCMId = 0;
+    public static final int kShifterSolenoidId1 = 7;
+    public static final int kShifterSolenoidId2 = 5;
+    public static final double kDriveLowGearReduction = 40.0 / 11.0 * 44.0 / 20.0;
+    public static final double kDriveRotationsPerTickHighGear = 1.0 / 2048.0 * 1.0 / kDriveLowGearReduction; // ticks *
+                                                                                                             // kDriveRotationsPerTicksHighGear
+                                                                                                             // = wheel
+                                                                                                             // rotations
+    public static final double kDriveRotationsPerTickLowGear = 1.0 / 2048.0 * 1.0 / kDriveHighGearReduction; // ticks *
+                                                                                                             // kDriveRotationsPerTicksLowGear
+                                                                                                             // = wheel
+                                                                                                             // rotations
+    public static final double kDriveEncoderPPR = 1000.0;
 }
