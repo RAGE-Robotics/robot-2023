@@ -2,12 +2,12 @@ package com.team254.lib.trajectory;
 
 import com.team254.lib.geometry.State;
 
-public class TrajectoryIterator<S extends State<S>, T extends State<T>> {
-    protected final TrajectoryView<S, T> view_;
+public class TrajectoryIterator<S extends State<S>> {
+    protected final TrajectoryView<S> view_;
     protected double progress_ = 0.0;
-    protected TrajectorySamplePoint<S, T> current_sample_;
+    protected TrajectorySamplePoint<S> current_sample_;
 
-    public TrajectoryIterator(final TrajectoryView<S, T> view) {
+    public TrajectoryIterator(final TrajectoryView<S> view) {
         view_ = view;
 
         // No effect if view is empty.
@@ -27,7 +27,7 @@ public class TrajectoryIterator<S extends State<S>, T extends State<T>> {
         return Math.max(0.0, view_.last_interpolant() - progress_);
     }
 
-    public TrajectorySamplePoint<S, T> getSample() {
+    public TrajectorySamplePoint<S> getSample() {
         return current_sample_;
     }
 
@@ -35,24 +35,20 @@ public class TrajectoryIterator<S extends State<S>, T extends State<T>> {
         return getSample().state();
     }
 
-    public T getHeading() {
-        return getSample().heading();
-    }
-
-    public TrajectorySamplePoint<S, T> advance(double additional_progress) {
+    public TrajectorySamplePoint<S> advance(double additional_progress) {
         progress_ = Math.max(view_.first_interpolant(),
                 Math.min(view_.last_interpolant(), progress_ + additional_progress));
         current_sample_ = view_.sample(progress_);
         return current_sample_;
     }
 
-    public TrajectorySamplePoint<S, T> preview(double additional_progress) {
+    public TrajectorySamplePoint<S> preview(double additional_progress) {
         final double progress = Math.max(view_.first_interpolant(),
                 Math.min(view_.last_interpolant(), progress_ + additional_progress));
         return view_.sample(progress);
     }
 
-    public Trajectory<S, T> trajectory() {
+    public Trajectory<S> trajectory() {
         return view_.trajectory();
     }
 }

@@ -3,39 +3,34 @@ package com.team254.lib.trajectory;
 import com.team254.lib.geometry.State;
 import com.team254.lib.util.Util;
 
-public class DistanceView<S extends State<S>, T extends State<T>> implements TrajectoryView<S, T> {
-    protected final Trajectory<S, T> trajectory_;
+public class DistanceView<S extends State<S>> implements TrajectoryView<S> {
+    protected final Trajectory<S> trajectory_;
     protected final double[] distances_;
 
-    public DistanceView(final Trajectory<S, T> trajectory) {
+    public DistanceView(final Trajectory<S> trajectory) {
         trajectory_ = trajectory;
         distances_ = new double[trajectory_.length()];
         distances_[0] = 0.0;
         for (int i = 1; i < trajectory_.length(); ++i) {
-            distances_[i] = distances_[i - 1]
-                    + trajectory_.getPoint(i - 1).state().distance(trajectory_.getPoint(i).state());
+            distances_[i] = distances_[i - 1] + trajectory_.getState(i - 1).distance(trajectory_.getState(i));
         }
     }
 
     @Override
-    public TrajectorySamplePoint<S, T> sample(double distance) {
+    public TrajectorySamplePoint<S> sample(double distance) {
         if (distance >= last_interpolant())
-            return new TrajectorySamplePoint<>(trajectory_.getPoint(trajectory_.length() - 1));
+            return new TrajectorySamplePoint<S>(trajectory_.getPoint(trajectory_.length() - 1));
         if (distance <= 0.0)
-            return new TrajectorySamplePoint<>(trajectory_.getPoint(0));
+            return new TrajectorySamplePoint<S>(trajectory_.getPoint(0));
         for (int i = 1; i < distances_.length; ++i) {
-            final TrajectoryPoint<S, T> s = trajectory_.getPoint(i);
+            final TrajectoryPoint<S> s = trajectory_.getPoint(i);
             if (distances_[i] >= distance) {
-                final TrajectoryPoint<S, T> prev_s = trajectory_.getPoint(i - 1);
+                final TrajectoryPoint<S> prev_s = trajectory_.getPoint(i - 1);
                 if (Util.epsilonEquals(distances_[i], distances_[i - 1])) {
-                    return new TrajectorySamplePoint<>(s);
+                    return new TrajectorySamplePoint<S>(s);
                 } else {
-                    return new TrajectorySamplePoint<>(
-                            prev_s.state().interpolate(s.state(),
-                                    (distance - distances_[i - 1]) / (distances_[i] - distances_[i - 1])),
-                            prev_s.heading().interpolate(s.heading(),
-                                    (distance - distances_[i - 1]) / (distances_[i] - distances_[i - 1])),
-                            i - 1, i);
+                    return new TrajectorySamplePoint<S>(prev_s.state().interpolate(s.state(),
+                            (distance - distances_[i - 1]) / (distances_[i] - distances_[i - 1])), i - 1, i);
                 }
             }
         }
@@ -53,7 +48,7 @@ public class DistanceView<S extends State<S>, T extends State<T>> implements Tra
     }
 
     @Override
-    public Trajectory<S, T> trajectory() {
+    public Trajectory<S> trajectory() {
         return trajectory_;
     }
 }

@@ -6,42 +6,27 @@ import com.team254.lib.util.CSVWritable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Trajectory<S extends State<S>, T extends State<T>> implements CSVWritable {
-    protected final List<TrajectoryPoint<S, T>> points_;
+public class Trajectory<S extends State<S>> implements CSVWritable {
+    protected final List<TrajectoryPoint<S>> points_;
     protected final IndexView index_view_ = new IndexView();
-    protected double default_velocity_;
 
     /**
      * Create an empty trajectory.
      */
     public Trajectory() {
-        points_ = new ArrayList<>();
-    }
-
-    public void setDefaultVelocity(double velocity) {
-        default_velocity_ = velocity;
-    }
-
-    public double getDefaultVelocity() {
-        return default_velocity_;
+        points_ = new ArrayList<TrajectoryPoint<S>>();
     }
 
     /**
      * Create a trajectory from the given states and transforms.
      *
      * @param states The states of the trajectory.
+     * @throws InvalidTrajectoryException
      */
-    public Trajectory(final List<S> states, final List<T> headings) {
+    public Trajectory(final List<S> states) {
         points_ = new ArrayList<>(states.size());
         for (int i = 0; i < states.size(); ++i) {
-            points_.add(new TrajectoryPoint<>(states.get(i), headings.get(i), i));
-        }
-    }
-
-    public Trajectory(final List<TrajectoryPoint<S, T>> points) {
-        points_ = new ArrayList<>(points.size());
-        for (int i = 0; i < points.size(); i++) {
-            points_.add(new TrajectoryPoint<>(points.get(i).state(), points.get(i).heading(), i));
+            points_.add(new TrajectoryPoint<>(states.get(i), i));
         }
     }
 
@@ -53,15 +38,23 @@ public class Trajectory<S extends State<S>, T extends State<T>> implements CSVWr
         return points_.size();
     }
 
-    public TrajectoryPoint<S, T> getLastPoint() {
-        return points_.get(length() - 1);
-    }
-
-    public TrajectoryPoint<S, T> getPoint(final int index) {
+    public TrajectoryPoint<S> getPoint(final int index) {
         return points_.get(index);
     }
 
-    public TrajectorySamplePoint<S, T> getInterpolated(final double index) {
+    public S getState(final int index) {
+        return getPoint(index).state();
+    }
+
+    public S getFirstState() {
+        return getState(0);
+    }
+
+    public S getLastState() {
+        return getState(length() - 1);
+    }
+
+    public TrajectorySamplePoint<S> getInterpolated(final double index) {
         if (isEmpty()) {
             return null;
         } else if (index <= 0.0) {
@@ -76,8 +69,7 @@ public class Trajectory<S extends State<S>, T extends State<T>> implements CSVWr
         } else if (frac >= 1.0 - Double.MIN_VALUE) {
             return new TrajectorySamplePoint<>(getPoint(i + 1));
         } else {
-            return new TrajectorySamplePoint<>(getPoint(i).state().interpolate(getPoint(i + 1).state(), frac),
-                    getPoint(i).heading().interpolate(getPoint(i + 1).heading(), frac), i, i + 1);
+            return new TrajectorySamplePoint<>(getState(i).interpolate(getState(i + 1), frac), i, i + 1);
         }
     }
 
@@ -91,8 +83,7 @@ public class Trajectory<S extends State<S>, T extends State<T>> implements CSVWr
         for (int i = 0; i < length(); ++i) {
             builder.append(i);
             builder.append(": ");
-            builder.append(getPoint(i).state());
-            builder.append(getPoint(i).heading());
+            builder.append(getState(i));
             builder.append(System.lineSeparator());
         }
         return builder.toString();
@@ -104,16 +95,15 @@ public class Trajectory<S extends State<S>, T extends State<T>> implements CSVWr
         for (int i = 0; i < length(); ++i) {
             builder.append(i);
             builder.append(",");
-            builder.append(getPoint(i).state().toCSV());
-            builder.append(getPoint(i).heading().toCSV());
+            builder.append(getState(i).toCSV());
             builder.append(System.lineSeparator());
         }
         return builder.toString();
     }
 
-    public class IndexView implements TrajectoryView<S, T> {
+    public class IndexView implements TrajectoryView<S> {
         @Override
-        public TrajectorySamplePoint<S, T> sample(double index) {
+        public TrajectorySamplePoint<S> sample(double index) {
             return Trajectory.this.getInterpolated(index);
         }
 
@@ -128,7 +118,7 @@ public class Trajectory<S extends State<S>, T extends State<T>> implements CSVWr
         }
 
         @Override
-        public Trajectory<S, T> trajectory() {
+        public Trajectory<S> trajectory() {
             return Trajectory.this;
         }
     }

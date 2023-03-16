@@ -3,19 +3,19 @@ package com.team254.lib.trajectory;
 import com.team254.lib.geometry.*;
 import com.team254.lib.util.Util;
 
-public class PurePursuitController<S extends ITranslation2d<S>, T extends IRotation2d<T>> implements IPathFollower {
-    protected final TrajectoryIterator<S, T> iterator_;
+public class PurePursuitController<S extends ITranslation2d<S>> implements IPathFollower {
+    protected final TrajectoryIterator<S> iterator_;
     protected final double sampling_dist_;
     protected final double lookahead_;
     protected final double goal_tolerance_;
     protected boolean done_ = false;
 
-    public PurePursuitController(final DistanceView<S, T> path, double sampling_dist, double lookahead,
+    public PurePursuitController(final DistanceView<S> path, double sampling_dist, double lookahead,
             double goal_tolerance) {
         sampling_dist_ = sampling_dist;
         lookahead_ = lookahead;
         goal_tolerance_ = goal_tolerance;
-        iterator_ = new TrajectoryIterator<S, T>(path);
+        iterator_ = new TrajectoryIterator<S>(path);
     }
 
     public Twist2d steer(final Pose2d current_pose) {
@@ -47,15 +47,11 @@ public class PurePursuitController<S extends ITranslation2d<S>, T extends IRotat
             }
         }
         iterator_.advance(goal_progress);
-        // final Arc<S> arc = new Arc<S>(current_pose, iterator_.getState());
-        final Translation2d path_setpoint = current_pose.getTranslation().inverse()
-                .translateBy(iterator_.getState().getTranslation());
-        final Rotation2d heading_setpoint = current_pose.getRotation().inverse()
-                .rotateBy(iterator_.getHeading().getRotation());
-        if (path_setpoint.norm() < Util.kEpsilon) {
+        final Arc<S> arc = new Arc<S>(current_pose, iterator_.getState());
+        if (arc.length < Util.kEpsilon) {
             return new Twist2d(0.0, 0.0, 0.0);
         } else {
-            return new Twist2d(path_setpoint.x(), path_setpoint.y(), heading_setpoint.getRadians());
+            return new Twist2d(arc.length, 0.0, arc.length / arc.radius);
         }
     }
 
