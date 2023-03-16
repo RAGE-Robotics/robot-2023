@@ -76,11 +76,56 @@ public class Robot extends TimedRobot {
         }
     }
 
+    public void driveTank() {
+        double left = -mControllers.getLeftJoystick().getY();
+        double right = -mControllers.getRightJoystick().getY();
+
+        if (Math.abs(left) < Constants.kJoystickDeadband)
+            left = 0;
+        if (Math.abs(right) < Constants.kJoystickDeadband)
+            right = 0;
+
+        boolean leftNegative = left < 0;
+        boolean rightNegative = right < 0;
+
+        left *= left;
+        right *= right;
+
+        if (leftNegative)
+            left *= -1;
+        if (rightNegative)
+            right *= -1;
+
+        mDrive.setOpenLoop(new DriveSignal(left, right));
+    }
+
+    void driveArcade() {
+        double throttle = -mControllers.getDriverController().getLeftY();
+        double steer = mControllers.getDriverController().getRightX();
+
+        if (Math.abs(throttle) < Constants.kJoystickDeadband)
+            throttle = 0;
+        if (Math.abs(steer) < Constants.kJoystickDeadband)
+            steer = 0;
+
+        boolean throttleNegative = throttle < 0;
+        boolean steerNegative = steer < 0;
+
+        throttle *= throttle;
+        steer *= steer;
+
+        if (throttleNegative)
+            throttle *= -1;
+        if (steerNegative)
+            steer *= -1;
+
+        mDrive.setOpenLoop(new DriveSignal(throttle + steer, throttle - steer));
+    }
+
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        mDrive.setOpenLoop(
-                new DriveSignal(-mControllers.getLeftJoystick().getY(), -mControllers.getRightJoystick().getY()));
+        driveArcade();
     }
 
     /** This function is called once when the robot is disabled. */

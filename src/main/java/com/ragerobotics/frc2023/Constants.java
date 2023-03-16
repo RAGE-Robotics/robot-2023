@@ -55,4 +55,5 @@ public class Constants {
                                                                                                              // rotations
     public static final double kDriveEncoderPPR = 1000.0;
     public static final double kLooperDt = 0.01;
+    public static final double kJoystickDeadband = 0.05;
 }

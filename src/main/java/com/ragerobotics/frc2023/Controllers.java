@@ -1,6 +1,7 @@
 package com.ragerobotics.frc2023;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 
 public class Controllers {
     private static Controllers mInstance = null;
@@ -12,11 +13,13 @@ public class Controllers {
     }
 
     private Joystick mLeftJoystick;
-    private Joystick mRighJoystick;
+    private Joystick mRightJoystick;
+    private XboxController mDriverController;
 
     private Controllers() {
         mLeftJoystick = new Joystick(0);
-        mRighJoystick = new Joystick(1);
+        mRightJoystick = new Joystick(1);
+        mDriverController = new XboxController(4);
     }
 
     public Joystick getLeftJoystick() {
@@ -24,6 +27,10 @@ public class Controllers {
     }
 
     public Joystick getRightJoystick() {
-        return mRighJoystick;
+        return mRightJoystick;
+    }
+
+    public XboxController getDriverController() {
+        return mDriverController;
     }
 }
