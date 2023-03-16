@@ -75,6 +75,10 @@ public class Drive extends Subsystem {
         talon.configForwardSoftLimitEnable(false);
         talon.configReverseSoftLimitEnable(false);
 
+        talon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+
+        talon.configOpenloopRamp(0.4, Constants.kLongCANTimeoutMs);
+
         // pid
         TalonUtil.checkError(talon.config_kP(kHighGearPIDSlot, Constants.kDriveHighGearKp, Constants.kLongCANTimeoutMs),
                 "Could not set high gear kp");
@@ -214,7 +218,7 @@ public class Drive extends Subsystem {
         mPeriodicIO.left_position_ticks = (int) mLeftMaster1.getSelectedSensorPosition();
         mPeriodicIO.right_position_ticks = (int) mRightMaster1.getSelectedSensorPosition();
 
-        mPeriodicIO.gyro_heading = Rotation2d.fromDegrees(mNavX.getAngle()).rotateBy(mGyroOffset);
+        mPeriodicIO.gyro_heading = Rotation2d.fromDegrees(-mNavX.getAngle()).rotateBy(mGyroOffset);
 
         mPeriodicIO.left_distance = rotationsToInches(mPeriodicIO.left_position_ticks * getRotationsPerTickDistance());
         mPeriodicIO.right_distance = rotationsToInches(
@@ -461,7 +465,7 @@ public class Drive extends Subsystem {
     public synchronized void setHeading(Rotation2d heading) {
         System.out.println("set heading: " + heading.getDegrees());
 
-        mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(mNavX.getAngle()).inverse());
+        mGyroOffset = heading.rotateBy(Rotation2d.fromDegrees(-mNavX.getAngle()).inverse());
         System.out.println("gyro offset: " + mGyroOffset.getDegrees());
 
         mPeriodicIO.gyro_heading = heading;

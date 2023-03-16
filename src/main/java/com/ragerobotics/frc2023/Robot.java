@@ -4,6 +4,7 @@ import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
 import com.team254.lib.loops.Looper;
 import com.team254.lib.util.CrashTracker;
+import com.team254.lib.util.DriveSignal;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -15,6 +16,8 @@ public class Robot extends TimedRobot {
     private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
     private final RobotStateEstimator mRobotStateEstimator = RobotStateEstimator.getInstance();
     private final Drive mDrive = Drive.getInstance();
+
+    private final Controllers mControllers = Controllers.getInstance();
 
     @Override
     public void robotInit() {
@@ -76,6 +79,8 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
+        mDrive.setOpenLoop(
+                new DriveSignal(-mControllers.getLeftJoystick().getY(), -mControllers.getRightJoystick().getY()));
     }
 
     /** This function is called once when the robot is disabled. */
