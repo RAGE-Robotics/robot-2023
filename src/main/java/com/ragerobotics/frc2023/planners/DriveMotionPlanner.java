@@ -33,7 +33,7 @@ public class DriveMotionPlanner implements CSVWritable {
         RAMSETE
     }
 
-    FollowerType mFollowerType = FollowerType.RAMSETE;
+    FollowerType mFollowerType = FollowerType.PURE_PURSUIT;
 
     public void setFollowerType(FollowerType type) {
         mFollowerType = type;

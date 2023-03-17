@@ -1,6 +1,6 @@
 package com.ragerobotics.frc2023;
 
-
+import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
 import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
 import com.team254.lib.loops.Looper;
@@ -12,11 +12,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
+    private final TrajectoryGenerator mTrajectoryGenerator = TrajectoryGenerator.getInstance();
     private final Looper mEnabledLooper = new Looper(Constants.kLooperDt);
     private final Looper mDisabledLooper = new Looper(Constants.kLooperDt);
     private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
     private final RobotStateEstimator mRobotStateEstimator = RobotStateEstimator.getInstance();
-    
+
     // subsystems
     public static Drive mDrive = Drive.getInstance();
 
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
+        mTrajectoryGenerator.generateTrajectories();
         mDrive.zeroSensors();
 
         mSubsystemManager.setSubsystems(mRobotStateEstimator, mDrive);
