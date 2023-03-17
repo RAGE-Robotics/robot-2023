@@ -14,7 +14,7 @@ public class Constants {
     public static final double kDriveAngularKa = 0.00517 / 2.0 * Constants.kDriveWheelDiameterInches * kGearRatioScalar; // V
                                                                                                                          // per
                                                                                                                          // rad/s^2
-    public static final double kDriveWheelTrackWidthInches = 30.0; // tuned 3/2
+    public static final double kDriveWheelTrackWidthInches = 21.0; // tuned 3/2
     public static final double kDriveWheelTrackRadiusWidthMeters = kDriveWheelTrackWidthInches / 2.0 * 0.0254;
     public static final double kRobotAngularInertia = kDriveAngularKa / kDriveLinearKa *
             kDriveWheelTrackRadiusWidthMeters * kDriveWheelTrackRadiusWidthMeters * kRobotLinearInertia; // kg m^2
@@ -56,4 +56,5 @@ public class Constants {
     public static final double kDriveEncoderPPR = 1000.0;
     public static final double kLooperDt = 0.01;
     public static final double kJoystickDeadband = 0.05;
+    public static final double kArcadeDriveDeadband = 0.2;
 }

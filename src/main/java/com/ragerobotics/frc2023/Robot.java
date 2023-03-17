@@ -23,6 +23,8 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         CrashTracker.logRobotInit();
         try {
+            mDrive.zeroSensors();
+
             mSubsystemManager.setSubsystems(mRobotStateEstimator, mDrive);
             mSubsystemManager.registerEnabledLoops(mEnabledLooper);
             mSubsystemManager.registerDisabledLoops(mDisabledLooper);
@@ -103,9 +105,9 @@ public class Robot extends TimedRobot {
         double throttle = -mControllers.getDriverController().getLeftY();
         double steer = mControllers.getDriverController().getRightX();
 
-        if (Math.abs(throttle) < Constants.kJoystickDeadband)
+        if (Math.abs(throttle) < Constants.kArcadeDriveDeadband)
             throttle = 0;
-        if (Math.abs(steer) < Constants.kJoystickDeadband)
+        if (Math.abs(steer) < Constants.kArcadeDriveDeadband)
             steer = 0;
 
         boolean throttleNegative = throttle < 0;
