@@ -1,62 +1,48 @@
 package com.ragerobotics.frc2023;
 
+
 import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
 import com.team254.lib.loops.Looper;
-import com.team254.lib.util.CrashTracker;
 import com.team254.lib.util.DriveSignal;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
     private final Looper mEnabledLooper = new Looper(Constants.kLooperDt);
     private final Looper mDisabledLooper = new Looper(Constants.kLooperDt);
     private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
     private final RobotStateEstimator mRobotStateEstimator = RobotStateEstimator.getInstance();
-    private final Drive mDrive = Drive.getInstance();
+    
+    // subsystems
+    public static Drive mDrive = Drive.getInstance();
 
     private final Controllers mControllers = Controllers.getInstance();
 
     @Override
     public void robotInit() {
-        CrashTracker.logRobotInit();
-        try {
-            mDrive.zeroSensors();
+        mDrive.zeroSensors();
 
-            mSubsystemManager.setSubsystems(mRobotStateEstimator, mDrive);
-            mSubsystemManager.registerEnabledLoops(mEnabledLooper);
-            mSubsystemManager.registerDisabledLoops(mDisabledLooper);
-            mSubsystemManager.stop();
-        } catch (Throwable t) {
-            CrashTracker.logThrowableCrash(t);
-            throw t;
-        }
+        mSubsystemManager.setSubsystems(mRobotStateEstimator, mDrive);
+        mSubsystemManager.registerEnabledLoops(mEnabledLooper);
+        mSubsystemManager.registerDisabledLoops(mDisabledLooper);
+        mSubsystemManager.stop();
     }
 
     @Override
     public void robotPeriodic() {
-        try {
-            mSubsystemManager.outputToSmartDashboard();
-            SmartDashboard.putNumber("Timestamp", Timer.getFPGATimestamp());
-        } catch (Throwable t) {
-            CrashTracker.logThrowableCrash(t);
-            throw t;
-        }
+        mSubsystemManager.outputToSmartDashboard();
+
+        CommandScheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit() {
-        CrashTracker.logAutoInit();
-        try {
-            mDisabledLooper.stop();
-            mSubsystemManager.stop();
-            mEnabledLooper.start();
-        } catch (Throwable t) {
-            CrashTracker.logThrowableCrash(t);
-            throw t;
-        }
+        mDisabledLooper.stop();
+        mSubsystemManager.stop();
+        mEnabledLooper.start();
     }
 
     /** This function is called periodically during autonomous. */
@@ -67,15 +53,9 @@ public class Robot extends TimedRobot {
     /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
-        CrashTracker.logTeleopInit();
-        try {
-            mDisabledLooper.stop();
-            mSubsystemManager.stop();
-            mEnabledLooper.start();
-        } catch (Throwable t) {
-            CrashTracker.logThrowableCrash(t);
-            throw t;
-        }
+        mDisabledLooper.stop();
+        mSubsystemManager.stop();
+        mEnabledLooper.start();
     }
 
     public void driveTank() {
@@ -133,14 +113,8 @@ public class Robot extends TimedRobot {
     /** This function is called once when the robot is disabled. */
     @Override
     public void disabledInit() {
-        CrashTracker.logDisabledInit();
-        try {
-            mEnabledLooper.stop();
-            mDisabledLooper.start();
-        } catch (Throwable t) {
-            CrashTracker.logThrowableCrash(t);
-            throw t;
-        }
+        mEnabledLooper.stop();
+        mDisabledLooper.start();
     }
 
     /** This function is called periodically when disabled. */
@@ -151,6 +125,7 @@ public class Robot extends TimedRobot {
     /** This function is called once when test mode is enabled. */
     @Override
     public void testInit() {
+        CommandScheduler.getInstance().cancelAll();
     }
 
     /** This function is called periodically during test mode. */

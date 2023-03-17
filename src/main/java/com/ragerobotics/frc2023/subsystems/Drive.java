@@ -1,34 +1,25 @@
 package com.ragerobotics.frc2023.subsystems;
 
-import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.*;
 import com.kauailabs.navx.frc.AHRS;
 import com.ragerobotics.frc2023.Constants;
 import com.ragerobotics.frc2023.RobotState;
 import com.team254.lib.loops.ILooper;
 import com.team254.lib.loops.Loop;
 import com.ragerobotics.frc2023.planners.DriveMotionPlanner;
-import com.team254.lib.drivers.CanDeviceId;
-//import com.team254.lib.drivers.MotorChecker;
-import com.team254.lib.drivers.Subsystem;
-//import com.team254.lib.drivers.TalonFXChecker;
-import com.team254.lib.drivers.TalonFXFactory;
-import com.team254.lib.drivers.TalonUtil;
-import com.team254.lib.geometry.Pose2d;
-import com.team254.lib.geometry.Pose2dWithCurvature;
-import com.team254.lib.geometry.Rotation2d;
+import com.team254.lib.drivers.*;
+import com.team254.lib.geometry.*;
 import com.team254.lib.trajectory.TrajectoryIterator;
 import com.team254.lib.trajectory.timing.TimedState;
-import com.team254.lib.util.DriveOutput;
-import com.team254.lib.util.DriveSignal;
-import com.team254.lib.util.ReflectingCSVWriter;
-import com.team254.lib.util.Util;
+import com.team254.lib.util.*;
 
-//import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
-//import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Timer;
-//import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.HashSet;
@@ -58,7 +49,6 @@ public class Drive extends Subsystem {
 
     private int kHighGearPIDSlot = 0;
     private int kLowGearPIDSlot = 1;
-    private int kPositionPID = 2;
 
     public synchronized static Drive getInstance() {
         if (mInstance == null) {
@@ -78,60 +68,6 @@ public class Drive extends Subsystem {
         talon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
         talon.configOpenloopRamp(0.4, Constants.kLongCANTimeoutMs);
-
-        // pid
-        TalonUtil.checkError(talon.config_kP(kHighGearPIDSlot, Constants.kDriveHighGearKp, Constants.kLongCANTimeoutMs),
-                "Could not set high gear kp");
-        TalonUtil.checkError(talon.config_kI(kHighGearPIDSlot, Constants.kDriveHighGearKi, Constants.kLongCANTimeoutMs),
-                "Could not set high gear ki");
-        TalonUtil.checkError(talon.config_kD(kHighGearPIDSlot, Constants.kDriveHighGearKd, Constants.kLongCANTimeoutMs),
-                "Could not set high gear kd");
-        TalonUtil.checkError(talon.config_kF(kHighGearPIDSlot, Constants.kDriveHighGearKf, Constants.kLongCANTimeoutMs),
-                "Could not set high gear kf");
-
-        TalonUtil.checkError(talon.config_kP(kLowGearPIDSlot, Constants.kDriveLowGearKp, Constants.kLongCANTimeoutMs),
-                "Could not set low gear kp");
-        TalonUtil.checkError(talon.config_kI(kLowGearPIDSlot, Constants.kDriveLowGearKi, Constants.kLongCANTimeoutMs),
-                "Could not set low gear ki");
-        TalonUtil.checkError(talon.config_kD(kLowGearPIDSlot, Constants.kDriveLowGearKd, Constants.kLongCANTimeoutMs),
-                "Could not set low gear kd");
-        TalonUtil.checkError(talon.config_kF(kLowGearPIDSlot, Constants.kDriveLowGearKf, Constants.kLongCANTimeoutMs),
-                "Could not set low gear kf");
-
-        TalonUtil.checkError(talon.config_kP(kPositionPID, Constants.kDrivePositionKp, Constants.kLongCANTimeoutMs),
-                "Could not set low gear kp");
-        TalonUtil.checkError(talon.config_kI(kPositionPID, Constants.kDrivePositionKi, Constants.kLongCANTimeoutMs),
-                "Could not set low gear ki");
-        TalonUtil.checkError(talon.config_kD(kPositionPID, Constants.kDrivePositionKd, Constants.kLongCANTimeoutMs),
-                "Could not set low gear kd");
-        TalonUtil.checkError(talon.config_kF(kPositionPID, Constants.kDrivePositionKf, Constants.kLongCANTimeoutMs),
-                "Could not set low gear kf");
-
-        TalonUtil.checkError(talon.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 60, 60, 0.2),
-                Constants.kLongCANTimeoutMs), "Could not set stator drive current limits");
-
-        TalonUtil.checkError(
-                talon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms, Constants.kLongCANTimeoutMs),
-                "could not config drive velocity measurement period");
-        TalonUtil.checkError(talon.configVelocityMeasurementWindow(1, Constants.kLongCANTimeoutMs),
-                "could not config drive velocity measurement window");
-
-        // voltage comp
-        TalonUtil.checkError(talon.configVoltageCompSaturation(12.0, Constants.kLongCANTimeoutMs),
-                "could not config drive voltage comp saturation");
-        talon.enableVoltageCompensation(true);
-
-        if (main_encoder_talon) {
-            // status frames (maybe set for characterization?)
-            TalonUtil.checkError(
-                    talon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, Constants.kLongCANTimeoutMs),
-                    "could not set drive feedback frame");
-            // TalonUtil.checkError(talon.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat,
-            // 10, Constants.kLongCANTimeoutMs), "could not set drive voltage frame");
-
-            // velocity measurement
-
-        }
     }
 
     private Drive() {
@@ -262,7 +198,6 @@ public class Drive extends Subsystem {
                 synchronized (Drive.this) {
                     stop();
                     setBrakeMode(true);
-                    startLogging();
                 }
             }
 
@@ -287,7 +222,6 @@ public class Drive extends Subsystem {
             @Override
             public void onStop(double timestamp) {
                 stop();
-                stopLogging();
             }
         });
     }
@@ -541,19 +475,6 @@ public class Drive extends Subsystem {
         return 1.0 / Constants.kDriveEncoderPPR;
     }
 
-    public synchronized void startLogging() {
-        if (mCSVWriter == null) {
-            mCSVWriter = new ReflectingCSVWriter<>("/home/lvuser/DRIVE-LOGS.csv", PeriodicIO.class);
-        }
-    }
-
-    public synchronized void stopLogging() {
-        if (mCSVWriter != null) {
-            mCSVWriter.flush();
-            mCSVWriter = null;
-        }
-    }
-
     public enum DriveControlState {
         OPEN_LOOP, // open loop voltage control,
         VELOCITY, // velocity control
@@ -584,44 +505,6 @@ public class Drive extends Subsystem {
         writePeriodicOutputs();
 
         setBrakeMode(false);
-
-        /*
-         * boolean leftSide = TalonFXChecker.checkMotors(this,
-         * new ArrayList<>() {
-         * {
-         * add(new MotorChecker.MotorConfig<>("left_master", mLeftMaster1));
-         * add(new MotorChecker.MotorConfig<>("left_master_2", mLeftMaster2));
-         * add(new MotorChecker.MotorConfig<>("left_master_3", mLeftMaster3));
-         * }
-         * }, new MotorChecker.CheckerConfig() {
-         * {
-         * mCurrentFloor = 5;
-         * mRPMFloor = 90;
-         * mCurrentEpsilon = 2.0;
-         * mRPMEpsilon = 200;
-         * mRPMSupplier = mLeftEncoder::getRate;
-         * }
-         * });
-         * boolean rightSide = TalonFXChecker.checkMotors(this,
-         * new ArrayList<>() {
-         * {
-         * add(new MotorChecker.MotorConfig<>("right_master", mRightMaster1));
-         * add(new MotorChecker.MotorConfig<>("right_master_2", mRightMaster2));
-         * add(new MotorChecker.MotorConfig<>("right_master_3", mRightMaster3));
-         * 
-         * }
-         * }, new MotorChecker.CheckerConfig() {
-         * {
-         * mCurrentFloor = 5;
-         * mRPMFloor = 90;
-         * mCurrentEpsilon = 2.0;
-         * mRPMEpsilon = 200;
-         * mRPMSupplier = mRightEncoder::getRate;
-         * }
-         * });
-         * 
-         * return leftSide && rightSide;
-         */
 
         return true;
     }
