@@ -5,7 +5,7 @@ public class Constants {
     public static final double kDriveWheelRadiusInches = kDriveWheelDiameterInches / 2.0;
     public static final double kDriveLinearKv = 0.0438 / 2.0 * Constants.kDriveWheelDiameterInches; // V / rad/s
     public static final double kRobotLinearInertia = 62.051; // kg TODO
-    public static final double kDriveHighGearReduction = 40.0 / 11.0 * 50.0 / 14.0;
+    public static final double kDriveHighGearReduction = 16.364;
     public static final double kGearRatioScalar = (1.0 / (40.0 / 10.0 * 50.0 / 14.0)) / (1.0 / kDriveHighGearReduction);
     public static final double kDriveLinearKa = 0.00597 / 2.0 * Constants.kDriveWheelDiameterInches * kGearRatioScalar; // V
                                                                                                                         // /
@@ -25,7 +25,7 @@ public class Constants {
     public static final double kPathKX = 4.0; // units/s per unit of error
     public static final int kCANTimeoutMs = 10; // use for important on the fly updates
     public static final int kLongCANTimeoutMs = 100; // use for constructors
-    public static final double kDriveHighGearKp = 0.15;
+    public static final double kDriveHighGearKp = 0.23;
     public static final double kDriveHighGearKi = 0.0;
     public static final double kDriveHighGearKd = 0.0;
     public static final double kDriveHighGearKf = 0.0;
@@ -44,7 +44,7 @@ public class Constants {
     public static final int kPCMId = 0;
     public static final int kShifterSolenoidId1 = 7;
     public static final int kShifterSolenoidId2 = 5;
-    public static final double kDriveLowGearReduction = 40.0 / 11.0 * 44.0 / 20.0;
+    public static final double kDriveLowGearReduction = 16.364;
     public static final double kDriveRotationsPerTickHighGear = 1.0 / 2048.0 * 1.0 / kDriveLowGearReduction; // ticks *
                                                                                                              // kDriveRotationsPerTicksHighGear
                                                                                                              // = wheel
@@ -53,7 +53,7 @@ public class Constants {
                                                                                                              // kDriveRotationsPerTicksLowGear
                                                                                                              // = wheel
                                                                                                              // rotations
-    public static final double kDriveEncoderPPR = 1000.0;
+    public static final double kDriveEncoderPPR = 2048.0;
     public static final double kLooperDt = 0.01;
     public static final double kJoystickDeadband = 0.05;
     public static final double kArcadeDriveDeadband = 0.2;

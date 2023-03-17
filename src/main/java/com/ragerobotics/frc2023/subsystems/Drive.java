@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.*;
 import com.kauailabs.navx.frc.AHRS;
 import com.ragerobotics.frc2023.Constants;
 import com.ragerobotics.frc2023.RobotState;
@@ -58,7 +57,6 @@ public class Drive extends Subsystem {
         return mInstance;
     }
 
-    @SuppressWarnings("deprecation")
     private void configureTalon(TalonFX talon, boolean left, boolean main_encoder_talon) {
         // general
         talon.setInverted(!left);
@@ -472,7 +470,7 @@ public class Drive extends Subsystem {
     }
 
     public double getRotationsPerTickDistance() { // us digital encoders
-        return 1.0 / Constants.kDriveEncoderPPR;
+        return 1.0 / Constants.kDriveEncoderPPR / (isHighGear() ? Constants.kDriveHighGearReduction : Constants.kDriveLowGearReduction);
     }
 
     public enum DriveControlState {
