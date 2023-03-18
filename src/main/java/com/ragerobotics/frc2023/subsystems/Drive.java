@@ -5,6 +5,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+import com.ctre.phoenix.motorcontrol.VelocityMeasPeriod;
 import com.kauailabs.navx.frc.AHRS;
 import com.ragerobotics.frc2023.Constants;
 import com.ragerobotics.frc2023.RobotState;
@@ -48,6 +51,7 @@ public class Drive extends Subsystem {
 
     private int kHighGearPIDSlot = 0;
     private int kLowGearPIDSlot = 1;
+    private int kPositionPID = 2;
 
     public synchronized static Drive getInstance() {
         if (mInstance == null) {
@@ -57,6 +61,7 @@ public class Drive extends Subsystem {
         return mInstance;
     }
 
+    @SuppressWarnings("deprecation")
     private void configureTalon(TalonFX talon, boolean left, boolean main_encoder_talon) {
         // general
         talon.setInverted(!left);
@@ -65,7 +70,59 @@ public class Drive extends Subsystem {
 
         talon.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
-        talon.configOpenloopRamp(0.4, Constants.kLongCANTimeoutMs);
+        talon.configOpenloopRamp(Constants.kDriveRampRate, Constants.kLongCANTimeoutMs);
+
+        TalonUtil.checkError(talon.config_kP(kHighGearPIDSlot, Constants.kDriveHighGearKp, Constants.kLongCANTimeoutMs),
+                "Could not set high gear kp");
+        TalonUtil.checkError(talon.config_kI(kHighGearPIDSlot, Constants.kDriveHighGearKi, Constants.kLongCANTimeoutMs),
+                "Could not set high gear ki");
+        TalonUtil.checkError(talon.config_kD(kHighGearPIDSlot, Constants.kDriveHighGearKd, Constants.kLongCANTimeoutMs),
+                "Could not set high gear kd");
+        TalonUtil.checkError(talon.config_kF(kHighGearPIDSlot, Constants.kDriveHighGearKf, Constants.kLongCANTimeoutMs),
+                "Could not set high gear kf");
+
+        TalonUtil.checkError(talon.config_kP(kLowGearPIDSlot, Constants.kDriveLowGearKp, Constants.kLongCANTimeoutMs),
+                "Could not set low gear kp");
+        TalonUtil.checkError(talon.config_kI(kLowGearPIDSlot, Constants.kDriveLowGearKi, Constants.kLongCANTimeoutMs),
+                "Could not set low gear ki");
+        TalonUtil.checkError(talon.config_kD(kLowGearPIDSlot, Constants.kDriveLowGearKd, Constants.kLongCANTimeoutMs),
+                "Could not set low gear kd");
+        TalonUtil.checkError(talon.config_kF(kLowGearPIDSlot, Constants.kDriveLowGearKf, Constants.kLongCANTimeoutMs),
+                "Could not set low gear kf");
+
+        TalonUtil.checkError(talon.config_kP(kPositionPID, Constants.kDrivePositionKp, Constants.kLongCANTimeoutMs),
+                "Could not set low gear kp");
+        TalonUtil.checkError(talon.config_kI(kPositionPID, Constants.kDrivePositionKi, Constants.kLongCANTimeoutMs),
+                "Could not set low gear ki");
+        TalonUtil.checkError(talon.config_kD(kPositionPID, Constants.kDrivePositionKd, Constants.kLongCANTimeoutMs),
+                "Could not set low gear kd");
+        TalonUtil.checkError(talon.config_kF(kPositionPID, Constants.kDrivePositionKf, Constants.kLongCANTimeoutMs),
+                "Could not set low gear kf");
+
+        TalonUtil.checkError(talon.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 60, 60, 0.2),
+                Constants.kLongCANTimeoutMs), "Could not set stator drive current limits");
+
+        TalonUtil.checkError(
+                talon.configVelocityMeasurementPeriod(VelocityMeasPeriod.Period_50Ms, Constants.kLongCANTimeoutMs),
+                "could not config drive velocity measurement period");
+        TalonUtil.checkError(talon.configVelocityMeasurementWindow(1, Constants.kLongCANTimeoutMs),
+                "could not config drive velocity measurement window");
+
+        // voltage comp
+        TalonUtil.checkError(talon.configVoltageCompSaturation(12.0, Constants.kLongCANTimeoutMs),
+                "could not config drive voltage comp saturation");
+        talon.enableVoltageCompensation(true);
+
+        if (main_encoder_talon) {
+            // status frames (maybe set for characterization?)
+            TalonUtil.checkError(
+                    talon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 10, Constants.kLongCANTimeoutMs),
+                    "could not set drive feedback frame");
+            // TalonUtil.checkError(talon.setStatusFramePeriod(StatusFrame.Status_4_AinTempVbat,
+            // 10, Constants.kLongCANTimeoutMs), "could not set drive voltage frame");
+
+            // velocity measurement
+        }
     }
 
     private Drive() {

@@ -26,7 +26,7 @@ public class Constants {
     public static final double kPathKX = 4.0; // units/s per unit of error
     public static final int kCANTimeoutMs = 10; // use for important on the fly updates
     public static final int kLongCANTimeoutMs = 100; // use for constructors
-    public static final double kDriveHighGearKp = 0.23;
+    public static final double kDriveHighGearKp = 0.04;
     public static final double kDriveHighGearKi = 0.0;
     public static final double kDriveHighGearKd = 0.0;
     public static final double kDriveHighGearKf = 0.0;
@@ -57,4 +57,7 @@ public class Constants {
     public static final double kLooperDt = 0.01;
     public static final double kJoystickDeadband = 0.05;
     public static final double kArcadeDriveDeadband = 0.2;
+    public static final double kDriveRampRate = 0.4;
+    public static final double kCompressorMinPressure = 75;
+    public static final double kCompressorMaxPressure = 115;
 }

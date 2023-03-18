@@ -8,9 +8,10 @@ import com.team254.lib.loops.Looper;
 import com.team254.lib.trajectory.TimedView;
 import com.team254.lib.trajectory.TrajectoryIterator;
 import com.team254.lib.trajectory.timing.TimedState;
-import com.team254.lib.util.DriveOutput;
 import com.team254.lib.util.DriveSignal;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,6 +40,10 @@ public class Robot extends TimedRobot {
         mSubsystemManager.registerEnabledLoops(mEnabledLooper);
         mSubsystemManager.registerDisabledLoops(mDisabledLooper);
         mSubsystemManager.stop();
+
+        Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
+        compressor.enableAnalog(Constants.kCompressorMinPressure, Constants.kCompressorMaxPressure);
+        compressor.close();
     }
 
     @Override
@@ -98,7 +103,7 @@ public class Robot extends TimedRobot {
 
     void driveArcade() {
         double throttle = -mControllers.getDriverController().getLeftY();
-        double steer = mControllers.getDriverController().getRightX();
+        double steer = 0.75 * mControllers.getDriverController().getRightX();
 
         if (Math.abs(throttle) < Constants.kArcadeDriveDeadband)
             throttle = 0;
