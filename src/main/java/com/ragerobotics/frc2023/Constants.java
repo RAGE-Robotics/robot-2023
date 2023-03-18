@@ -61,7 +61,7 @@ public class Constants {
     public static final double kCompressorMinPressure = 75;
     public static final double kCompressorMaxPressure = 115;
 
-    public static final double kArmKp = 0.1;
+    public static final double kArmKp = 0.75;
     public static final double kArmKi = 0;
     public static final double kArmKd = 0;
     public static final double kArmKf = 0;

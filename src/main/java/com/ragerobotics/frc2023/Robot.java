@@ -166,6 +166,8 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         driveArcade();
 
+        mArmMotor.set(ControlMode.Position, Constants.armDoubleStationPosition);
+
         mIntakeLeftMotor.set(ControlMode.PercentOutput, 1);
     }
 
