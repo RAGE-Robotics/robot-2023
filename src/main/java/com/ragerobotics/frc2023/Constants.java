@@ -6,7 +6,8 @@ public class Constants {
     public static final double kDriveLinearKv = 0.0438 / 2.0 * Constants.kDriveWheelDiameterInches; // V / rad/s
     public static final double kRobotLinearInertia = 62.051; // kg TODO
     public static final double kDriveHighGearReduction = 16.364;
-    public static final double kGearRatioScalar = (1.0 / (40.0 / 10.0 * 50.0 / 14.0)) / (1.0 / kDriveHighGearReduction);
+    public static final double kDriveLowGearReduction = 16.364;
+    public static final double kGearRatioScalar = (1.0 / kDriveLowGearReduction) / (1.0 / kDriveHighGearReduction);
     public static final double kDriveLinearKa = 0.00597 / 2.0 * Constants.kDriveWheelDiameterInches * kGearRatioScalar; // V
                                                                                                                         // /
                                                                                                                         // rad/s^2
@@ -44,7 +45,6 @@ public class Constants {
     public static final int kPCMId = 0;
     public static final int kShifterSolenoidId1 = 7;
     public static final int kShifterSolenoidId2 = 5;
-    public static final double kDriveLowGearReduction = 16.364;
     public static final double kDriveRotationsPerTickHighGear = 1.0 / 2048.0 * 1.0 / kDriveLowGearReduction; // ticks *
                                                                                                              // kDriveRotationsPerTicksHighGear
                                                                                                              // = wheel

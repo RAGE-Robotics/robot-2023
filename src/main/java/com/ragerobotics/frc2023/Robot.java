@@ -3,10 +3,16 @@ package com.ragerobotics.frc2023;
 import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
 import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
+import com.team254.lib.geometry.Pose2dWithCurvature;
 import com.team254.lib.loops.Looper;
+import com.team254.lib.trajectory.TimedView;
+import com.team254.lib.trajectory.TrajectoryIterator;
+import com.team254.lib.trajectory.timing.TimedState;
+import com.team254.lib.util.DriveOutput;
 import com.team254.lib.util.DriveSignal;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -17,6 +23,7 @@ public class Robot extends TimedRobot {
     private final Looper mDisabledLooper = new Looper(Constants.kLooperDt);
     private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
     private final RobotStateEstimator mRobotStateEstimator = RobotStateEstimator.getInstance();
+    private final RobotState mRobotState = RobotState.getInstance();
 
     // subsystems
     public static Drive mDrive = Drive.getInstance();
@@ -46,6 +53,11 @@ public class Robot extends TimedRobot {
         mDisabledLooper.stop();
         mSubsystemManager.stop();
         mEnabledLooper.start();
+
+        final TrajectoryIterator<TimedState<Pose2dWithCurvature>> trajectory = new TrajectoryIterator<>(
+                new TimedView<>(mTrajectoryGenerator.getTrajectorySet().testTrajectory));
+        mRobotState.reset(Timer.getFPGATimestamp(), trajectory.getState().state().getPose());
+        mDrive.setTrajectory(trajectory);
     }
 
     /** This function is called periodically during autonomous. */

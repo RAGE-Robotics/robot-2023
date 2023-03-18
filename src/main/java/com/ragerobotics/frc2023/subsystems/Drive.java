@@ -470,7 +470,8 @@ public class Drive extends Subsystem {
     }
 
     public double getRotationsPerTickDistance() { // us digital encoders
-        return 1.0 / Constants.kDriveEncoderPPR / (isHighGear() ? Constants.kDriveHighGearReduction : Constants.kDriveLowGearReduction);
+        return 1.0 / Constants.kDriveEncoderPPR
+                / (isHighGear() ? Constants.kDriveHighGearReduction : Constants.kDriveLowGearReduction);
     }
 
     public enum DriveControlState {
