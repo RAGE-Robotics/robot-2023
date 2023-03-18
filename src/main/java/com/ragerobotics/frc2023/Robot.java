@@ -1,8 +1,16 @@
 package com.ragerobotics.frc2023;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
 import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
+import com.ragerobotics.frc2023.subsystems.LEDs;
 import com.team254.lib.geometry.Pose2dWithCurvature;
 import com.team254.lib.loops.Looper;
 import com.team254.lib.trajectory.TimedView;
@@ -14,6 +22,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -31,6 +40,11 @@ public class Robot extends TimedRobot {
 
     private final Controllers mControllers = Controllers.getInstance();
 
+    private final TalonSRX mArmMotor = new TalonSRX(6);
+    private boolean mArmZeroed = false;
+    private final TalonSRX mIntakeLeftMotor = new TalonSRX(8);
+    private final TalonSRX mIntakeRightMotor = new TalonSRX(11);
+
     @Override
     public void robotInit() {
         mTrajectoryGenerator.generateTrajectories();
@@ -44,11 +58,34 @@ public class Robot extends TimedRobot {
         Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
         compressor.enableAnalog(Constants.kCompressorMinPressure, Constants.kCompressorMaxPressure);
         compressor.close();
+
+        mArmMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        mArmMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+        mArmMotor.configForwardSoftLimitEnable(false);
+        mArmMotor.config_kP(0, Constants.kArmKp);
+        mArmMotor.config_kI(0, Constants.kArmKi);
+        mArmMotor.config_kD(0, Constants.kArmKd);
+        mArmMotor.config_kF(0, Constants.kArmKf);
+
+        mIntakeRightMotor.follow(mIntakeLeftMotor, FollowerType.PercentOutput);
+        mIntakeRightMotor.setInverted(true);
     }
 
     @Override
     public void robotPeriodic() {
         mSubsystemManager.outputToSmartDashboard();
+
+        if (!mArmZeroed && mArmMotor.isFwdLimitSwitchClosed() != 0) {
+            mArmMotor.setSelectedSensorPosition(0);
+            mArmZeroed = true;
+        }
+        if (mArmZeroed) {
+            mArmMotor.setNeutralMode(NeutralMode.Brake);
+        } else {
+            mArmMotor.setNeutralMode(NeutralMode.Coast);
+        }
+
+        SmartDashboard.putNumber("Arm", mArmMotor.getSelectedSensorPosition());
 
         CommandScheduler.getInstance().run();
     }
@@ -128,6 +165,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         driveArcade();
+
+        mIntakeLeftMotor.set(ControlMode.PercentOutput, 0.1);
     }
 
     /** This function is called once when the robot is disabled. */
