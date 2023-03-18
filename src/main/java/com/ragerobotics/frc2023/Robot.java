@@ -166,7 +166,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         driveArcade();
 
-        mIntakeLeftMotor.set(ControlMode.PercentOutput, 0.1);
+        mIntakeLeftMotor.set(ControlMode.PercentOutput, 1);
     }
 
     /** This function is called once when the robot is disabled. */

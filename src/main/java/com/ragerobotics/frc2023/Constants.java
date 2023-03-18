@@ -65,4 +65,12 @@ public class Constants {
     public static final double kArmKi = 0;
     public static final double kArmKd = 0;
     public static final double kArmKf = 0;
+
+    public static final double armDownPosition = 9900;
+    public static final double armBackLimitPosition = 8800;
+    public static final double armDoubleStationPosition = 4600;
+    public static final double armSingleStationPosition = 5600;
+    public static final double armCubePlaceHeightPosition = -6100;
+    public static final double armHorizontalConePlacePosition = -7030;
+    public static final double armVerticalConePlacePosition = -5860;
 }
