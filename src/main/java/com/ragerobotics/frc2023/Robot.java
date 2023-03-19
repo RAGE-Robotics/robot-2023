@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
     public static Drive mDrive = Drive.getInstance();
 
     private final Controllers mControllers = Controllers.getInstance();
-
+    
     private final TalonSRX mArmMotor = new TalonSRX(6);
     private boolean mArmZeroed = false;
     private final TalonSRX mIntakeLeftMotor = new TalonSRX(8);
