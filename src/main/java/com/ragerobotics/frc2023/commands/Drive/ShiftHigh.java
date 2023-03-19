@@ -1,5 +1,7 @@
 package com.ragerobotics.frc2023.commands.Drive;
 
+import com.ragerobotics.frc2023.Robot;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ShiftHigh extends CommandBase {
@@ -15,6 +17,7 @@ public class ShiftHigh extends CommandBase {
       // Called every time the scheduler runs while the command is scheduled.
       @Override
       public void execute() {
+        Robot.mDrive.getHeading();
         // Robot.claw.RunIntake(-1);
       }
     
