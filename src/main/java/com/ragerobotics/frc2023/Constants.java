@@ -61,6 +61,11 @@ public class Constants {
     public static final double kCompressorMinPressure = 75;
     public static final double kCompressorMaxPressure = 115;
 
+    // RAGEDrive Constants
+    public static double quickturnSensitivity = .69;
+    public static double normalTurnSensitivity = .65;
+
+
     public static final double kArmKp = 0.75;
     public static final double kArmKi = 0;
     public static final double kArmKd = 0;

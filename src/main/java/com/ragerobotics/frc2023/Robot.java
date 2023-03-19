@@ -7,9 +7,11 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
+import com.ragerobotics.frc2023.commands.Drive.RAGEDrive;
+// import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
 import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
+import com.ragerobotics.frc2023.subsystems.wpilib.DriveTrain;
 // import com.ragerobotics.frc2023.subsystems.LEDs;
 import com.team254.lib.geometry.Pose2dWithCurvature;
 import com.team254.lib.loops.Looper;
@@ -37,6 +39,7 @@ public class Robot extends TimedRobot {
 
     // subsystems
     public static Drive mDrive = Drive.getInstance();
+    public static DriveTrain driveTrain = new DriveTrain();
 
     private final Controllers mControllers = Controllers.getInstance();
 
@@ -50,14 +53,21 @@ public class Robot extends TimedRobot {
         // mTrajectoryGenerator.generateTrajectories();
         mDrive.zeroSensors();
 
+        // Auto Subsystem manager
         mSubsystemManager.setSubsystems(mRobotStateEstimator, mDrive);
         mSubsystemManager.registerEnabledLoops(mEnabledLooper);
         mSubsystemManager.registerDisabledLoops(mDisabledLooper);
         mSubsystemManager.stop();
 
+        // Compressor stuff
         Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
         compressor.enableAnalog(Constants.kCompressorMinPressure, Constants.kCompressorMaxPressure);
         compressor.close();
+
+
+        // Setting Default Commands for Subsystems
+        driveTrain.setDefaultCommand(new RAGEDrive());
+
 
         mArmMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         mArmMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
@@ -85,6 +95,7 @@ public class Robot extends TimedRobot {
             mArmMotor.setNeutralMode(NeutralMode.Coast);
         }
 
+        
         SmartDashboard.putNumber("Arm", mArmMotor.getSelectedSensorPosition());
 
         CommandScheduler.getInstance().run();
@@ -110,61 +121,61 @@ public class Robot extends TimedRobot {
     /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
-        mDisabledLooper.stop();
+        mDisabledLooper.start();
         mSubsystemManager.stop();
-        mEnabledLooper.start();
+        mEnabledLooper.stop();
     }
 
-    public void driveTank() {
-        double left = -mControllers.getLeftJoystick().getY();
-        double right = -mControllers.getRightJoystick().getY();
+    // public void driveTank() {
+    //     double left = -mControllers.getLeftJoystick().getY();
+    //     double right = -mControllers.getRightJoystick().getY();
 
-        if (Math.abs(left) < Constants.kJoystickDeadband)
-            left = 0;
-        if (Math.abs(right) < Constants.kJoystickDeadband)
-            right = 0;
+    //     if (Math.abs(left) < Constants.kJoystickDeadband)
+    //         left = 0;
+    //     if (Math.abs(right) < Constants.kJoystickDeadband)
+    //         right = 0;
 
-        boolean leftNegative = left < 0;
-        boolean rightNegative = right < 0;
+    //     boolean leftNegative = left < 0;
+    //     boolean rightNegative = right < 0;
 
-        left *= left;
-        right *= right;
+    //     left *= left;
+    //     right *= right;
 
-        if (leftNegative)
-            left *= -1;
-        if (rightNegative)
-            right *= -1;
+    //     if (leftNegative)
+    //         left *= -1;
+    //     if (rightNegative)
+    //         right *= -1;
 
-        mDrive.setOpenLoop(new DriveSignal(left, right));
-    }
+    //     mDrive.setOpenLoop(new DriveSignal(left, right));
+    // }
 
-    void driveArcade() {
-        double throttle = -mControllers.getDriverController().getLeftY();
-        double steer = 0.75 * mControllers.getDriverController().getRightX();
+    // void driveArcade() {
+    //     double throttle = -mControllers.getDriverController().getLeftY();
+    //     double steer = 0.75 * mControllers.getDriverController().getRightX();
 
-        if (Math.abs(throttle) < Constants.kArcadeDriveDeadband)
-            throttle = 0;
-        if (Math.abs(steer) < Constants.kArcadeDriveDeadband)
-            steer = 0;
+    //     if (Math.abs(throttle) < Constants.kArcadeDriveDeadband)
+    //         throttle = 0;
+    //     if (Math.abs(steer) < Constants.kArcadeDriveDeadband)
+    //         steer = 0;
 
-        boolean throttleNegative = throttle < 0;
-        boolean steerNegative = steer < 0;
+    //     boolean throttleNegative = throttle < 0;
+    //     boolean steerNegative = steer < 0;
 
-        throttle *= throttle;
-        steer *= steer;
+    //     throttle *= throttle;
+    //     steer *= steer;
 
-        if (throttleNegative)
-            throttle *= -1;
-        if (steerNegative)
-            steer *= -1;
+    //     if (throttleNegative)
+    //         throttle *= -1;
+    //     if (steerNegative)
+    //         steer *= -1;
 
-        mDrive.setOpenLoop(new DriveSignal(throttle + steer, throttle - steer));
-    }
+    //     mDrive.setOpenLoop(new DriveSignal(throttle + steer, throttle - steer));
+    // }
 
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        driveArcade();
+        // driveArcade();
 
         mArmMotor.set(ControlMode.Position, Constants.armDoubleStationPosition);
 
