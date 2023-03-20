@@ -1,4 +1,4 @@
-package com.ragerobotics.frc2023.commands.Drive;
+package com.ragerobotics.frc2023.commands.drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.ragerobotics.frc2023.Constants;
@@ -41,7 +41,7 @@ public class RAGEDrive extends CommandBase {
         Math.sin(Math.PI / 2.0 * wheelNonLinearity);
 
     double leftPwm, rightPwm, overPower;
-    double sensitivity = Constants.normalTurnSensitivity;
+    double sensitivity = Constants.kNormalTurnSensitivity;
 
     double angularPower;
     double linearPower;
@@ -58,7 +58,7 @@ public class RAGEDrive extends CommandBase {
         negInertiaScalar = 3.0;
       }
     }
-    sensitivity = Constants.normalTurnSensitivity;
+    sensitivity = Constants.kNormalTurnSensitivity;
 
     if (Math.abs(throttle) > 0.1) {
     }
@@ -86,7 +86,7 @@ public class RAGEDrive extends CommandBase {
       overPower = 1.0;
       sensitivity = 1.0;
 
-      angularPower = Constants.quickturnSensitivity * wheel;
+      angularPower = Constants.kQuickturnSensitivity * wheel;
     } else {
       overPower = 0.0;
       angularPower = Math.abs(throttle) * wheel * sensitivity - quickStopAccumulator;

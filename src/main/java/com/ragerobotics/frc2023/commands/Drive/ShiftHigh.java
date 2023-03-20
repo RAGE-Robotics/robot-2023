@@ -1,4 +1,4 @@
-package com.ragerobotics.frc2023.commands.Drive;
+package com.ragerobotics.frc2023.commands.drive;
 
 import com.ragerobotics.frc2023.Robot;
 

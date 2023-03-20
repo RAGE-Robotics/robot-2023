@@ -1,4 +1,4 @@
-package com.ragerobotics.frc2023.commands.Intake;
+package com.ragerobotics.frc2023.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 

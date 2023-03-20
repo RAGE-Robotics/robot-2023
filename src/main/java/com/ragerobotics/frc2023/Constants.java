@@ -62,20 +62,19 @@ public class Constants {
     public static final double kCompressorMaxPressure = 115;
 
     // RAGEDrive Constants
-    public static double quickturnSensitivity = .69;
-    public static double normalTurnSensitivity = .65;
-
+    public static double kQuickturnSensitivity = .69;
+    public static double kNormalTurnSensitivity = .65;
 
     public static final double kArmKp = 0.75;
     public static final double kArmKi = 0;
     public static final double kArmKd = 0;
     public static final double kArmKf = 0;
 
-    public static final double armDownPosition = 9900;
-    public static final double armBackLimitPosition = 8800;
-    public static final double armDoubleStationPosition = 4600;
-    public static final double armSingleStationPosition = 5600;
-    public static final double armCubePlaceHeightPosition = -6100;
-    public static final double armHorizontalConePlacePosition = -7030;
-    public static final double armVerticalConePlacePosition = -5860;
+    public static final double kArmDownPosition = 9900;
+    public static final double kArmBackLimitPosition = 8800;
+    public static final double kArmDoubleStationPosition = 4600;
+    public static final double kArmSingleStationPosition = 5600;
+    public static final double kArmCubePlaceHeightPosition = -6100;
+    public static final double kArmHorizontalConePlacePosition = -7030;
+    public static final double kArmVerticalConePlacePosition = -5860;
 }
