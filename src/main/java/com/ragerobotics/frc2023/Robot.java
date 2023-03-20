@@ -7,10 +7,12 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ragerobotics.frc2023.commands.arm.Position;
 import com.ragerobotics.frc2023.commands.drive.RAGEDrive;
 import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
 import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
+import com.ragerobotics.frc2023.subsystems.wpilib.Arm;
 import com.ragerobotics.frc2023.subsystems.wpilib.DriveTrain;
 import com.team254.lib.geometry.Pose2dWithCurvature;
 import com.team254.lib.loops.Looper;
@@ -39,13 +41,9 @@ public class Robot extends TimedRobot {
     // subsystems
     public static Drive mDrive = Drive.getInstance();
     public static DriveTrain driveTrain = new DriveTrain();
+    public static Arm mArm = new Arm();
 
     private final Controllers mControllers = Controllers.getInstance();
-
-    private final TalonSRX mArmMotor = new TalonSRX(6);
-    private boolean mArmZeroed = false;
-    private final TalonSRX mIntakeLeftMotor = new TalonSRX(8);
-    private final TalonSRX mIntakeRightMotor = new TalonSRX(11);
 
     @Override
     public void robotInit() {
@@ -65,34 +63,12 @@ public class Robot extends TimedRobot {
 
         // Setting Default Commands for Subsystems
         driveTrain.setDefaultCommand(new RAGEDrive());
-
-        mArmMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        mArmMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-        mArmMotor.configForwardSoftLimitEnable(false);
-        mArmMotor.config_kP(0, Constants.kArmKp);
-        mArmMotor.config_kI(0, Constants.kArmKi);
-        mArmMotor.config_kD(0, Constants.kArmKd);
-        mArmMotor.config_kF(0, Constants.kArmKf);
-
-        mIntakeRightMotor.follow(mIntakeLeftMotor, FollowerType.PercentOutput);
-        mIntakeRightMotor.setInverted(true);
+        mArm.setDefaultCommand(new Position());
     }
 
     @Override
     public void robotPeriodic() {
         mSubsystemManager.outputToSmartDashboard();
-
-        if (!mArmZeroed && mArmMotor.isFwdLimitSwitchClosed() != 0) {
-            mArmMotor.setSelectedSensorPosition(0);
-            mArmZeroed = true;
-        }
-        if (mArmZeroed) {
-            mArmMotor.setNeutralMode(NeutralMode.Brake);
-        } else {
-            mArmMotor.setNeutralMode(NeutralMode.Coast);
-        }
-
-        SmartDashboard.putNumber("Arm", mArmMotor.getSelectedSensorPosition());
 
         CommandScheduler.getInstance().run();
     }
@@ -124,60 +100,12 @@ public class Robot extends TimedRobot {
         mEnabledLooper.stop();
     }
 
-    // public void driveTank() {
-    // double left = -mControllers.getLeftJoystick().getY();
-    // double right = -mControllers.getRightJoystick().getY();
-
-    // if (Math.abs(left) < Constants.kJoystickDeadband)
-    // left = 0;
-    // if (Math.abs(right) < Constants.kJoystickDeadband)
-    // right = 0;
-
-    // boolean leftNegative = left < 0;
-    // boolean rightNegative = right < 0;
-
-    // left *= left;
-    // right *= right;
-
-    // if (leftNegative)
-    // left *= -1;
-    // if (rightNegative)
-    // right *= -1;
-
-    // mDrive.setOpenLoop(new DriveSignal(left, right));
-    // }
-
-    // void driveArcade() {
-    // double throttle = -mControllers.getDriverController().getLeftY();
-    // double steer = 0.75 * mControllers.getDriverController().getRightX();
-
-    // if (Math.abs(throttle) < Constants.kArcadeDriveDeadband)
-    // throttle = 0;
-    // if (Math.abs(steer) < Constants.kArcadeDriveDeadband)
-    // steer = 0;
-
-    // boolean throttleNegative = throttle < 0;
-    // boolean steerNegative = steer < 0;
-
-    // throttle *= throttle;
-    // steer *= steer;
-
-    // if (throttleNegative)
-    // throttle *= -1;
-    // if (steerNegative)
-    // steer *= -1;
-
-    // mDrive.setOpenLoop(new DriveSignal(throttle + steer, throttle - steer));
-    // }
-
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
         // driveArcade();
 
-        mArmMotor.set(ControlMode.Position, Constants.kArmDoubleStationPosition);
-
-        mIntakeLeftMotor.set(ControlMode.PercentOutput, 1);
+        //mIntakeLeftMotor.set(ControlMode.PercentOutput, 1);
     }
 
     /** This function is called once when the robot is disabled. */

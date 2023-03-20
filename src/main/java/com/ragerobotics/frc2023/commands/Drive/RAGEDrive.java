@@ -3,11 +3,14 @@ package com.ragerobotics.frc2023.commands.drive;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.ragerobotics.frc2023.Constants;
 import com.ragerobotics.frc2023.Controllers;
+import com.ragerobotics.frc2023.Robot;
+import com.team254.lib.util.DriveSignal;
 
 public class RAGEDrive extends CommandBase {
   private double oldWheel = 0.0;
   private double quickStopAccumulator;
   private double wheelDeadband = 0.1;
+
   public RAGEDrive() {
     // Use addRequirements() here to declare subsystem dependencies.
     // addRequirements(Robot.driveTrain);
@@ -117,16 +120,17 @@ public class RAGEDrive extends CommandBase {
       rightPwm = -1.0;
     }
 
-    // Robot.drivetrain.drive(leftPwm, rightPwm);  // MAKE SURE TO UNCOMMENT DIS
+    Robot.mDrive.setOpenLoop(new DriveSignal(leftPwm, rightPwm)); // MAKE SURE TO UNCOMMENT DIS
+    System.out.println("here");
   }
 
   public double handleDeadband(double val, double deadband) {
     return (Math.abs(val) > Math.abs(deadband)) ? val : 0.0;
   }
 
-  public static double limit(double v, double limit){
-		return (Math.abs(v) < limit) ? v : limit * (v < 0 ? -1 : 1);
-	}
+  public static double limit(double v, double limit) {
+    return (Math.abs(v) < limit) ? v : limit * (v < 0 ? -1 : 1);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
