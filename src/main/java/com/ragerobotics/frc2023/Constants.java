@@ -61,16 +61,19 @@ public class Constants {
     public static final double kCompressorMinPressure = 75;
     public static final double kCompressorMaxPressure = 115;
 
-    public static final double kArmKp = 0.75;
+    public static final double kArmKp = 0.6;
     public static final double kArmKi = 0;
-    public static final double kArmKd = 0;
+    public static final double kArmKd = 140;
     public static final double kArmKf = 0;
+    public static final double kArmCruiseVelocity = 355;
+    public static final double kArmAcceleration = 55;
 
-    public static final double armDownPosition = 9900;
-    public static final double armBackLimitPosition = 8800;
-    public static final double armDoubleStationPosition = 4600;
-    public static final double armSingleStationPosition = 5600;
-    public static final double armCubePlaceHeightPosition = -6100;
-    public static final double armHorizontalConePlacePosition = -7030;
-    public static final double armVerticalConePlacePosition = -5860;
+    public static final double kArmStowedPosition = 2770;
+    public static final double kArmDownPosition = 9900;
+    public static final double kArmBackLimitPosition = 8800;
+    public static final double kArmDoubleStationPosition = 4500;
+    public static final double kArmSingleStationPosition = 5600;
+    public static final double kArmCubePlaceHeightPosition = -6100;
+    public static final double kArmHorizontalConePlacePosition = -7030;
+    public static final double kArmVerticalConePlacePosition = -5860;
 }

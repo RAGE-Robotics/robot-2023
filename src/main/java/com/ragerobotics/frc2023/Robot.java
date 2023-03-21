@@ -8,9 +8,10 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
+import com.ragerobotics.frc2023.subsystems.Arm;
 import com.ragerobotics.frc2023.subsystems.Drive;
+import com.ragerobotics.frc2023.subsystems.Intake;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
-import com.ragerobotics.frc2023.subsystems.LEDs;
 import com.team254.lib.geometry.Pose2dWithCurvature;
 import com.team254.lib.loops.Looper;
 import com.team254.lib.trajectory.TimedView;
@@ -23,11 +24,8 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
-    private Command m_autonomousCommand;
     private final TrajectoryGenerator mTrajectoryGenerator = TrajectoryGenerator.getInstance();
     private final Looper mEnabledLooper = new Looper(Constants.kLooperDt);
     private final Looper mDisabledLooper = new Looper(Constants.kLooperDt);
@@ -37,13 +35,10 @@ public class Robot extends TimedRobot {
 
     // subsystems
     public static Drive mDrive = Drive.getInstance();
+    public static Arm mArm = Arm.getInstance();
+    public static Intake mIntake = Intake.getInstance();
 
     private final Controllers mControllers = Controllers.getInstance();
-
-    private final TalonSRX mArmMotor = new TalonSRX(6);
-    private boolean mArmZeroed = false;
-    private final TalonSRX mIntakeLeftMotor = new TalonSRX(8);
-    private final TalonSRX mIntakeRightMotor = new TalonSRX(11);
 
     @Override
     public void robotInit() {
@@ -58,36 +53,11 @@ public class Robot extends TimedRobot {
         Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
         compressor.enableAnalog(Constants.kCompressorMinPressure, Constants.kCompressorMaxPressure);
         compressor.close();
-
-        mArmMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        mArmMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-        mArmMotor.configForwardSoftLimitEnable(false);
-        mArmMotor.config_kP(0, Constants.kArmKp);
-        mArmMotor.config_kI(0, Constants.kArmKi);
-        mArmMotor.config_kD(0, Constants.kArmKd);
-        mArmMotor.config_kF(0, Constants.kArmKf);
-
-        mIntakeRightMotor.follow(mIntakeLeftMotor, FollowerType.PercentOutput);
-        mIntakeRightMotor.setInverted(true);
     }
 
     @Override
     public void robotPeriodic() {
         mSubsystemManager.outputToSmartDashboard();
-
-        if (!mArmZeroed && mArmMotor.isFwdLimitSwitchClosed() != 0) {
-            mArmMotor.setSelectedSensorPosition(0);
-            mArmZeroed = true;
-        }
-        if (mArmZeroed) {
-            mArmMotor.setNeutralMode(NeutralMode.Brake);
-        } else {
-            mArmMotor.setNeutralMode(NeutralMode.Coast);
-        }
-
-        SmartDashboard.putNumber("Arm", mArmMotor.getSelectedSensorPosition());
-
-        CommandScheduler.getInstance().run();
     }
 
     @Override
@@ -105,6 +75,9 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during autonomous. */
     @Override
     public void autonomousPeriodic() {
+        double timestamp = Timer.getFPGATimestamp();
+        mArm.update(timestamp, 'a');
+        mIntake.update(timestamp, 'a');
     }
 
     /** This function is called once when teleop is enabled. */
@@ -113,29 +86,6 @@ public class Robot extends TimedRobot {
         mDisabledLooper.stop();
         mSubsystemManager.stop();
         mEnabledLooper.start();
-    }
-
-    public void driveTank() {
-        double left = -mControllers.getLeftJoystick().getY();
-        double right = -mControllers.getRightJoystick().getY();
-
-        if (Math.abs(left) < Constants.kJoystickDeadband)
-            left = 0;
-        if (Math.abs(right) < Constants.kJoystickDeadband)
-            right = 0;
-
-        boolean leftNegative = left < 0;
-        boolean rightNegative = right < 0;
-
-        left *= left;
-        right *= right;
-
-        if (leftNegative)
-            left *= -1;
-        if (rightNegative)
-            right *= -1;
-
-        mDrive.setOpenLoop(new DriveSignal(left, right));
     }
 
     void driveArcade() {
@@ -166,9 +116,9 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         driveArcade();
 
-        mArmMotor.set(ControlMode.Position, Constants.armDoubleStationPosition);
-
-        mIntakeLeftMotor.set(ControlMode.PercentOutput, 1);
+        double timestamp = Timer.getFPGATimestamp();
+        mArm.update(timestamp, 't');
+        mIntake.update(timestamp, 't');
     }
 
     /** This function is called once when the robot is disabled. */
@@ -181,12 +131,15 @@ public class Robot extends TimedRobot {
     /** This function is called periodically when disabled. */
     @Override
     public void disabledPeriodic() {
+        double timestamp = Timer.getFPGATimestamp();
+        mArm.update(timestamp, 'd');
+        mIntake.update(timestamp, 'd');
     }
 
     /** This function is called once when test mode is enabled. */
     @Override
     public void testInit() {
-        CommandScheduler.getInstance().cancelAll();
+
     }
 
     /** This function is called periodically during test mode. */
