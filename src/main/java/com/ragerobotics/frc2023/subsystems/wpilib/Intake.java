@@ -1,5 +1,6 @@
 package com.ragerobotics.frc2023.subsystems.wpilib;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -19,6 +20,10 @@ public class Intake extends SubsystemBase {
         mIntakeRightMotor.follow(mIntakeLeftMotor, FollowerType.PercentOutput);
         mIntakeRightMotor.setInverted(false);
         mIntakeLeftMotor.setInverted(true);
+    }
+
+    public void runIntake(double runIntake) {
+        mIntakeLeftMotor.set(ControlMode.PercentOutput,runIntake);
     }
 
     @Override

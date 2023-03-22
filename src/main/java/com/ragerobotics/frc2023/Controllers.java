@@ -1,5 +1,8 @@
 package com.ragerobotics.frc2023;
 
+import com.ragerobotics.frc2023.commands.intake.*;
+// import com.ragerobotics.frc2023.commands.intake.IntakeIn;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
@@ -16,13 +19,13 @@ public class Controllers {
     private Joystick mLeftJoystick;
     private Joystick mRightJoystick;
     private static XboxController mDriverController;
-    private PS4Controller mOperatorController;
+    private static XboxController mOperatorController;
 
     private Controllers() {
         mLeftJoystick = new Joystick(0);
         mRightJoystick = new Joystick(1);
         mDriverController = new XboxController(4);
-        mOperatorController = new PS4Controller(5);
+        mOperatorController = new XboxController(5);
         configureBindings();
     }
 
@@ -30,7 +33,8 @@ public class Controllers {
         // <--driver controller -->.<-- Button --> (<-- Insert Command here -->)
 
         // m_driverController.a().whileTrue(new IntakeIn());
-
+        mOperatorController.getLeftBumperPressed(new IntakeIn());
+        mOperatorController.getRightBumperPressed(new IntakeOut());
     }
 
     // RAGEDrive Methods
@@ -75,7 +79,7 @@ public class Controllers {
         return mDriverController;
     }
 
-    public PS4Controller getOperatorController() {
+    public XboxController getOperatorController() {
         return mOperatorController;
     }
 }

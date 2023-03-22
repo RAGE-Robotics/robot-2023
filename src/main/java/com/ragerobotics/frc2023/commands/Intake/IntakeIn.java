@@ -1,11 +1,13 @@
 package com.ragerobotics.frc2023.commands.intake;
 
+import com.ragerobotics.frc2023.Robot;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class CubeIn extends CommandBase {
-    public CubeIn() {
+public class IntakeIn extends CommandBase {
+    public IntakeIn() {
         // Use addRequirements() here to declare subsystem dependencies.
-        // addRequirements(Robot.claw);
+         addRequirements(Robot.mIntake);
       }
     
       // Called when the command is initially scheduled.
@@ -15,7 +17,7 @@ public class CubeIn extends CommandBase {
       // Called every time the scheduler runs while the command is scheduled.
       @Override
       public void execute() {
-        // Robot.claw.RunIntake(-1);
+         Robot.mIntake.runIntake(-1);
       }
     
       // Called once the command ends or is interrupted.
