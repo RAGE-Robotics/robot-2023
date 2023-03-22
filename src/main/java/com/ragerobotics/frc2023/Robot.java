@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ragerobotics.frc2023.commands.Drive.RAGEArcade;
 import com.ragerobotics.frc2023.commands.arm.Position;
-import com.ragerobotics.frc2023.commands.drive.RAGEDrive;
+// import com.ragerobotics.frc2023.commands.drive.RAGEDrive;
 import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
 import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
@@ -33,31 +33,34 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
-    private final TrajectoryGenerator mTrajectoryGenerator = TrajectoryGenerator.getInstance();
-    private final Looper mEnabledLooper = new Looper(Constants.kLooperDt);
-    private final Looper mDisabledLooper = new Looper(Constants.kLooperDt);
-    private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
-    private final RobotStateEstimator mRobotStateEstimator = RobotStateEstimator.getInstance();
-    private final RobotState mRobotState = RobotState.getInstance();
+    // private final TrajectoryGenerator mTrajectoryGenerator = TrajectoryGenerator.getInstance();
+    // private final Looper mEnabledLooper = new Looper(Constants.kLooperDt);
+    // private final Looper mDisabledLooper = new Looper(Constants.kLooperDt);
+    // private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
+    // private final RobotStateEstimator mRobotStateEstimator = RobotStateEstimator.getInstance();
+    // private final RobotState mRobotState = RobotState.getInstance();
 
     // subsystems
-    public static Drive mDrive = Drive.getInstance();
+    // public static Drive mDrive = Drive.getInstance();
     public static DriveTrain driveTrain = new DriveTrain();
     public static Arm mArm = new Arm();
     public static Intake mIntake = new Intake();
 
-    private final Controllers mControllers = Controllers.getInstance();
+    public static Controllers mControllers;
 
     @Override
     public void robotInit() {
-        mTrajectoryGenerator.generateTrajectories();
-        mDrive.zeroSensors();
+
+        mControllers = new Controllers();
+        // mTrajectoryGenerator.generateTrajectories();
+        // mDrive.zeroSensors();
+
 
         // Auto Subsystem manager
-        mSubsystemManager.setSubsystems(mRobotStateEstimator, mDrive);
-        mSubsystemManager.registerEnabledLoops(mEnabledLooper);
-        mSubsystemManager.registerDisabledLoops(mDisabledLooper);
-        mSubsystemManager.stop();
+        // mSubsystemManager.setSubsystems(mRobotStateEstimator, mDrive);
+        // mSubsystemManager.registerEnabledLoops(mEnabledLooper);
+        // mSubsystemManager.registerDisabledLoops(mDisabledLooper);
+        // mSubsystemManager.stop();
 
         // Compressor stuff
         Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
@@ -71,16 +74,16 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotPeriodic() {
-        mSubsystemManager.outputToSmartDashboard();
+        // mSubsystemManager.outputToSmartDashboard();
 
         CommandScheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit() {
-        mDisabledLooper.stop();
-        mSubsystemManager.stop();
-        mEnabledLooper.start();
+        // mDisabledLooper.stop();
+        // mSubsystemManager.stop();
+        // mEnabledLooper.start();
 
         // final TrajectoryIterator<TimedState<Pose2dWithCurvature>> trajectory = new
         // TrajectoryIterator<>(
@@ -98,9 +101,9 @@ public class Robot extends TimedRobot {
     /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
-        mDisabledLooper.start();
-        mSubsystemManager.stop();
-        mEnabledLooper.stop();
+        // mDisabledLooper.start();
+        // mSubsystemManager.stop();
+        // mEnabledLooper.stop();
     }
 
     /** This function is called periodically during operator control. */
@@ -114,8 +117,8 @@ public class Robot extends TimedRobot {
     /** This function is called once when the robot is disabled. */
     @Override
     public void disabledInit() {
-        mEnabledLooper.stop();
-        mDisabledLooper.start();
+        // mEnabledLooper.stop();
+        // mDisabledLooper.start();
     }
 
     /** This function is called periodically when disabled. */

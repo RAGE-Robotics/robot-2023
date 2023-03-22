@@ -21,7 +21,7 @@ public class Controllers {
     private static XboxController mDriverController;
     private static XboxController mOperatorController;
 
-    private Controllers() {
+    public Controllers() {
         mLeftJoystick = new Joystick(0);
         mRightJoystick = new Joystick(1);
         mDriverController = new XboxController(4);
@@ -33,8 +33,8 @@ public class Controllers {
         // <--driver controller -->.<-- Button --> (<-- Insert Command here -->)
 
         // m_driverController.a().whileTrue(new IntakeIn());
-        mOperatorController.getLeftBumperPressed(new IntakeIn());
-        mOperatorController.getRightBumperPressed(new IntakeOut());
+        //mOperatorController.leftBumper().whileTrue(new IntakeIn());
+        // mOperatorController.getBumperPressed(new IntakeOut());
     }
 
     // RAGEDrive Methods
