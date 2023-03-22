@@ -26,6 +26,7 @@ public class Arm extends SubsystemBase {
         murphyArm.config_kD(0, Constants.kArmKd);
         murphyArm.config_kF(0, Constants.kArmKf);
 
+        coast();
         mZeroed = false;
     }
 
@@ -57,13 +58,14 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         if (!mZeroed && murphyArm.isFwdLimitSwitchClosed() != 0) {
             murphyArm.setSelectedSensorPosition(0);
+            brake();
             mZeroed = true;
         }
-        if (mZeroed) {
-            murphyArm.setNeutralMode(NeutralMode.Brake);
-        } else {
-            murphyArm.setNeutralMode(NeutralMode.Coast);
-        }
+        // if (mZeroed) {
+        //     murphyArm.setNeutralMode(NeutralMode.Brake);}
+        //  else {
+        //     murphyArm.setNeutralMode(NeutralMode.Coast);
+        // }
 
         SmartDashboard.putNumber("Arm", murphyArm.getSelectedSensorPosition());
         SmartDashboard.putNumber("Arm Percentage", murphyArm.getMotorOutputPercent());

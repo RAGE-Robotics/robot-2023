@@ -75,7 +75,7 @@ public class Constants {
 
     public static final double kArmDownPosition = 9900;
     public static final double kArmBackLimitPosition = 8800;
-    public static final double kArmDoubleStationPosition = 4500;
+    public static final double kArmDoubleStationPosition = 4410;
     public static final double kArmSingleStationPosition = 5600;
     public static final double kArmCubePlaceHeightPosition = -6100;
     public static final double kArmHorizontalConePlacePosition = -7030;

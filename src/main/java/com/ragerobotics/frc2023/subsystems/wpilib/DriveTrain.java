@@ -22,6 +22,8 @@ public class DriveTrain extends SubsystemBase {
 
     rightLeader.setInverted(true);
     rightFollower.setInverted(true);
+
+    brake();
   }
 
   public void coast() {
