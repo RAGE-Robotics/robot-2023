@@ -1,11 +1,14 @@
 package com.ragerobotics.frc2023;
 
-import com.ragerobotics.frc2023.commands.intake.*;
-// import com.ragerobotics.frc2023.commands.intake.IntakeIn;
-
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PS4Controller;
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
+import com.ragerobotics.frc2023.commands.Intake.IntakeIn;
+import com.ragerobotics.frc2023.commands.Intake.IntakeOut;
+// import com.ragerobotics.frc2023.commands.Intake.IntakeIn;
+// import com.ragerobotics.frc2023.commands.Intake.IntakeOut;
+// import com.ragerobotics.frc2023.commands.intake.IntakeOut;
+import com.ragerobotics.frc2023.commands.arm.DoubleStationCube;
 
 public class Controllers {
     private static Controllers mInstance = null;
@@ -18,24 +21,24 @@ public class Controllers {
 
     private Joystick mLeftJoystick;
     private Joystick mRightJoystick;
-    private static XboxController mDriverController;
-    private static XboxController mOperatorController;
+    private static CommandXboxController mDriverController;
+    private static CommandXboxController mOperatorController;
 
     public Controllers() {
         mLeftJoystick = new Joystick(0);
         mRightJoystick = new Joystick(1);
-        mDriverController = new XboxController(4);
-        mOperatorController = new XboxController(5);
+        mDriverController = new CommandXboxController(4);
+        mOperatorController = new CommandXboxController(5);
         configureBindings();
     }
 
     private void configureBindings() {
         // <--driver controller -->.<-- Button --> (<-- Insert Command here -->)
 
-        // m_driverController.a().whileTrue(new IntakeIn());
-        //mOperatorController.leftBumper().whileTrue(new IntakeIn());
-        // mOperatorController.a().whileTrue(new IntakeIn());
-        // (new IntakeOut());
+        // operator controls
+        mOperatorController.rightBumper().whileTrue(new IntakeOut());
+        mOperatorController.leftBumper().whileTrue(new IntakeIn());
+        // mOperatorController.rightBumper().whileTrue(new DoubleStationCube());
     }
 
     // RAGEDrive Methods
@@ -76,11 +79,11 @@ public class Controllers {
         return mRightJoystick;
     }
 
-    public XboxController getDriverController() {
+    public CommandXboxController getDriverController() {
         return mDriverController;
     }
 
-    public XboxController getOperatorController() {
+    public CommandXboxController getOperatorController() {
         return mOperatorController;
     }
 }
