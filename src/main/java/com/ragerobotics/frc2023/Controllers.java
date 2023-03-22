@@ -37,24 +37,30 @@ public class Controllers {
     public static double GetTurn() {
         return mDriverController.getRawAxis(0);
     }
-    
+
     public static double GetThrottle() {
         double reverse = mDriverController.getRawAxis(2);
         double forward = mDriverController.getRawAxis(3);
 
-        if((reverse > .1) && (forward > .1)) {
+        if ((reverse > .1) && (forward > .1)) {
             return 0;
-        }
-        else if(forward > .1) {
+        } else if (forward > .1) {
             return forward;
         }
 
         else if (reverse > .1) {
             return -reverse;
-        }
-        else {
+        } else {
             return 0;
         }
+    }
+
+    public static double getLeftDriverY() {
+        return mDriverController.getLeftY();
+    }
+
+    public static double getRightDriverX() {
+        return mDriverController.getRightX();
     }
 
     public Joystick getLeftJoystick() {

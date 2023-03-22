@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ragerobotics.frc2023.commands.Drive.RAGEArcade;
 import com.ragerobotics.frc2023.commands.arm.Position;
 import com.ragerobotics.frc2023.commands.drive.RAGEDrive;
 import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
@@ -14,6 +15,7 @@ import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
 import com.ragerobotics.frc2023.subsystems.wpilib.Arm;
 import com.ragerobotics.frc2023.subsystems.wpilib.DriveTrain;
+import com.ragerobotics.frc2023.subsystems.wpilib.Intake;
 import com.team254.lib.geometry.Pose2dWithCurvature;
 import com.team254.lib.loops.Looper;
 import com.team254.lib.trajectory.TimedView;
@@ -42,6 +44,7 @@ public class Robot extends TimedRobot {
     public static Drive mDrive = Drive.getInstance();
     public static DriveTrain driveTrain = new DriveTrain();
     public static Arm mArm = new Arm();
+    public static Intake mIntake = new Intake();
 
     private final Controllers mControllers = Controllers.getInstance();
 
@@ -62,8 +65,8 @@ public class Robot extends TimedRobot {
         compressor.close();
 
         // Setting Default Commands for Subsystems
-        driveTrain.setDefaultCommand(new RAGEDrive());
-        mArm.setDefaultCommand(new Position());
+        driveTrain.setDefaultCommand(new RAGEArcade());
+        // mArm.setDefaultCommand(new Position());
     }
 
     @Override

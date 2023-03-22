@@ -18,6 +18,6 @@ public class Position extends CommandBase {
 
     @Override
     public void execute() {
-        Arm.motor.set(ControlMode.Position, Constants.kArmDoubleStationPosition);
+        // Arm.mot.set(ControlMode.Position, Constants.kArmDoubleStationPosition);
     }
 }

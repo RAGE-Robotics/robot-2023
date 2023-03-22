@@ -120,8 +120,7 @@ public class RAGEDrive extends CommandBase {
       rightPwm = -1.0;
     }
 
-    Robot.mDrive.setOpenLoop(new DriveSignal(leftPwm, rightPwm)); // MAKE SURE TO UNCOMMENT DIS
-    System.out.println("here");
+    // Robot.mDrive.setOpenLoop(new DriveSignal(leftPwm, rightPwm)); // MAKE SURE TO UNCOMMENT DIS
   }
 
   public double handleDeadband(double val, double deadband) {
