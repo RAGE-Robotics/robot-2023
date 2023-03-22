@@ -70,20 +70,4 @@ public class Controllers {
     public static double getRightDriverX() {
         return mDriverController.getRightX();
     }
-
-    public Joystick getLeftJoystick() {
-        return mLeftJoystick;
-    }
-
-    public Joystick getRightJoystick() {
-        return mRightJoystick;
-    }
-
-    public CommandXboxController getDriverController() {
-        return mDriverController;
-    }
-
-    public CommandXboxController getOperatorController() {
-        return mOperatorController;
-    }
 }

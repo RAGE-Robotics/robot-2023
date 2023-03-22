@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -36,6 +37,12 @@ public class Robot extends TimedRobot {
     // private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
     // private final RobotStateEstimator mRobotStateEstimator = RobotStateEstimator.getInstance();
     // private final RobotState mRobotState = RobotState.getInstance();
+
+    //Autonomous chooser
+    private static final String kDefaultAuto = "Do Nothing";
+    private static final String kDriveStraight = "Drive Straight";
+    private String m_autoSelected;
+    private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
     // subsystems
     // public static Drive mDrive = Drive.getInstance();
@@ -67,6 +74,11 @@ public class Robot extends TimedRobot {
         // Setting Default Commands for Subsystems
         driveTrain.setDefaultCommand(new RAGEArcade());
         // mArm.setDefaultCommand(new Position());
+
+        // autonomous options
+        m_chooser.setDefaultOption(kDefaultAuto, kDefaultAuto);
+        m_chooser.addOption(kDriveStraight, kDriveStraight);
+        SmartDashboard.putData("Auto choices", m_chooser);
     }
 
     @Override
@@ -81,6 +93,8 @@ public class Robot extends TimedRobot {
         // mDisabledLooper.stop();
         // mSubsystemManager.stop();
         // mEnabledLooper.start();
+
+        m_autoSelected = m_chooser.getSelected();
 
         // final TrajectoryIterator<TimedState<Pose2dWithCurvature>> trajectory = new
         // TrajectoryIterator<>(
@@ -106,9 +120,6 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {
-        // driveArcade();
-
-        //mIntakeLeftMotor.set(ControlMode.PercentOutput, 1);
     }
 
     /** This function is called once when the robot is disabled. */
