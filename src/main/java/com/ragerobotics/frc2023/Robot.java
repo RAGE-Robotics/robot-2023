@@ -76,8 +76,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         double timestamp = Timer.getFPGATimestamp();
-        mArm.update(timestamp, 'a');
-        mIntake.update(timestamp, 'a');
+        //mArm.update(timestamp, 'a');
+        //mIntake.update(timestamp, 'a');
     }
 
     /** This function is called once when teleop is enabled. */
@@ -117,8 +117,8 @@ public class Robot extends TimedRobot {
         driveArcade();
 
         double timestamp = Timer.getFPGATimestamp();
-        mArm.update(timestamp, 't');
-        mIntake.update(timestamp, 't');
+        //mArm.update(timestamp, 't');
+        //mIntake.update(timestamp, 't');
     }
 
     /** This function is called once when the robot is disabled. */
@@ -132,8 +132,8 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         double timestamp = Timer.getFPGATimestamp();
-        mArm.update(timestamp, 'd');
-        mIntake.update(timestamp, 'd');
+        //mArm.update(timestamp, 'd');
+        //mIntake.update(timestamp, 'd');
     }
 
     /** This function is called once when test mode is enabled. */
