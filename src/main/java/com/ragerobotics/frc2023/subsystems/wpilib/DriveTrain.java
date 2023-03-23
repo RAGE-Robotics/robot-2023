@@ -25,6 +25,7 @@ public class DriveTrain extends SubsystemBase {
 
   public void drive(double leftPercent, double rightPercent) {
     Drive.getInstance().setOpenLoop(new DriveSignal(leftPercent, rightPercent));
+    
   }
 
   public CommandBase exampleMethodCommand() {

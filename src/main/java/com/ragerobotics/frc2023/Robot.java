@@ -122,10 +122,9 @@ public class Robot extends TimedRobot {
     /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
-        // mDisabledLooper.start();
         mSubsystemManager.stop();
-        mEnabledLooper.stop();
         mDisabledLooper.stop();
+        mEnabledLooper.start();
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
@@ -140,6 +139,8 @@ public class Robot extends TimedRobot {
     /** This function is called once when the robot is disabled. */
     @Override
     public void disabledInit() {
+        mEnabledLooper.stop();
+        mDisabledLooper.start();
     }
 
     /** This function is called periodically when disabled. */
