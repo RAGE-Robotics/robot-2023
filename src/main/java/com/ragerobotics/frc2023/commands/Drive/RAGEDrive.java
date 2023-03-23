@@ -1,4 +1,4 @@
-package com.ragerobotics.frc2023.commands.drive;
+package com.ragerobotics.frc2023.commands.Drive;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.ragerobotics.frc2023.Constants;

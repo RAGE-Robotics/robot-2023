@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ragerobotics.frc2023.commands.Auto_commands.DoNothing;
 import com.ragerobotics.frc2023.commands.Auto_commands.DriveStraight;
 import com.ragerobotics.frc2023.commands.Drive.RAGEArcade;
 import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
@@ -44,10 +45,8 @@ public class Robot extends TimedRobot {
     private final RobotState mRobotState = RobotState.getInstance();
 
     //Autonomous chooser
-    private static final String kDefaultAuto = "Do Nothing";
     private static final String kDriveStraight = "Drive Straight";
-    private String m_autoSelected;
-    private final SendableChooser<String> m_chooser = new SendableChooser<>();
+    private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     // subsystems
     public static Drive mDrive = Drive.getInstance();
@@ -80,28 +79,27 @@ public class Robot extends TimedRobot {
         driveTrain.setDefaultCommand(new RAGEArcade());
 
         // autonomous options
-        m_chooser.setDefaultOption(kDefaultAuto, kDefaultAuto);
-        // m_chooser.addOption(kDriveStraight, new DriveStraight());
-        SmartDashboard.putData("Auto choices", m_chooser);
+        m_chooser.setDefaultOption("Do Nothing", new DoNothing());
+        m_chooser.addOption(kDriveStraight, new DriveStraight());
+        SmartDashboard.putData(m_chooser);
     }
 
     @Override
     public void robotPeriodic() {
-        // mSubsystemManager.outputToSmartDashboard();
+        mSubsystemManager.outputToSmartDashboard();
 
         CommandScheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit() {
-        m_autonomousCommand = new DriveStraight();
         mDisabledLooper.stop();
         mSubsystemManager.stop();
         mEnabledLooper.start();
+        m_autonomousCommand = m_chooser.getSelected();
 
         Pose2d reset = new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0));
 
-        m_autoSelected = m_chooser.getSelected();
 
         // final TrajectoryIterator<TimedState<Pose2dWithCurvature>> trajectory = new
         // TrajectoryIterator<>(
@@ -124,10 +122,14 @@ public class Robot extends TimedRobot {
     /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
-        mDisabledLooper.start();
+        // mDisabledLooper.start();
         mSubsystemManager.stop();
         mEnabledLooper.stop();
         mDisabledLooper.stop();
+
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.cancel();
+        }
     }
 
     /** This function is called periodically during operator control. */
@@ -138,8 +140,6 @@ public class Robot extends TimedRobot {
     /** This function is called once when the robot is disabled. */
     @Override
     public void disabledInit() {
-        // mEnabledLooper.stop();
-        // mDisabledLooper.start();
     }
 
     /** This function is called periodically when disabled. */

@@ -67,13 +67,13 @@ public class TrajectoryGenerator {
     }
 
     public class TrajectorySet {
-        public final Trajectory<TimedState<Pose2dWithCurvature>> testTrajectory;
+        public final Trajectory<TimedState<Pose2dWithCurvature>> driveStraight;
 
         private TrajectorySet() {
-            testTrajectory = getTestTrajectory();
+            driveStraight = DriveStraight();
         }
 
-        private Trajectory<TimedState<Pose2dWithCurvature>> getTestTrajectory() {
+        private Trajectory<TimedState<Pose2dWithCurvature>> DriveStraight() {
             List<Pose2d> waypoints = new ArrayList<>();
             waypoints.add(new Pose2d(Translation2d.identity(), Rotation2d.fromDegrees(0)));
             waypoints.add(new Pose2d(120, 0, Rotation2d.fromDegrees(0)));
