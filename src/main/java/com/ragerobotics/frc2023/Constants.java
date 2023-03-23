@@ -73,12 +73,12 @@ public class Constants {
     public static final double kArmCruiseVelocity = 355;
     public static final double kArmAcceleration = 55;
 
-    public static final double kArmDownPosition = 11200;
+    public static final double kArmDownPosition = 11200; 
     public static final double kArmBackLimitPosition = 8800;
-    public static final double kArmDoubleStationPosition = 5160;
-    public static final double kArmSingleStationPosition = 5600;
-    public static final double kArmCubePlaceHeightPosition = -6800;
-    public static final double kArmHorizontalConePlacePosition = -7030;
-    public static final double kArmVerticalConePlacePosition = -5860;
-    public static final double kArmStowedPosition = 2770;
+    public static final double kArmDoubleStationPosition = 5160; 
+    public static final double kArmSingleStationPosition = 5600; 
+    public static final double kArmCubePlaceHeightPosition = -6800; 
+    public static final double kArmHorizontalConePlacePosition = -7030; 
+    public static final double kArmVerticalConePlacePosition = -5860; 
+    public static final double kArmStowedPosition = 2770; 
 }

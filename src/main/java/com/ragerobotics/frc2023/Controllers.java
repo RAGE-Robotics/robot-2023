@@ -15,6 +15,8 @@ import com.ragerobotics.frc2023.commands.arm.GroundPos;
 import com.ragerobotics.frc2023.commands.arm.ScoreCube;
 import com.ragerobotics.frc2023.commands.arm.ScoreHorizontalCone;
 import com.ragerobotics.frc2023.commands.arm.ScoreVerticalCone;
+import com.ragerobotics.frc2023.commands.arm.SingleStation;
+import com.ragerobotics.frc2023.commands.arm.StowedPos;
 
 public class Controllers {
     private static Controllers mInstance = null;
@@ -49,6 +51,8 @@ public class Controllers {
         mOperatorController.povDown().whileTrue(new ScoreCube());
         mOperatorController.povUp().whileTrue(new ScoreVerticalCone());
         mOperatorController.povLeft().whileTrue(new ScoreHorizontalCone());
+        mOperatorController.button(4).whileTrue(new StowedPos());
+        mOperatorController.button(1).whileTrue(new SingleStation());
         // mOperatorController.rightBumper().whileTrue(new IntakeOut());
         // mOperatorController.leftBumper().whileTrue(new IntakeIn());
         // mOperatorController.x().whileTrue(new GroundPos()); //actually a

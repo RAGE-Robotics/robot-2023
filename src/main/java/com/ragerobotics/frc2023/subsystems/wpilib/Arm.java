@@ -56,10 +56,11 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (!mZeroed && murphyArm.isFwdLimitSwitchClosed() != 0) {
+        if (!mZeroed  && murphyArm.isFwdLimitSwitchClosed() != 0) {
             murphyArm.setSelectedSensorPosition(0);
             brake();
             mZeroed = true;
+            murphyArm.configForwardLimitSwitchSource(LimitSwitchSource.Deactivated, LimitSwitchNormal.Disabled);
         }
         // if (mZeroed) {
         //     murphyArm.setNeutralMode(NeutralMode.Brake);}

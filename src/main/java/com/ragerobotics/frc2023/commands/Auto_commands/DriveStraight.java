@@ -6,6 +6,7 @@ package com.ragerobotics.frc2023.commands.Auto_commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.ragerobotics.frc2023.Robot;
+import com.ragerobotics.frc2023.RobotState;
 import com.team254.lib.trajectory.TimedView;
 import com.team254.lib.trajectory.TrajectoryIterator;
 import com.team254.lib.trajectory.timing.TimedState;
@@ -25,6 +26,7 @@ public class DriveStraight extends CommandBase {
   @Override
   public void initialize() {
     trajectory = new TrajectoryIterator<>(new TimedView<>(Robot.mTrajectoryGenerator.getTrajectorySet().driveStraight));
+    RobotState.getInstance().reset(Timer.getFPGATimestamp(), trajectory.getState().state().getPose());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
