@@ -2,6 +2,7 @@ package com.ragerobotics.frc2023.subsystems.wpilib;
 
 import com.ragerobotics.frc2023.Constants;
 import com.ragerobotics.frc2023.subsystems.Drive;
+import com.team254.lib.util.DriveSignal;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -11,41 +12,20 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 
 public class DriveTrain extends SubsystemBase {
-  final TalonFX leftLeader = new TalonFX(14);
-  final TalonFX leftFollower = new TalonFX(13);
-  final TalonFX rightLeader = new TalonFX(1);
-  final TalonFX rightFollower = new TalonFX(5);
-
   public DriveTrain() {
-    leftFollower.follow(leftLeader);
-    rightFollower.follow(rightLeader);
-
-    rightLeader.setInverted(true);
-    rightFollower.setInverted(true);
-
-    brake();
   }
 
   public void coast() {
-    leftLeader.setNeutralMode(NeutralMode.Coast);
-    rightLeader.setNeutralMode(NeutralMode.Coast);
+    Drive.getInstance().setBrakeMode(false);
   }
 
   public void brake() {
-    leftLeader.setNeutralMode(NeutralMode.Brake);
-    rightLeader.setNeutralMode(NeutralMode.Brake);
+    Drive.getInstance().setBrakeMode(true);
   }
 
   public void drive(double leftPercent, double rightPercent) {
-    leftLeader.set(ControlMode.PercentOutput, leftPercent);
-    rightLeader.set(ControlMode.PercentOutput, rightPercent);
+    Drive.getInstance().setOpenLoop(new DriveSignal(leftPercent, rightPercent));
   }
-
-  public void setRampRate(double rampRate) {
-    leftLeader.configOpenloopRamp(Constants.kDriveRampRate);
-    rightLeader.configOpenloopRamp(Constants.kDriveRampRate);
-  }
-
 
   public CommandBase exampleMethodCommand() {
     // Inline construction of command goes here.
