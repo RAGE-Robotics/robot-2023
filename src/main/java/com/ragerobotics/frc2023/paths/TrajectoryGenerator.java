@@ -76,7 +76,7 @@ public class TrajectoryGenerator {
         private Trajectory<TimedState<Pose2dWithCurvature>> getTestTrajectory() {
             List<Pose2d> waypoints = new ArrayList<>();
             waypoints.add(new Pose2d(Translation2d.identity(), Rotation2d.fromDegrees(0)));
-            waypoints.add(new Pose2d(36, 0, Rotation2d.fromDegrees(0)));
+            waypoints.add(new Pose2d(120, 0, Rotation2d.fromDegrees(0)));
             return generateTrajectory(false, waypoints, Arrays.asList(), kMaxVel, kMaxAccel, kMaxVoltage);
         }
     }

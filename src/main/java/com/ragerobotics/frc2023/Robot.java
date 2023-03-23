@@ -32,7 +32,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
-    private final TrajectoryGenerator mTrajectoryGenerator = TrajectoryGenerator.getInstance();
+    public static TrajectoryGenerator mTrajectoryGenerator = TrajectoryGenerator.getInstance();
     private final Looper mEnabledLooper = new Looper(Constants.kLooperDt);
     private final Looper mDisabledLooper = new Looper(Constants.kLooperDt);
     private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
