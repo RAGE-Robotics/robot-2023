@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ragerobotics.frc2023.commands.Drive.RAGEArcade;
+import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
 import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
 import com.ragerobotics.frc2023.subsystems.wpilib.Arm;
@@ -31,12 +32,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
-    // private final TrajectoryGenerator mTrajectoryGenerator = TrajectoryGenerator.getInstance();
-    // private final Looper mEnabledLooper = new Looper(Constants.kLooperDt);
-    // private final Looper mDisabledLooper = new Looper(Constants.kLooperDt);
-    // private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
-    // private final RobotStateEstimator mRobotStateEstimator = RobotStateEstimator.getInstance();
-    // private final RobotState mRobotState = RobotState.getInstance();
+    private final TrajectoryGenerator mTrajectoryGenerator = TrajectoryGenerator.getInstance();
+    private final Looper mEnabledLooper = new Looper(Constants.kLooperDt);
+    private final Looper mDisabledLooper = new Looper(Constants.kLooperDt);
+    private final SubsystemManager mSubsystemManager = SubsystemManager.getInstance();
+    private final RobotStateEstimator mRobotStateEstimator = RobotStateEstimator.getInstance();
+    private final RobotState mRobotState = RobotState.getInstance();
 
     //Autonomous chooser
     private static final String kDefaultAuto = "Do Nothing";
@@ -45,7 +46,7 @@ public class Robot extends TimedRobot {
     private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
     // subsystems
-    // public static Drive mDrive = Drive.getInstance();
+    public static Drive mDrive = Drive.getInstance();
     public static DriveTrain driveTrain = new DriveTrain();
     public static Arm mArm = new Arm();
     public static Intake mIntake = new Intake();
@@ -56,15 +57,15 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         mControllers = new Controllers();
-        // mTrajectoryGenerator.generateTrajectories();
-        // mDrive.zeroSensors();
+        mTrajectoryGenerator.generateTrajectories();
+        mDrive.zeroSensors();
 
 
         // Auto Subsystem manager
-        // mSubsystemManager.setSubsystems(mRobotStateEstimator, mDrive);
-        // mSubsystemManager.registerEnabledLoops(mEnabledLooper);
-        // mSubsystemManager.registerDisabledLoops(mDisabledLooper);
-        // mSubsystemManager.stop();
+        mSubsystemManager.setSubsystems(mRobotStateEstimator, mDrive);
+        mSubsystemManager.registerEnabledLoops(mEnabledLooper);
+        mSubsystemManager.registerDisabledLoops(mDisabledLooper);
+        mSubsystemManager.stop();
 
         // Compressor stuff
         Compressor compressor = new Compressor(PneumaticsModuleType.REVPH);
@@ -73,7 +74,6 @@ public class Robot extends TimedRobot {
 
         // Setting Default Commands for Subsystems
         driveTrain.setDefaultCommand(new RAGEArcade());
-        // mArm.setDefaultCommand(new Position());
 
         // autonomous options
         m_chooser.setDefaultOption(kDefaultAuto, kDefaultAuto);
@@ -90,18 +90,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        // mDisabledLooper.stop();
-        // mSubsystemManager.stop();
-        // mEnabledLooper.start();
+        mDisabledLooper.stop();
+        mSubsystemManager.stop();
+        mEnabledLooper.start();
 
         m_autoSelected = m_chooser.getSelected();
 
-        // final TrajectoryIterator<TimedState<Pose2dWithCurvature>> trajectory = new
-        // TrajectoryIterator<>(
-        // new TimedView<>(mTrajectoryGenerator.getTrajectorySet().testTrajectory));
-        // mRobotState.reset(Timer.getFPGATimestamp(),
-        // trajectory.getState().state().getPose());
-        // mDrive.setTrajectory(trajectory);
+        final TrajectoryIterator<TimedState<Pose2dWithCurvature>> trajectory = new
+        TrajectoryIterator<>(
+        new TimedView<>(mTrajectoryGenerator.getTrajectorySet().testTrajectory));
+        mRobotState.reset(Timer.getFPGATimestamp(),
+        trajectory.getState().state().getPose());
+        mDrive.setTrajectory(trajectory);
     }
 
     /** This function is called periodically during autonomous. */
@@ -112,9 +112,10 @@ public class Robot extends TimedRobot {
     /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
-        // mDisabledLooper.start();
-        // mSubsystemManager.stop();
-        // mEnabledLooper.stop();
+        mDisabledLooper.start();
+        mSubsystemManager.stop();
+        mEnabledLooper.stop();
+        mDisabledLooper.stop();
     }
 
     /** This function is called periodically during operator control. */

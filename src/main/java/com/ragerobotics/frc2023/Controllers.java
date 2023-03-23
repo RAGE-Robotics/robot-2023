@@ -13,6 +13,8 @@ import com.ragerobotics.frc2023.commands.Intake.IntakeOut;
 import com.ragerobotics.frc2023.commands.arm.DoubleStationCube;
 import com.ragerobotics.frc2023.commands.arm.GroundPos;
 import com.ragerobotics.frc2023.commands.arm.ScoreCube;
+import com.ragerobotics.frc2023.commands.arm.ScoreHorizontalCone;
+import com.ragerobotics.frc2023.commands.arm.ScoreVerticalCone;
 
 public class Controllers {
     private static Controllers mInstance = null;
@@ -45,6 +47,8 @@ public class Controllers {
         mOperatorController.button(2).whileTrue(new GroundPos());
         mOperatorController.button(3).whileTrue(new DoubleStationCube());
         mOperatorController.povDown().whileTrue(new ScoreCube());
+        mOperatorController.povUp().whileTrue(new ScoreVerticalCone());
+        mOperatorController.povLeft().whileTrue(new ScoreHorizontalCone());
         // mOperatorController.rightBumper().whileTrue(new IntakeOut());
         // mOperatorController.leftBumper().whileTrue(new IntakeIn());
         // mOperatorController.x().whileTrue(new GroundPos()); //actually a

@@ -120,6 +120,7 @@ public class RAGEDrive extends CommandBase {
       rightPwm = -1.0;
     }
 
+    Robot.driveTrain.drive(leftPwm, rightPwm);
     // Robot.mDrive.setOpenLoop(new DriveSignal(leftPwm, rightPwm)); // MAKE SURE TO UNCOMMENT DIS
   }
 
