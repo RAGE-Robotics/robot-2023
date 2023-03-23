@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ragerobotics.frc2023.commands.Auto_commands.DriveStraight;
 import com.ragerobotics.frc2023.commands.Drive.RAGEArcade;
 import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
 import com.ragerobotics.frc2023.subsystems.Drive;
@@ -14,7 +15,10 @@ import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
 import com.ragerobotics.frc2023.subsystems.wpilib.Arm;
 import com.ragerobotics.frc2023.subsystems.wpilib.DriveTrain;
 import com.ragerobotics.frc2023.subsystems.wpilib.Intake;
+import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Pose2dWithCurvature;
+import com.team254.lib.geometry.Rotation2d;
+import com.team254.lib.geometry.Translation2d;
 import com.team254.lib.loops.Looper;
 import com.team254.lib.trajectory.TimedView;
 import com.team254.lib.trajectory.TrajectoryIterator;
@@ -77,7 +81,7 @@ public class Robot extends TimedRobot {
 
         // autonomous options
         m_chooser.setDefaultOption(kDefaultAuto, kDefaultAuto);
-        m_chooser.addOption(kDriveStraight, kDriveStraight);
+        // m_chooser.addOption(kDriveStraight, new DriveStraight());
         SmartDashboard.putData("Auto choices", m_chooser);
     }
 
@@ -90,18 +94,26 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        m_autonomousCommand = new DriveStraight();
         mDisabledLooper.stop();
         mSubsystemManager.stop();
         mEnabledLooper.start();
 
+        Pose2d reset = new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0));
+
         m_autoSelected = m_chooser.getSelected();
 
-        final TrajectoryIterator<TimedState<Pose2dWithCurvature>> trajectory = new
-        TrajectoryIterator<>(
-        new TimedView<>(mTrajectoryGenerator.getTrajectorySet().testTrajectory));
+        // final TrajectoryIterator<TimedState<Pose2dWithCurvature>> trajectory = new
+        // TrajectoryIterator<>(
+        // new TimedView<>(mTrajectoryGenerator.getTrajectorySet().testTrajectory));
+        // mDrive.setTrajectory(trajectory);
+
         mRobotState.reset(Timer.getFPGATimestamp(),
-        trajectory.getState().state().getPose());
-        mDrive.setTrajectory(trajectory);
+        reset);
+
+        if (m_autonomousCommand != null) {
+            m_autonomousCommand.schedule();
+        }
     }
 
     /** This function is called periodically during autonomous. */
