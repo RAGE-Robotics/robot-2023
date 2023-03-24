@@ -1,7 +1,7 @@
 package com.ragerobotics.frc2023;
 
 public class Constants {
-    public static final double kDriveWheelDiameterInches = 5.9067052758; // tuned 3/2
+    public static final double kDriveWheelDiameterInches = 6.0;
     public static final double kDriveWheelRadiusInches = kDriveWheelDiameterInches / 2.0;
     public static final double kDriveLinearKv = 0.0438 / 2.0 * Constants.kDriveWheelDiameterInches; // V / rad/s
     public static final double kRobotLinearInertia = 62.051; // kg TODO
