@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ragerobotics.frc2023.commands.Auto_commands.CubeAndCross;
 import com.ragerobotics.frc2023.commands.Auto_commands.DoNothing;
 import com.ragerobotics.frc2023.commands.Auto_commands.DriveStraight;
 import com.ragerobotics.frc2023.commands.Drive.RAGEArcade;
@@ -80,6 +81,7 @@ public class Robot extends TimedRobot {
         // autonomous options
         m_chooser.setDefaultOption("Do Nothing", new DoNothing());
         m_chooser.addOption(kDriveStraight, new DriveStraight());
+        m_chooser.addOption("Cube and Cross", new CubeAndCross());
         SmartDashboard.putData(m_chooser);
 
     }

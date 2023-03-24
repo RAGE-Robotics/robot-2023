@@ -2,6 +2,7 @@ package com.ragerobotics.frc2023.commands.arm;
 
 import com.ragerobotics.frc2023.Constants;
 import com.ragerobotics.frc2023.Robot;
+import com.ragerobotics.frc2023.subsystems.wpilib.Arm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -28,6 +29,6 @@ public class ScoreCube extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-      return false;
+        return false;
     }
 }
