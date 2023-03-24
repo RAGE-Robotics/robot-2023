@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     private final RobotStateEstimator mRobotStateEstimator = RobotStateEstimator.getInstance();
     private final RobotState mRobotState = RobotState.getInstance();
 
-    //Autonomous chooser
+    // Autonomous chooser
     private static final String kDriveStraight = "Drive Straight";
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -62,7 +62,6 @@ public class Robot extends TimedRobot {
         mControllers = new Controllers();
         mTrajectoryGenerator.generateTrajectories();
         mDrive.zeroSensors();
-
 
         // Auto Subsystem manager
         mSubsystemManager.setSubsystems(mRobotStateEstimator, mDrive);
@@ -82,6 +81,7 @@ public class Robot extends TimedRobot {
         m_chooser.setDefaultOption("Do Nothing", new DoNothing());
         m_chooser.addOption(kDriveStraight, new DriveStraight());
         SmartDashboard.putData(m_chooser);
+
     }
 
     @Override
@@ -98,16 +98,16 @@ public class Robot extends TimedRobot {
         mEnabledLooper.start();
         m_autonomousCommand = m_chooser.getSelected();
 
-        Pose2d reset = new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0));
-
+        // Pose2d reset = new Pose2d(new Translation2d(0, 0),
+        // Rotation2d.fromDegrees(0));
 
         // final TrajectoryIterator<TimedState<Pose2dWithCurvature>> trajectory = new
         // TrajectoryIterator<>(
-        // new TimedView<>(mTrajectoryGenerator.getTrajectorySet().testTrajectory));
-        // mDrive.setTrajectory(trajectory);
+        // new TimedView<>(mTrajectoryGenerator.getTrajectorySet().driveStraight));
+        // mRobotState.reset(Timer.getFPGATimestamp(),
+        // trajectory.getState().state().getPose());
 
-        mRobotState.reset(Timer.getFPGATimestamp(),
-        reset);
+        // mDrive.setTrajectory(trajectory);
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();

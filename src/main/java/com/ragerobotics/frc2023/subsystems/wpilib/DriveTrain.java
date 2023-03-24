@@ -15,13 +15,13 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
   }
 
-  public void coast() {
-    Drive.getInstance().setBrakeMode(false);
-  }
+  // public void coast() {
+  //   Drive.getInstance().setBrakeMode(false);
+  // }
 
-  public void brake() {
-    Drive.getInstance().setBrakeMode(true);
-  }
+  // public void brake() {
+  //   Drive.getInstance().setBrakeMode(true);
+  // }
 
   public void drive(double leftPercent, double rightPercent) {
     Drive.getInstance().setOpenLoop(new DriveSignal(leftPercent, rightPercent));

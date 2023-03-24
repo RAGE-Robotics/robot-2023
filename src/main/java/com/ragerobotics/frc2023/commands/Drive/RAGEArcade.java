@@ -4,6 +4,7 @@ import com.ragerobotics.frc2023.Constants;
 import com.ragerobotics.frc2023.Controllers;
 import com.ragerobotics.frc2023.Robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class RAGEArcade extends CommandBase {
@@ -19,6 +20,9 @@ public class RAGEArcade extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
+        if (DriverStation.isAutonomous())
+            return;
+
         double throttle = -Controllers.getLeftDriverY();
         double steer = Controllers.getRightDriverX() * 0.75;
 

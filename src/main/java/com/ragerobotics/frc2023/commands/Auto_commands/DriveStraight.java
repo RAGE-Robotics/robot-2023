@@ -27,17 +27,19 @@ public class DriveStraight extends CommandBase {
   public void initialize() {
     trajectory = new TrajectoryIterator<>(new TimedView<>(Robot.mTrajectoryGenerator.getTrajectorySet().driveStraight));
     RobotState.getInstance().reset(Timer.getFPGATimestamp(), trajectory.getState().state().getPose());
+    Robot.mDrive.setTrajectory(trajectory);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Robot.mDrive.setTrajectory(trajectory);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override
