@@ -5,7 +5,7 @@ public class Constants {
     public static final double kDriveWheelRadiusInches = kDriveWheelDiameterInches / 2.0;
     public static final double kDriveLinearKv = 0.0438 / 2.0 * Constants.kDriveWheelDiameterInches; // V / rad/s
     public static final double kRobotLinearInertia = 62.051; // kg TODO
-    public static final double kDriveHighGearReduction = 16.364;
+    public static final double kDriveHighGearReduction = 7.955;
     public static final double kDriveLowGearReduction = 16.364;
     public static final double kGearRatioScalar = (1.0 / kDriveLowGearReduction) / (1.0 / kDriveHighGearReduction);
     public static final double kDriveLinearKa = 0.00597 / 2.0 * Constants.kDriveWheelDiameterInches * kGearRatioScalar; // V
