@@ -15,8 +15,8 @@ import java.util.List;
 
 public class TrajectoryGenerator {
     // TODO tune
-    private static final double kMaxVel = 80.0; // 150.0
-    private static final double kMaxAccel = 40.0; // 100.0
+    private static final double kMaxVel = 150.0;
+    private static final double kMaxAccel = 100.0;
     private static final double kMaxVoltage = 9.0;
 
     private static TrajectoryGenerator mInstance = new TrajectoryGenerator();
@@ -68,15 +68,24 @@ public class TrajectoryGenerator {
 
     public class TrajectorySet {
         public final Trajectory<TimedState<Pose2dWithCurvature>> driveStraight;
+        public final Trajectory<TimedState<Pose2dWithCurvature>> driveBalance;
 
         private TrajectorySet() {
             driveStraight = driveStraight();
+            driveBalance = driveBalance();
         }
 
         private Trajectory<TimedState<Pose2dWithCurvature>> driveStraight() {
             List<Pose2d> waypoints = new ArrayList<>();
             waypoints.add(new Pose2d(Translation2d.identity(), Rotation2d.fromDegrees(0)));
             waypoints.add(new Pose2d(156, 0, Rotation2d.fromDegrees(0)));
+            return generateTrajectory(false, waypoints, Arrays.asList(), kMaxVel, kMaxAccel, kMaxVoltage);
+        }
+
+        private Trajectory<TimedState<Pose2dWithCurvature>> driveBalance() {
+            List<Pose2d> waypoints = new ArrayList<>();
+            waypoints.add(new Pose2d(Translation2d.identity(), Rotation2d.fromDegrees(0)));
+            waypoints.add(new Pose2d(84, 0, Rotation2d.fromDegrees(0)));
             return generateTrajectory(false, waypoints, Arrays.asList(), kMaxVel, kMaxAccel, kMaxVoltage);
         }
     }

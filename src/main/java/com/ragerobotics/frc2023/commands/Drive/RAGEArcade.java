@@ -24,7 +24,7 @@ public class RAGEArcade extends CommandBase {
             return;
 
         double throttle = -Controllers.getLeftDriverY();
-        double steer = Controllers.getRightDriverX() * 0.75;
+        double steer = Controllers.getRightDriverX() * 0.52;
 
         if (Math.abs(throttle) < Constants.kArcadeDriveDeadband) {
             throttle = 0;

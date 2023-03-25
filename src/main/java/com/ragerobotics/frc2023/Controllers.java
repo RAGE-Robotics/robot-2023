@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 
-
+import com.ragerobotics.frc2023.commands.Intake.ConeHold;
 import com.ragerobotics.frc2023.commands.Intake.IntakeIn;
 import com.ragerobotics.frc2023.commands.Intake.IntakeOut;
 // import com.ragerobotics.frc2023.commands.Intake.IntakeIn;
@@ -46,6 +46,7 @@ public class Controllers {
         // operator controls
         mOperatorController.button(5).whileTrue(new IntakeIn());
         mOperatorController.button(6).whileTrue(new IntakeOut());
+        mOperatorController.button(7).whileTrue(new ConeHold());
         mOperatorController.button(2).whileTrue(new GroundPos());
         mOperatorController.button(3).whileTrue(new DoubleStationCube());
         mOperatorController.povDown().whileTrue(new ScoreCube());

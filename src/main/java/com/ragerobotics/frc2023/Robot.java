@@ -7,6 +7,9 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ragerobotics.frc2023.LimelightHelpers.LimelightResults;
+import com.ragerobotics.frc2023.commands.Auto_commands.ConeAndBalance;
+import com.ragerobotics.frc2023.commands.Auto_commands.CubeAndBalance;
 import com.ragerobotics.frc2023.commands.Auto_commands.CubeAndCross;
 import com.ragerobotics.frc2023.commands.Auto_commands.DoNothing;
 import com.ragerobotics.frc2023.commands.Auto_commands.DriveStraight;
@@ -28,9 +31,11 @@ import com.team254.lib.trajectory.timing.TimedState;
 import com.team254.lib.util.DriveSignal;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
@@ -59,7 +64,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-
         mControllers = new Controllers();
         mTrajectoryGenerator.generateTrajectories();
         mDrive.zeroSensors();
@@ -82,6 +86,8 @@ public class Robot extends TimedRobot {
         m_chooser.setDefaultOption("Do Nothing", new DoNothing());
         m_chooser.addOption(kDriveStraight, new DriveStraight());
         m_chooser.addOption("Cube and Cross", new CubeAndCross());
+        m_chooser.addOption("Cube and Balance", new CubeAndBalance());
+        m_chooser.addOption("Cone and Cross", new ConeAndBalance());
         SmartDashboard.putData(m_chooser);
 
     }
@@ -89,6 +95,19 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         mSubsystemManager.outputToSmartDashboard();
+        SmartDashboard.putNumber("Pitch", mDrive.NAVXpitch());
+
+        LimelightResults llresults = LimelightHelpers.getLatestResults("");
+        if (llresults.targetingResults.targets_Fiducials.length > 0) {
+            double x = llresults.targetingResults.botpose_wpiblue[0] * 100 / 2.54;
+            double y = llresults.targetingResults.botpose_wpiblue[1] * 100 / 2.54;
+            double z = llresults.targetingResults.botpose_wpiblue[2] * 100 / 2.54;
+            double theta = llresults.targetingResults.botpose_wpired[5] / 360 * Math.PI * 2;
+
+            if (Math.abs(z) < 24) {
+                System.out.println("x: " + x + ", y: " + y + ", z: " + z + ", theta: " + theta);
+            }
+        }
 
         CommandScheduler.getInstance().run();
     }
@@ -99,17 +118,6 @@ public class Robot extends TimedRobot {
         mSubsystemManager.stop();
         mEnabledLooper.start();
         m_autonomousCommand = m_chooser.getSelected();
-
-        // Pose2d reset = new Pose2d(new Translation2d(0, 0),
-        // Rotation2d.fromDegrees(0));
-
-        // final TrajectoryIterator<TimedState<Pose2dWithCurvature>> trajectory = new
-        // TrajectoryIterator<>(
-        // new TimedView<>(mTrajectoryGenerator.getTrajectorySet().driveStraight));
-        // mRobotState.reset(Timer.getFPGATimestamp(),
-        // trajectory.getState().state().getPose());
-
-        // mDrive.setTrajectory(trajectory);
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();

@@ -1,0 +1,23 @@
+ConeAndCrossLeftRed
+x: 78
+y: 22
+
+CubeAndCrossLeftRed
+x: 78
+y: 41
+
+ConeAndBalanceRed
+x: 78
+y: 90
+
+CubeAndBalanceRed
+x: 78
+y: 110
+
+ConeAndCrossRightRed
+x: 78
+y: 199
+
+CubeAndCrossRightRed
+x: 78
+y: 176
