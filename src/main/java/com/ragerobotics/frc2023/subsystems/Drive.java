@@ -566,6 +566,27 @@ public class Drive extends Subsystem {
         return true;
     }
 
+    // NavX methods for auto balancing
+    public double NAVXpitch() {
+        return mNavX.getPitch();
+    }
+
+    public double NAVXRoll() {
+        return mNavX.getRoll();
+    }
+
+    public double getTilt() {
+        double pitch = NAVXpitch();
+        double roll = NAVXRoll();
+
+        if((pitch + roll) >= 0) {
+            return Math.sqrt((pitch * pitch )+ (roll * roll));
+        }
+        else {
+            return -Math.sqrt((pitch * pitch )+ (roll * roll));
+        }
+    }
+
     @Override
     public void outputTelemetry() {
         SmartDashboard.putNumber("Right Drive Distance", mPeriodicIO.right_distance);
