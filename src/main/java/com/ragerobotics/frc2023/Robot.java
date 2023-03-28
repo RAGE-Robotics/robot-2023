@@ -20,6 +20,7 @@ import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
 import com.ragerobotics.frc2023.subsystems.wpilib.Arm;
 import com.ragerobotics.frc2023.subsystems.wpilib.DriveTrain;
 import com.ragerobotics.frc2023.subsystems.wpilib.Intake;
+import com.ragerobotics.frc2023.subsystems.wpilib.LEDs;
 import com.team254.lib.geometry.Pose2d;
 import com.team254.lib.geometry.Pose2dWithCurvature;
 import com.team254.lib.geometry.Rotation2d;
@@ -59,6 +60,7 @@ public class Robot extends TimedRobot {
     public static DriveTrain driveTrain = new DriveTrain();
     public static Arm mArm = new Arm();
     public static Intake mIntake = new Intake();
+    public static LEDs mleds = new LEDs();
 
     public static Controllers mControllers;
 
@@ -89,6 +91,9 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("Cube and Balance", new CubeAndBalance());
         m_chooser.addOption("Cone and Cross", new ConeAndBalance());
         SmartDashboard.putData(m_chooser);
+
+        //Arm brake
+        mArm.toggleBrake();
 
     }
 

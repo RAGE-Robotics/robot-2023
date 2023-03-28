@@ -8,11 +8,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ragerobotics.frc2023.Constants;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
     public static TalonSRX murphyArm = new TalonSRX(6);
+    public static DoubleSolenoid armBrake = new DoubleSolenoid(PneumaticsModuleType.REVPH, 4, 9);
     private boolean mZeroed;
     
 
@@ -52,6 +55,10 @@ public class Arm extends SubsystemBase {
 
     public void positionMaunel(double position){
         murphyArm.set(ControlMode.Position, position);
+    }
+
+    public void toggleBrake(){
+        armBrake.toggle();
     }
 
     @Override
