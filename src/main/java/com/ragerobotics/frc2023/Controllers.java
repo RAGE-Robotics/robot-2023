@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandGenericHID;
 import com.ragerobotics.frc2023.commands.Intake.ConeHold;
 import com.ragerobotics.frc2023.commands.Intake.IntakeIn;
 import com.ragerobotics.frc2023.commands.Intake.IntakeOut;
+import com.ragerobotics.frc2023.commands.LEDs.SignalCone;
+import com.ragerobotics.frc2023.commands.LEDs.SignalCube;
 // import com.ragerobotics.frc2023.commands.Intake.IntakeIn;
 // import com.ragerobotics.frc2023.commands.Intake.IntakeOut;
 // import com.ragerobotics.frc2023.commands.intake.IntakeOut;
@@ -59,6 +61,9 @@ public class Controllers {
         // mOperatorController.x().whileTrue(new GroundPos()); //actually a
         // mOperatorController.b().whileTrue(new DoubleStationCube());
         // mOperatorController.a().whileTrue(new ScoreCube()); //actually x
+
+        mDriverController.button(5).whileTrue(new SignalCube());
+        mDriverController.button(6).whileTrue(new SignalCone());
     }
 
     // RAGEDrive Methods

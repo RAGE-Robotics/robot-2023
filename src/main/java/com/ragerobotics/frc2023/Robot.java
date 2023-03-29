@@ -92,9 +92,6 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("Cone and Cross", new ConeAndBalance());
         SmartDashboard.putData(m_chooser);
 
-        //Arm brake
-        mArm.toggleBrake();
-
     }
 
     @Override
@@ -124,9 +121,12 @@ public class Robot extends TimedRobot {
         mEnabledLooper.start();
         m_autonomousCommand = m_chooser.getSelected();
 
+        mArm.toggleBrake();
+
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
+
     }
 
     /** This function is called periodically during autonomous. */
@@ -144,6 +144,8 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        
+
     }
 
     /** This function is called periodically during operator control. */
