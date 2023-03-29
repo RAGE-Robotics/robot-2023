@@ -24,7 +24,7 @@ public class SignalCube extends CommandBase {
   @Override
   public void execute() {
     Robot.mleds.signalCube();
-    mCubeActive = true;
+    // mCubeActive = true;
   }
 
   // Called once the command ends or is interrupted.

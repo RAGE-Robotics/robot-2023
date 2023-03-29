@@ -71,6 +71,8 @@ public class LEDs extends SubsystemBase {
     // This method will be called once per scheduler run
     if (!SignalCube.mCubeActive && !SignalCone.mConeActive)
     {
+      // RUN ALLIANCE COLOR IN THE END METHOD OF YOUR COMMAND FOR SIGNAL CONE/CUBE
+      // ALSO MAKE ALLIANCE COLOR A DEFAULT COMMAND FOR THE SUBSYSTEM IN ROBOT INIT
       allianceColor();
     }
   }

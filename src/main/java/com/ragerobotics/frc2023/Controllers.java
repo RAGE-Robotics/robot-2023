@@ -56,11 +56,6 @@ public class Controllers {
         mOperatorController.povLeft().whileTrue(new ScoreHorizontalCone());
         mOperatorController.button(4).whileTrue(new StowedPos());
         mOperatorController.button(1).whileTrue(new SingleStation());
-        // mOperatorController.rightBumper().whileTrue(new IntakeOut());
-        // mOperatorController.leftBumper().whileTrue(new IntakeIn());
-        // mOperatorController.x().whileTrue(new GroundPos()); //actually a
-        // mOperatorController.b().whileTrue(new DoubleStationCube());
-        // mOperatorController.a().whileTrue(new ScoreCube()); //actually x
 
         mDriverController.button(5).whileTrue(new SignalCube());
         mDriverController.button(6).whileTrue(new SignalCone());
