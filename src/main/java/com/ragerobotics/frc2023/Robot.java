@@ -15,6 +15,7 @@ import com.ragerobotics.frc2023.commands.Auto_commands.CubeAndBalance;
 import com.ragerobotics.frc2023.commands.Auto_commands.CubeAndCross;
 import com.ragerobotics.frc2023.commands.Auto_commands.DoNothing;
 import com.ragerobotics.frc2023.commands.Auto_commands.DoubleCube;
+import com.ragerobotics.frc2023.commands.Auto_commands.DriveOverBalance;
 import com.ragerobotics.frc2023.commands.Auto_commands.DriveStraight;
 import com.ragerobotics.frc2023.commands.Drive.RAGEArcade;
 import com.ragerobotics.frc2023.commands.LEDs.AllianceColor;
@@ -56,7 +57,6 @@ public class Robot extends TimedRobot {
     private final RobotState mRobotState = RobotState.getInstance();
 
     // Autonomous chooser
-    private static final String kDriveStraight = "Drive Straight";
     private final SendableChooser<Command> m_chooser = new SendableChooser<>();
 
     // subsystems
@@ -91,15 +91,15 @@ public class Robot extends TimedRobot {
 
         // autonomous options
         m_chooser.setDefaultOption("Do Nothing", new DoNothing());
-        m_chooser.addOption(kDriveStraight, new DriveStraight());
+        m_chooser.addOption("Drive Straight", new DriveStraight());
         m_chooser.addOption("Cube and Cross", new CubeAndCross());
         m_chooser.addOption("Cone and Cross", new ConeAndCross());
         m_chooser.addOption("Cube and Balance", new CubeAndBalance());
         m_chooser.addOption("Cone and Balance", new ConeAndBalance());
         m_chooser.addOption("Just balance", new Balance());
         m_chooser.addOption("Double Cube", new DoubleCube());
+        m_chooser.addOption("Drive over Balance", new DriveOverBalance());
         SmartDashboard.putData(m_chooser);
-
     }
 
     @Override
@@ -114,8 +114,23 @@ public class Robot extends TimedRobot {
             double z = llresults.targetingResults.botpose_wpiblue[2] * 100 / 2.54;
             double theta = llresults.targetingResults.botpose_wpired[5] / 360 * Math.PI * 2;
 
-            if (Math.abs(z) < 24) {
-                System.out.println("x: " + x + ", y: " + y + ", z: " + z + ", theta: " + theta);
+            if (Math.abs(z) < 12) {
+                Rotation2d angle = new Rotation2d(theta, true);
+
+                double yOffset = 0;
+
+                if (m_chooser.getSelected() != null && m_chooser.getSelected() instanceof DriveOverBalance)
+                    yOffset = 90;
+
+                if (DriverStation.getAlliance() == Alliance.Red || DriverStation.getAlliance() == Alliance.Invalid) {
+                    x = 629.25 - x;
+                    y = -(y - yOffset);
+                    angle = angle.rotateBy(new Rotation2d(Math.PI, false));
+                    System.out.println("x: " + x + ", y: " + y + ", z: " + z + ", theta: " + angle);
+                }
+
+                if (yOffset != 0)
+                    mRobotState.reset(Timer.getFPGATimestamp(), new Pose2d(x, yOffset, angle));
             }
         }
 
@@ -152,7 +167,6 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        
 
     }
 
