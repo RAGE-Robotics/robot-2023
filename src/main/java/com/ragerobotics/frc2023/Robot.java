@@ -126,8 +126,9 @@ public class Robot extends TimedRobot {
                     x = 629.25 - x;
                     y = -(y - yOffset);
                     angle = angle.rotateBy(new Rotation2d(Math.PI, false));
-                    System.out.println("x: " + x + ", y: " + y + ", z: " + z + ", theta: " + angle);
-                }
+                } else
+                    y -= yOffset;
+                System.out.println("x: " + x + ", y: " + y + ", z: " + z + ", theta: " + angle);
 
                 if (yOffset != 0)
                     mRobotState.reset(Timer.getFPGATimestamp(), new Pose2d(x, yOffset, angle));
