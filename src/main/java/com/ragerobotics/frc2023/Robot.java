@@ -128,6 +128,7 @@ public class Robot extends TimedRobot {
                     angle = angle.rotateBy(new Rotation2d(Math.PI, false));
                 } else
                     y -= yOffset;
+                x -= 78;
                 System.out.println("x: " + x + ", y: " + y + ", z: " + z + ", theta: " + angle);
 
                 if (yOffset != 0)
