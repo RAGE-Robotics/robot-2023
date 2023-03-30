@@ -14,6 +14,7 @@ import com.ragerobotics.frc2023.commands.Auto_commands.ConeAndCross;
 import com.ragerobotics.frc2023.commands.Auto_commands.CubeAndBalance;
 import com.ragerobotics.frc2023.commands.Auto_commands.CubeAndCross;
 import com.ragerobotics.frc2023.commands.Auto_commands.DoNothing;
+import com.ragerobotics.frc2023.commands.Auto_commands.DoubleCube;
 import com.ragerobotics.frc2023.commands.Auto_commands.DriveStraight;
 import com.ragerobotics.frc2023.commands.Drive.RAGEArcade;
 import com.ragerobotics.frc2023.commands.LEDs.AllianceColor;
@@ -96,6 +97,7 @@ public class Robot extends TimedRobot {
         m_chooser.addOption("Cube and Balance", new CubeAndBalance());
         m_chooser.addOption("Cone and Balance", new ConeAndBalance());
         m_chooser.addOption("Just balance", new Balance());
+        m_chooser.addOption("Double Cube", new DoubleCube());
         SmartDashboard.putData(m_chooser);
 
     }

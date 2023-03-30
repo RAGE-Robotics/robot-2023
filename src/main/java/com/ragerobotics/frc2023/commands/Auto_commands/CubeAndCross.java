@@ -20,9 +20,10 @@ public class CubeAndCross extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
-    addCommands(new ScoreCube().withTimeout(0.4), 
+    addCommands(new ScoreCube().withTimeout(0.6), 
                 new RunIntake(.6).withTimeout(0.4), 
                 new GroundPos().withTimeout(0.3), 
-                new DriveStraight());
+                new PickupCube().withTimeout(3.5)
+                );
   }
 }

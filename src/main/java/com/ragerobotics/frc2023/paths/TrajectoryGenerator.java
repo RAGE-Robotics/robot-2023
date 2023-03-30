@@ -80,7 +80,7 @@ public class TrajectoryGenerator {
         private Trajectory<TimedState<Pose2dWithCurvature>> driveStraight() {
             List<Pose2d> waypoints = new ArrayList<>();
             waypoints.add(new Pose2d(Translation2d.identity(), Rotation2d.fromDegrees(0)));
-            waypoints.add(new Pose2d(160, 0, Rotation2d.fromDegrees(0)));
+            waypoints.add(new Pose2d(170.5, 0, Rotation2d.fromDegrees(0)));
             return generateTrajectory(false, waypoints, Arrays.asList(), kMaxVel, kMaxAccel, kMaxVoltage);
         }
 
@@ -93,7 +93,7 @@ public class TrajectoryGenerator {
         private Trajectory<TimedState<Pose2dWithCurvature>> driveReverse() {
             List<Pose2d> waypoints = new ArrayList<>();
             waypoints.add(new Pose2d(Translation2d.identity(), Rotation2d.fromDegrees(0)));
-            waypoints.add(new Pose2d(160, 0, Rotation2d.fromDegrees(0)));
+            waypoints.add(new Pose2d(164.5, 0, Rotation2d.fromDegrees(0)));
             return generateTrajectory(true, waypoints, Arrays.asList(), kMaxVel, kMaxAccel, kMaxVoltage);
         }
     }
