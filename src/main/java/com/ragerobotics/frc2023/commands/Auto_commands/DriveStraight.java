@@ -7,6 +7,7 @@ package com.ragerobotics.frc2023.commands.Auto_commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import com.ragerobotics.frc2023.Robot;
 import com.ragerobotics.frc2023.RobotState;
+import com.ragerobotics.frc2023.subsystems.Drive;
 import com.team254.lib.trajectory.TimedView;
 import com.team254.lib.trajectory.TrajectoryIterator;
 import com.team254.lib.trajectory.timing.TimedState;
@@ -44,6 +45,6 @@ public class DriveStraight extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return Drive.getInstance().isDoneWithTrajectory();
   }
 }

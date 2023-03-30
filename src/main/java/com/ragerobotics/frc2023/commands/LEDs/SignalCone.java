@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class SignalCone extends CommandBase {
   /** Creates a new SignalCone. */
-  public static boolean mConeActive;
   public SignalCone() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Robot.mleds);
@@ -24,13 +23,12 @@ public class SignalCone extends CommandBase {
   @Override
   public void execute() {
     Robot.mleds.signalCone();
-    mConeActive = true;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    mConeActive = false;
+    Robot.mleds.allianceColor();
   }
 
   // Returns true when the command should end.

@@ -8,12 +8,15 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ragerobotics.frc2023.LimelightHelpers.LimelightResults;
+import com.ragerobotics.frc2023.commands.Auto_commands.Balance;
 import com.ragerobotics.frc2023.commands.Auto_commands.ConeAndBalance;
+import com.ragerobotics.frc2023.commands.Auto_commands.ConeAndCross;
 import com.ragerobotics.frc2023.commands.Auto_commands.CubeAndBalance;
 import com.ragerobotics.frc2023.commands.Auto_commands.CubeAndCross;
 import com.ragerobotics.frc2023.commands.Auto_commands.DoNothing;
 import com.ragerobotics.frc2023.commands.Auto_commands.DriveStraight;
 import com.ragerobotics.frc2023.commands.Drive.RAGEArcade;
+import com.ragerobotics.frc2023.commands.LEDs.AllianceColor;
 import com.ragerobotics.frc2023.paths.TrajectoryGenerator;
 import com.ragerobotics.frc2023.subsystems.Drive;
 import com.ragerobotics.frc2023.subsystems.RobotStateEstimator;
@@ -83,13 +86,16 @@ public class Robot extends TimedRobot {
 
         // Setting Default Commands for Subsystems
         driveTrain.setDefaultCommand(new RAGEArcade());
+        mleds.setDefaultCommand(new AllianceColor());
 
         // autonomous options
         m_chooser.setDefaultOption("Do Nothing", new DoNothing());
         m_chooser.addOption(kDriveStraight, new DriveStraight());
         m_chooser.addOption("Cube and Cross", new CubeAndCross());
+        m_chooser.addOption("Cone and Cross", new ConeAndCross());
         m_chooser.addOption("Cube and Balance", new CubeAndBalance());
-        m_chooser.addOption("Cone and Cross", new ConeAndBalance());
+        m_chooser.addOption("Cone and Balance", new ConeAndBalance());
+        m_chooser.addOption("Just balance", new Balance());
         SmartDashboard.putData(m_chooser);
 
     }

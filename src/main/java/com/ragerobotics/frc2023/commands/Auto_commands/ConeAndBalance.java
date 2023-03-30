@@ -19,6 +19,10 @@ public class ConeAndBalance extends SequentialCommandGroup {
   public ConeAndBalance() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new PlaceCone().withTimeout(0.7), new RunIntake(0.45).withTimeout(0.4), new StowedPos().withTimeout(0.5), new DriveBalance());
+    addCommands(new PlaceCone().withTimeout(0.7), 
+                new RunIntake(0.45).withTimeout(0.4), 
+                new StowedPos().withTimeout(0.5), 
+                new DriveBalance().withTimeout(3.2), 
+                new BalancePlatform(0.01, 0, 2, 0.3));
   }
 }
