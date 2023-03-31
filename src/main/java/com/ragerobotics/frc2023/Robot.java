@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
             double x = llresults.targetingResults.botpose_wpiblue[0] * 100 / 2.54;
             double y = llresults.targetingResults.botpose_wpiblue[1] * 100 / 2.54;
             double z = llresults.targetingResults.botpose_wpiblue[2] * 100 / 2.54;
-            double theta = llresults.targetingResults.botpose_wpired[5] / 360 * Math.PI * 2;
+            double theta = llresults.targetingResults.botpose_wpiblue[5] / 360 * Math.PI * 2;
 
             if (Math.abs(z) < 12) {
                 Rotation2d angle = new Rotation2d(theta, true);
@@ -120,14 +120,16 @@ public class Robot extends TimedRobot {
                 double yOffset = 0;
 
                 if (m_chooser.getSelected() != null && m_chooser.getSelected() instanceof DriveOverBalance)
-                    yOffset = 90;
+                    yOffset = 100;
 
-                if (DriverStation.getAlliance() == Alliance.Red || DriverStation.getAlliance() == Alliance.Invalid) {
+                if (DriverStation.getAlliance() == Alliance.Blue) {
+                    y -= yOffset;
+                    y *= -1;
+                } else {
                     x = 629.25 - x;
                     y = -(y - yOffset);
                     angle = angle.rotateBy(new Rotation2d(Math.PI, false));
-                } else
-                    y -= yOffset;
+                }
                 x -= 78;
                 System.out.println("x: " + x + ", y: " + y + ", z: " + z + ", theta: " + angle);
 
