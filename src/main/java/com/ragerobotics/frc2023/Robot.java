@@ -116,13 +116,17 @@ public class Robot extends TimedRobot {
             double z = llresults.targetingResults.botpose_wpiblue[2] * 100 / 2.54;
             double theta = llresults.targetingResults.botpose_wpiblue[5] / 360 * Math.PI * 2;
 
-            if (Math.abs(z) < 12) {
+            if (Math.abs(z) < 24) {
                 Rotation2d angle = new Rotation2d(theta, true);
 
                 double yOffset = 0;
 
                 if (m_chooser.getSelected() != null && m_chooser.getSelected() instanceof DriveOverBalance)
                     yOffset = 100;
+                else if (m_chooser.getSelected() != null && m_chooser.getSelected() instanceof DoubleCube)
+                    if ((DriverStation.getAlliance() == Alliance.Blue && DriverStation.getLocation() == 3)
+                            || (DriverStation.getAlliance() == Alliance.Red && DriverStation.getLocation() == 1))
+                        yOffset = 41;
 
                 if (DriverStation.getAlliance() == Alliance.Blue) {
                     y -= yOffset;
