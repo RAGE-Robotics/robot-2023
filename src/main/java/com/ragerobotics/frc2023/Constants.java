@@ -73,7 +73,7 @@ public class Constants {
     public static final double kArmCruiseVelocity = 355;
     public static final double kArmAcceleration = 55;
 
-    public static final double kArmDownPosition = 11200;
+    public static final double kArmDownPosition = 11000;
     public static final double kArmBackLimitPosition = 8800;
     public static final double kArmDoubleStationPosition = 5160;
     public static final double kArmSingleStationPosition = 5600;
