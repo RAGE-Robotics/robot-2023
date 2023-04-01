@@ -26,6 +26,6 @@ public class CubeAndBalance extends SequentialCommandGroup {
                 new RunIntake(.55).withTimeout(0.4), 
                 new StowedPos().withTimeout(0.4), 
                 new DriveBalance().withTimeout(3.2), 
-                new BalancePlatform(0.01, 0, 2, 0.3));
+                new BalancePlatform(0.006, 0, 2, 0.3));
   }
 }

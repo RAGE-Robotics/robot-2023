@@ -23,6 +23,6 @@ public class ConeAndBalance extends SequentialCommandGroup {
                 new RunIntake(0.45).withTimeout(0.4), 
                 new StowedPos().withTimeout(0.5), 
                 new DriveBalance().withTimeout(3.2), 
-                new BalancePlatform(0.01, 0, 2, 0.3));
+                new BalancePlatform(0.006, 0, 2, 0.3));
   }
 }

@@ -126,7 +126,7 @@ public class Robot extends TimedRobot {
                 /*else if (m_chooser.getSelected() != null && m_chooser.getSelected() instanceof DoubleCube)
                     if ((DriverStation.getAlliance() == Alliance.Blue && DriverStation.getLocation() == 3)
                             || (DriverStation.getAlliance() == Alliance.Red && DriverStation.getLocation() == 1))
-                        yOffset = 41;*/
+                        yOffset = 37;*/
 
                 if (DriverStation.getAlliance() == Alliance.Blue) {
                     y -= yOffset;
@@ -140,7 +140,8 @@ public class Robot extends TimedRobot {
                 System.out.println("x: " + x + ", y: " + y + ", z: " + z + ", theta: " + angle);
 
                 if (yOffset != 0)
-                    mRobotState.reset(Timer.getFPGATimestamp(), new Pose2d(x, yOffset, angle));
+                    mRobotState.reset(Timer.getFPGATimestamp(), new Pose2d(
+                            mRobotState.getLatestFieldToVehicle().getValue().getTranslation().x(), y, angle));
             }
         }
 
