@@ -16,7 +16,7 @@ public class Balance extends SequentialCommandGroup {
   public Balance() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new StowedPos().withTimeout(0.4), new DriveBalance().withTimeout(3.2), new BalancePlatform(0.01, 0, 2, 0.25));
+    addCommands(new StowedPos().withTimeout(0.4), new DriveBalance().withTimeout(3.2), new BalancePlatform(0.006, 0, 2, 0.25));
 
   }
 }

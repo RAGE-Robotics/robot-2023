@@ -37,17 +37,15 @@ public class BalancePlatform extends CommandBase {
   public void execute() {
     error = Math.abs(aDegree - Robot.mDrive.NAVXpitch());
 
-    if(mKp * error >= aSpeed) {
+    if (mKp * error >= aSpeed) {
       pidSpeed = aSpeed;
-    }
-    else {
+    } else {
       pidSpeed = mKp * error;
     }
 
-    if(Robot.mDrive.NAVXpitch() < aDegree) {
+    if (Robot.mDrive.NAVXpitch() < aDegree) {
       Drive.getInstance().setOpenLoop(new DriveSignal(-pidSpeed, -pidSpeed));
-    }
-    else {
+    } else {
       Drive.getInstance().setOpenLoop(new DriveSignal(pidSpeed, pidSpeed));
     }
   }
@@ -62,6 +60,7 @@ public class BalancePlatform extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return ((Math.abs(error) <= tolerance));
+    // return ((Math.abs(error) <= tolerance));
+    return false;
   }
 }

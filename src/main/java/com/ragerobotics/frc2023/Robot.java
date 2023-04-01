@@ -123,10 +123,10 @@ public class Robot extends TimedRobot {
 
                 if (m_chooser.getSelected() != null && m_chooser.getSelected() instanceof DriveOverBalance)
                     yOffset = 100;
-                else if (m_chooser.getSelected() != null && m_chooser.getSelected() instanceof DoubleCube)
+                /*else if (m_chooser.getSelected() != null && m_chooser.getSelected() instanceof DoubleCube)
                     if ((DriverStation.getAlliance() == Alliance.Blue && DriverStation.getLocation() == 3)
                             || (DriverStation.getAlliance() == Alliance.Red && DriverStation.getLocation() == 1))
-                        yOffset = 41;
+                        yOffset = 41;*/
 
                 if (DriverStation.getAlliance() == Alliance.Blue) {
                     y -= yOffset;
